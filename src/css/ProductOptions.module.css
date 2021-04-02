@@ -1,0 +1,30 @@
+.productOptionsContainer {
+	display: none;
+}
+
+.title {
+	font-size: 1rem;
+	text-align: center;
+}
+
+.input {
+	margin-bottom: 2rem;
+}
+
+.inputContainer {
+	width: 80%;
+	justify-content: space-between;
+}
+
+@media (min-width: 1024px) {
+	.productOptionsContainer {
+		display: flex;
+		border-right: 1px solid var(--bg-color-overlay);
+		position: fixed;
+		top: 6.2rem;
+		left: 0rem;
+		bottom: 0rem;
+		padding: 0rem 1rem;
+		width: 15%;
+	}
+}

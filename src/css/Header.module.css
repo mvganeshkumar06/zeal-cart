@@ -1,0 +1,57 @@
+.container {
+	width: 100%;
+	position: fixed;
+	top: 0;
+	height: 4rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--bg-color);
+	color: var(--text-color);
+	border-bottom: var(--default-border);
+	z-index: 10;
+}
+
+.iconSmall {
+	width: 1.5rem;
+	height: 1.5rem;
+	margin: 0rem 0.5rem;
+}
+
+.zealCartIcon {
+	width: 2rem;
+	height: 2rem;
+	margin-left: 2.75rem;
+}
+
+.socialIcons {
+	margin-left: 0.5rem;
+}
+
+.title {
+	font-size: 1.125rem;
+	margin: 0.25rem 0rem 0rem 0.5rem;
+}
+
+@media (min-width: 1024px) {
+	.container {
+		align-items: center;
+	}
+	.iconSmall {
+		width: 2rem;
+		height: 2rem;
+	}
+	.zealCartIcon {
+		width: 3rem;
+		height: 3rem;
+		margin-left: 3rem;
+	}
+	.socialIcons {
+		margin-left: auto;
+		margin-right: 5rem;
+	}
+	.title {
+		font-size: 1.5rem;
+		margin: 0.75rem 0rem 0rem 1rem;
+	}
+}

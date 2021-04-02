@@ -1,0 +1,8 @@
+.sortContainer {
+	width: 50%;
+	border-right: 1px solid var(--gray-4);
+}
+
+.sortIcon {
+	margin: 0.5rem;
+}

@@ -1,0 +1,25 @@
+.productsContainer {
+	width: 100%;
+	align-items: center;
+	margin-top: 5rem;
+}
+
+@media (min-width: 425px) {
+	.products {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 768px) {
+	.products {
+		width: 80%;
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.products {
+		width: 80%;
+		grid-template-columns: repeat(4, 1fr);
+	}
+}

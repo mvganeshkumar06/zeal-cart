@@ -1,0 +1,8 @@
+.filterContainer {
+	width: 50%;
+	border-left: 1px solid var(--gray-4);
+}
+
+.filterIcon {
+	margin: 0.5rem;
+}
