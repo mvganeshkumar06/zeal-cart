@@ -19,27 +19,26 @@ const Products = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(false);
 
-	const fetchData = async () => {
-		const response = await axios({
-			method: "get",
-			url: "/products",
-		});
-		dispatch({
-			type: "SET_PRODUCTS",
-			payload: response.data.products,
-		});
-	};
-
 	useEffect(() => {
 		try {
 			setIsLoading(true);
+			const fetchData = async () => {
+				const response = await axios({
+					method: "get",
+					url: "/products",
+				});
+				dispatch({
+					type: "SET_PRODUCTS",
+					payload: response.data.products,
+				});
+			};
 			fetchData();
 		} catch (error) {
 			setIsError(true);
 		} finally {
 			setIsLoading(false);
 		}
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div className={`align-items-col ${styles.productsContainer}`}>
