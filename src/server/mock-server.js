@@ -1,8 +1,6 @@
 import { createServer, Model, Factory } from "miragejs";
 import faker from "faker";
 
-faker.seed(123);
-
 const getRandomProducts = (count) => {
 	const products = [];
 	for (let i = 0; i < count; i++) {
@@ -14,9 +12,8 @@ const getRandomProducts = (count) => {
 	return products;
 };
 
-const createMockServer = ({ environment = "test" } = {}) => {
+const createMockServer = () => {
 	createServer({
-		environment,
 		models: {
 			category: Model,
 			product: Model,
@@ -32,7 +29,7 @@ const createMockServer = ({ environment = "test" } = {}) => {
 			}),
 			product: Factory.extend({
 				id: faker.datatype.uuid,
-				image: faker.random.image(),
+				image: faker.random.image,
 				name: faker.commerce.productName,
 				description: "This is an awesome product",
 				price: faker.commerce.price,
@@ -56,7 +53,7 @@ const createMockServer = ({ environment = "test" } = {}) => {
 		},
 		seeds(server) {
 			server.createList("category", 10);
-			server.createList("product", 10);
+			server.createList("product", 15);
 		},
 	});
 };

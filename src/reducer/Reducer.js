@@ -29,6 +29,22 @@ const reducer = (state, action) => {
 					return item.id !== action.payload;
 				}),
 			};
+		case "SORT_PRICE_LOW_TO_HIGH":
+		case "SORT_PRICE_HIGH_TO_LOW":
+		case "SORT_TRENDING_FIRST":
+		case "SORT_RATING":
+			return {
+				...state,
+				sortOption: action.payload,
+			};
+		case "SET_PRICE_RANGE":
+			return {
+				...state,
+				filterOptions: {
+					...state.filterOptions,
+					priceRange: action.payload,
+				},
+			};
 		default:
 			throw new Error(`Unhandled action type: ${action.type}`);
 	}

@@ -1,64 +1,107 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import ProductContext from "../context/ProductContext";
 import "../css/DriftUI.css";
 import styles from "../css/ProductOptions.module.css";
 
 const ProductOptions = () => {
-	const [input, setInput] = useState({
-		lowToHigh: false,
-		highToLow: false,
-		trending: false,
-		range: 0,
-	});
+	const {
+		state: {
+			sortOption,
+			filterOptions: { priceRange },
+		},
+		dispatch,
+	} = useContext(ProductContext);
+
+	const clearAllInput = () => {
+		const radioGroup = document.querySelectorAll(
+			`input[name = "radio-group"]`
+		);
+		radioGroup.forEach((radioBtn) => {
+			radioBtn.checked = false;
+		});
+		dispatch({
+			type: "SET_PRICE_RANGE",
+			payload: 0,
+		});
+	};
 
 	return (
 		<div
 			className={`align-items-col scroll-auto ${styles.productOptionsContainer}`}
 		>
-			<h2 className="sub-heading-2">Sort by</h2>
+			<div className={`align-items-row ${styles.optionsHeader}`}>
+				<h2 className="sub-heading-2">Sort by</h2>
+				<button
+					className={`btn btn-action ${styles.btnClear}`}
+					onClick={() => {
+						clearAllInput();
+					}}
+				>
+					Clear All
+				</button>
+			</div>
 			<span className="divider" />
 			<div className={`align-items-col ${styles.input}`}>
 				<div className={`align-items-row ${styles.inputContainer}`}>
-					<label htmlFor="Input_low_to_high">
+					<label htmlFor="input-low-to-high">
 						Price : Low to High
 					</label>
 					<input
-						id="Input_low_to_high"
-						type="checkbox"
-						value={input.lowToHigh}
+						id="input-low-to-high"
+						type="radio"
+						name="radio-group"
+						value={sortOption === "LOW_TO_HIGH"}
 						onChange={() =>
-							setInput({
-								...input,
-								lowToHigh: !input.lowToHigh,
+							dispatch({
+								type: "SORT_PRICE_LOW_TO_HIGH",
+								payload: "LOW_TO_HIGH",
 							})
 						}
 					/>
 				</div>
 				<div className={`align-items-row ${styles.inputContainer}`}>
-					<label htmlFor="Input_high_to_low">
+					<label htmlFor="input-high-to-low">
 						Price : High to Low
 					</label>
 					<input
-						id="Input_high_to_low"
-						type="checkbox"
-						value={input.highToLow}
+						id="input-high-to-low"
+						type="radio"
+						name="radio-group"
+						value={sortOption === "HIGH_TO_LOW"}
 						onChange={() =>
-							setInput({
-								...input,
-								highToLow: !input.highToLow,
+							dispatch({
+								type: "SORT_PRICE_HIGH_TO_LOW",
+								payload: "HIGH_TO_LOW",
 							})
 						}
 					/>
 				</div>
 				<div className={`align-items-row ${styles.inputContainer}`}>
-					<label htmlFor="Input_trending"> Discount</label>
+					<label htmlFor="input-trending"> Trending First </label>
 					<input
-						id="Input_trending"
-						type="checkbox"
-						value={input.trending}
+						id="input-trending"
+						type="radio"
+						name="radio-group"
+						value={sortOption === "TRENDING_FIRST"}
 						onChange={() =>
-							setInput({
-								...input,
-								trending: !input.trending,
+							dispatch({
+								type: "SORT_TRENDING_FIRST",
+								payload: "TRENDING_FIRST",
+							})
+						}
+					/>
+				</div>
+				<div className={`align-items-row ${styles.inputContainer}`}>
+					<label htmlFor="input-rating"> Rating </label>
+					<input
+						id="input-rating"
+						type="radio"
+						name="radio-group"
+						value={sortOption === "RATING"}
+						onChange={() =>
+							dispatch({
+								type: "SORT_RATING",
+								payload: "RATING",
 							})
 						}
 					/>
@@ -67,20 +110,22 @@ const ProductOptions = () => {
 			<div className={`align-items-col ${styles.input}`}>
 				<h2 className="sub-heading-2">Filters</h2>
 				<span className="divider" />
-				<label htmlFor="Input_range" min="0" max="100000">
-					Price Range
-				</label>
+				<label htmlFor="input-range">Price Range</label>
 				<input
-					id="Input_range"
+					id="input-range"
 					type="range"
-					value={input.range}
+					name="price-range"
+					min="0"
+					max="1500"
+					value={priceRange}
 					onChange={(event) =>
-						setInput({
-							...input,
-							range: Number.parseInt(event.target.value),
+						dispatch({
+							type: "SET_PRICE_RANGE",
+							payload: parseInt(event.target.value),
 						})
 					}
 				/>
+				<span>0 to {priceRange}</span>
 			</div>
 		</div>
 	);

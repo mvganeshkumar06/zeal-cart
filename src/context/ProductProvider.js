@@ -7,6 +7,10 @@ const ProductProvider = ({ children }) => {
 		products: [],
 		wishList: [],
 		cart: [],
+		sortOption: "",
+		filterOptions: {
+			priceRange: 0,
+		},
 	});
 
 	return (

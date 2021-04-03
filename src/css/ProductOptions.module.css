@@ -16,6 +16,14 @@
 	justify-content: space-between;
 }
 
+.btnClear {
+	width: 5rem;
+}
+
+.optionsHeader {
+	justify-content: space-between;
+}
+
 @media (min-width: 1024px) {
 	.productOptionsContainer {
 		display: flex;
