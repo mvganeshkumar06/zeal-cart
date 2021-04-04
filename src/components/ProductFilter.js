@@ -14,13 +14,6 @@ const ProductFilter = () => {
 		dispatch,
 	} = useContext(ProductContext);
 
-	const clearAllInput = () => {
-		dispatch({
-			type: "SET_PRICE_RANGE",
-			payload: 0,
-		});
-	};
-
 	return (
 		<div className={`align-items-row center ${styles.filterContainer}`}>
 			<FilterListIcon className={styles.filterIcon} />
@@ -40,7 +33,6 @@ const ProductFilter = () => {
 						<button
 							className="btn btn-action"
 							onClick={() => {
-								clearAllInput();
 								setIsFilterOptionOpen(!isFilterOptionOpen);
 							}}
 						>

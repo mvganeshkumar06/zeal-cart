@@ -55,7 +55,7 @@ const reducer = (state, action) => {
 				...state,
 				filterOptions: {
 					...state.filterOptions,
-					priceRange: 0,
+					priceRange: 1500,
 				},
 			};
 		case "RESET_SORT_AND_FILTER":
@@ -64,7 +64,7 @@ const reducer = (state, action) => {
 				sortOption: "",
 				filterOptions: {
 					...state.filterOptions,
-					priceRange: 0,
+					priceRange: 1500,
 				},
 			};
 		default:

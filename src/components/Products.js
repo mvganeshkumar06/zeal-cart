@@ -70,9 +70,6 @@ const Products = () => {
 				filterOptions.priceRange
 			);
 		}
-		if (filteredProducts.length === 0) {
-			return sortedProducts;
-		}
 		return filteredProducts;
 	};
 
@@ -103,6 +100,13 @@ const Products = () => {
 					return <ProductItem key={product.id} details={product} />;
 				})}
 			</div>
+			{filteredProducts.length === 0 && (
+				<p
+					className={`alert alert-danger sub-heading-2 ${styles.alertContainer}`}
+				>
+					Sorry no products avaialble based on current filters
+				</p>
+			)}
 		</div>
 	);
 };

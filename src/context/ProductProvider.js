@@ -9,7 +9,7 @@ const ProductProvider = ({ children }) => {
 		cart: [],
 		sortOption: "",
 		filterOptions: {
-			priceRange: 0,
+			priceRange: 1500,
 		},
 	});
 
