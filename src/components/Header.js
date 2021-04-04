@@ -1,16 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../css/DriftUI.css";
 import styles from "../css/Header.module.css";
 import ZealCartIcon from "../assets/zeal-cart.svg";
-import LinkedinIcon from "../assets/linkedin.svg";
-import GithubIcon from "../assets/github.svg";
-import TwitterIcon from "../assets/twitter.svg";
+import LinkedInIcon from "@material-ui/icons/LinkedIn";
+import GitHubIcon from "@material-ui/icons/GitHub";
+import TwitterIcon from "@material-ui/icons/Twitter";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
+import ThemeContext from "../context/ThemeContext";
 
 const Header = () => {
+	const { switchTheme } = useContext(ThemeContext);
 	return (
 		<div className={`align-items-row ${styles.container}`}>
 			<div className="align-items-row">
-				<a href="https://zeal-stream.netlify.app/">
+				<a href="https://zeal-cart.netlify.app/">
 					<img
 						src={ZealCartIcon}
 						alt="Drift UI"
@@ -19,41 +22,35 @@ const Header = () => {
 				</a>
 				<span className={`text-bold ${styles.title}`}>Zeal Cart</span>
 			</div>
-			<p className={`align-items-row center ${styles.socialIcons}`}>
+			<div className={`align-items-row center ${styles.socialIcons}`}>
+				<span>
+					<Brightness4Icon
+						className={styles.themeSwitchIcon}
+						onClick={() => switchTheme()}
+					/>
+				</span>
 				<a
 					href="https://www.linkedin.com/in/mvganeshkumar06/"
 					target="_blank"
 					rel="noreferrer"
 				>
-					<img
-						src={LinkedinIcon}
-						alt="Linkedin"
-						className={styles.iconSmall}
-					/>
+					<LinkedInIcon className={styles.socialIcon} />
 				</a>
 				<a
 					href="https://github.com/mvganeshkumar06"
 					target="_blank"
 					rel="noreferrer"
 				>
-					<img
-						src={GithubIcon}
-						alt="Github"
-						className={styles.iconSmall}
-					/>
+					<GitHubIcon className={styles.socialIcon} />
 				</a>
 				<a
 					href="https://twitter.com/mvganeshkumar06"
 					target="_blank"
 					rel="noreferrer"
 				>
-					<img
-						src={TwitterIcon}
-						alt="Twitter"
-						className={styles.iconSmall}
-					/>
+					<TwitterIcon className={styles.socialIcon} />
 				</a>
-			</p>
+			</div>
 		</div>
 	);
 };

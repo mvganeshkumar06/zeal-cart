@@ -1,6 +1,5 @@
 import React from "react";
 import "../css/DriftUI.css";
-// import styles from "./css/Home.module.css";
 import Navigation from "./Navigation";
 import Header from "./Header";
 import createMockServer from "../server/mock-server";

@@ -30,7 +30,7 @@ const createMockServer = () => {
 			product: Factory.extend({
 				id: faker.datatype.uuid,
 				image: faker.random.image,
-				name: faker.commerce.productName,
+				name: faker.commerce.product,
 				description: "This is an awesome product",
 				price: faker.commerce.price,
 				discount: faker.random.arrayElement([

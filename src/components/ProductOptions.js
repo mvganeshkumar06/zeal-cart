@@ -38,7 +38,7 @@ const ProductOptions = () => {
 					<input
 						id="input-low-to-high"
 						type="radio"
-						name="radio-group"
+						name="sort"
 						checked={sortOption === "LOW_TO_HIGH"}
 						onChange={() =>
 							dispatch({
@@ -55,7 +55,7 @@ const ProductOptions = () => {
 					<input
 						id="input-high-to-low"
 						type="radio"
-						name="radio-group"
+						name="sort"
 						checked={sortOption === "HIGH_TO_LOW"}
 						onChange={() =>
 							dispatch({
@@ -70,7 +70,7 @@ const ProductOptions = () => {
 					<input
 						id="input-trending"
 						type="radio"
-						name="radio-group"
+						name="sort"
 						checked={sortOption === "TRENDING_FIRST"}
 						onChange={() =>
 							dispatch({
@@ -85,7 +85,7 @@ const ProductOptions = () => {
 					<input
 						id="input-rating"
 						type="radio"
-						name="radio-group"
+						name="sort"
 						checked={sortOption === "RATING"}
 						onChange={() =>
 							dispatch({
