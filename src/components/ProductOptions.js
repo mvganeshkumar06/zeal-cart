@@ -12,19 +12,6 @@ const ProductOptions = () => {
 		dispatch,
 	} = useContext(ProductContext);
 
-	const clearAllInput = () => {
-		const radioGroup = document.querySelectorAll(
-			`input[name = "radio-group"]`
-		);
-		radioGroup.forEach((radioBtn) => {
-			radioBtn.checked = false;
-		});
-		dispatch({
-			type: "SET_PRICE_RANGE",
-			payload: 0,
-		});
-	};
-
 	return (
 		<div
 			className={`align-items-col scroll-auto ${styles.productOptionsContainer}`}
@@ -33,9 +20,11 @@ const ProductOptions = () => {
 				<h2 className="sub-heading-2">Sort by</h2>
 				<button
 					className={`btn btn-action ${styles.btnClear}`}
-					onClick={() => {
-						clearAllInput();
-					}}
+					onClick={() =>
+						dispatch({
+							type: "RESET_SORT_AND_FILTER",
+						})
+					}
 				>
 					Clear All
 				</button>
@@ -50,10 +39,10 @@ const ProductOptions = () => {
 						id="input-low-to-high"
 						type="radio"
 						name="radio-group"
-						value={sortOption === "LOW_TO_HIGH"}
+						checked={sortOption === "LOW_TO_HIGH"}
 						onChange={() =>
 							dispatch({
-								type: "SORT_PRICE_LOW_TO_HIGH",
+								type: "SET_PRICE_LOW_TO_HIGH",
 								payload: "LOW_TO_HIGH",
 							})
 						}
@@ -67,10 +56,10 @@ const ProductOptions = () => {
 						id="input-high-to-low"
 						type="radio"
 						name="radio-group"
-						value={sortOption === "HIGH_TO_LOW"}
+						checked={sortOption === "HIGH_TO_LOW"}
 						onChange={() =>
 							dispatch({
-								type: "SORT_PRICE_HIGH_TO_LOW",
+								type: "SET_PRICE_HIGH_TO_LOW",
 								payload: "HIGH_TO_LOW",
 							})
 						}
@@ -82,10 +71,10 @@ const ProductOptions = () => {
 						id="input-trending"
 						type="radio"
 						name="radio-group"
-						value={sortOption === "TRENDING_FIRST"}
+						checked={sortOption === "TRENDING_FIRST"}
 						onChange={() =>
 							dispatch({
-								type: "SORT_TRENDING_FIRST",
+								type: "SET_TRENDING_FIRST",
 								payload: "TRENDING_FIRST",
 							})
 						}
@@ -97,10 +86,10 @@ const ProductOptions = () => {
 						id="input-rating"
 						type="radio"
 						name="radio-group"
-						value={sortOption === "RATING"}
+						checked={sortOption === "RATING"}
 						onChange={() =>
 							dispatch({
-								type: "SORT_RATING",
+								type: "SET_RATING",
 								payload: "RATING",
 							})
 						}
@@ -125,7 +114,7 @@ const ProductOptions = () => {
 						})
 					}
 				/>
-				<span>0 to {priceRange}</span>
+				<span>Upto {priceRange}</span>
 			</div>
 		</div>
 	);

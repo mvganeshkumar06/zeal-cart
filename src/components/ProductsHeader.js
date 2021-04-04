@@ -19,7 +19,7 @@ const ProductsHeader = () => {
 	return (
 		<div className={`align-items-row ${styles.container}`}>
 			<div className="align-items-row center">
-				<a href="https://zeal-stream.netlify.app/">
+				<a href="https://zeal-cart.netlify.app/">
 					<img
 						src={ZealCartIcon}
 						alt="Drift UI"

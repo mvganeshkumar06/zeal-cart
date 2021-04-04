@@ -19,65 +19,65 @@ import filterByRange from "../utils/Filter";
 
 const Products = () => {
 	const {
-		state: {
-			products,
-			sortOption,
-			filterOptions: { priceRange },
-		},
+		state: { products, sortOption, filterOptions },
 		dispatch,
 	} = useContext(ProductContext);
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [isError, setIsError] = useState(false);
 
-	const fetchData = async () => {
-		const response = await axios({
-			method: "Get",
-			url: "/products",
-		});
-		dispatch({
-			type: "SET_PRODUCTS",
-			payload: response.data.products,
-		});
-	};
-
 	useEffect(() => {
 		try {
 			setIsLoading(true);
+			const fetchData = async () => {
+				const response = await axios({
+					method: "Get",
+					url: "/products",
+				});
+				dispatch({
+					type: "SET_PRODUCTS",
+					payload: response.data.products,
+				});
+			};
 			fetchData();
 		} catch (error) {
 			setIsError(true);
 		} finally {
 			setIsLoading(false);
 		}
-	}, []);
+	}, [dispatch]);
 
-	const [modifiedProducts, setModifiedProducts] = useState([]);
-
-	useEffect(() => {
-		setModifiedProducts(filterByRange(products, priceRange));
-
+	const sortProducts = (sortOption) => {
 		switch (sortOption) {
 			case "LOW_TO_HIGH":
-				setModifiedProducts(sortInIncreasingOrder(products));
-				break;
+				return sortInIncreasingOrder(products);
 			case "HIGH_TO_LOW":
-				setModifiedProducts(sortInDecreasingOrder(products));
-				break;
+				return sortInDecreasingOrder(products);
 			case "TRENDING_FIRST":
-				setModifiedProducts(sortByTrending(products));
-				break;
+				return sortByTrending(products);
 			case "RATING":
-				setModifiedProducts(sortByRating(products));
-				break;
+				return sortByRating(products);
 			default:
-				break;
+				return products;
 		}
-	}, [sortOption, priceRange]);
-
-	const productsModified = () => {
-		return sortOption !== "" || priceRange > 0;
 	};
+
+	const filterProducts = (sortedProducts, filterOptions) => {
+		let filteredProducts = [];
+		if (filterOptions.priceRange > 0) {
+			filteredProducts = filterByRange(
+				sortedProducts,
+				filterOptions.priceRange
+			);
+		}
+		if (filteredProducts.length === 0) {
+			return sortedProducts;
+		}
+		return filteredProducts;
+	};
+
+	const sortedProducts = sortProducts(sortOption);
+	const filteredProducts = filterProducts(sortedProducts, filterOptions);
 
 	return (
 		<div className={`align-items-col ${styles.productsContainer}`}>
@@ -99,23 +99,9 @@ const Products = () => {
 			</div>
 			<ProductOptions />
 			<div className={`grid grid-col-1 ${styles.products}`}>
-				{productsModified()
-					? modifiedProducts.map((product) => {
-							return (
-								<ProductItem
-									key={product.id}
-									details={product}
-								/>
-							);
-					  })
-					: products.map((product) => {
-							return (
-								<ProductItem
-									key={product.id}
-									details={product}
-								/>
-							);
-					  })}
+				{filteredProducts.map((product) => {
+					return <ProductItem key={product.id} details={product} />;
+				})}
 			</div>
 		</div>
 	);

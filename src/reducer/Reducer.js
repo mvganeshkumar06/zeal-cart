@@ -29,10 +29,10 @@ const reducer = (state, action) => {
 					return item.id !== action.payload;
 				}),
 			};
-		case "SORT_PRICE_LOW_TO_HIGH":
-		case "SORT_PRICE_HIGH_TO_LOW":
-		case "SORT_TRENDING_FIRST":
-		case "SORT_RATING":
+		case "SET_PRICE_LOW_TO_HIGH":
+		case "SET_PRICE_HIGH_TO_LOW":
+		case "SET_TRENDING_FIRST":
+		case "SET_RATING":
 			return {
 				...state,
 				sortOption: action.payload,
@@ -43,6 +43,28 @@ const reducer = (state, action) => {
 				filterOptions: {
 					...state.filterOptions,
 					priceRange: action.payload,
+				},
+			};
+		case "RESET_SORT":
+			return {
+				...state,
+				sortOption: "",
+			};
+		case "RESET_FILTER":
+			return {
+				...state,
+				filterOptions: {
+					...state.filterOptions,
+					priceRange: 0,
+				},
+			};
+		case "RESET_SORT_AND_FILTER":
+			return {
+				...state,
+				sortOption: "",
+				filterOptions: {
+					...state.filterOptions,
+					priceRange: 0,
 				},
 			};
 		default:

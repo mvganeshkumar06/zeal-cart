@@ -35,20 +35,19 @@ const ProductFilter = () => {
 				}`}
 			>
 				<div className={`modal modal-center ${styles.modal}`}>
-					<div
-						className={`align-items-row modal-header ${styles.modalHeadPosition}`}
-					>
+					<div className={`modal-header ${styles.modalHeadPosition}`}>
 						<h1 className="sub-heading-2">Filter products by</h1>
 						<button
 							className="btn btn-action"
-							onClick={() =>
-								setIsFilterOptionOpen(!isFilterOptionOpen)
-							}
+							onClick={() => {
+								clearAllInput();
+								setIsFilterOptionOpen(!isFilterOptionOpen);
+							}}
 						>
 							X
 						</button>
 					</div>
-					<div className={`align-items-col ${styles.input}`}>
+					<div className={`modal-content`}>
 						<label htmlFor="input-range">Price Range</label>
 						<input
 							id="input-range"
@@ -64,7 +63,15 @@ const ProductFilter = () => {
 								})
 							}
 						/>
-						<span>0 to {priceRange}</span>
+						<span>Upto {priceRange}</span>
+					</div>
+					<div className="modal-footer">
+						<button
+							className={`btn btn-action ${styles.btnClear}`}
+							onClick={() => dispatch({ type: "RESET_FILTER" })}
+						>
+							Clear all
+						</button>
 					</div>
 				</div>
 			</div>

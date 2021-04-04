@@ -7,10 +7,6 @@
 	margin: 0.5rem;
 }
 
-.input {
-	padding: 1.5rem 1rem 0rem 1rem;
-}
-
 .filterOptionOpen {
 	display: flex;
 }
@@ -25,5 +21,11 @@
 
 .modal {
 	width: 15rem;
-	height: 15rem;
+	height: 20rem;
+}
+
+.btnClear {
+	margin: 0;
+	padding: 0.25rem;
+	height: 2rem;
 }

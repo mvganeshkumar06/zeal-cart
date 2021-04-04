@@ -12,15 +12,6 @@ const ProductSort = () => {
 		dispatch,
 	} = useContext(ProductContext);
 
-	const clearAllInput = () => {
-		const radioGroup = document.querySelectorAll(
-			`input[name = "radio-group"]`
-		);
-		radioGroup.forEach((radioBtn) => {
-			radioBtn.checked = false;
-		});
-	};
-
 	return (
 		<div className={`align-items-row center ${styles.sortContainer}`}>
 			<SortIcon className={styles.sortIcon} />
@@ -35,9 +26,7 @@ const ProductSort = () => {
 				}`}
 			>
 				<div className={`modal modal-center ${styles.modal}`}>
-					<div
-						className={`align-items-row modal-header ${styles.modalHeadPosition}`}
-					>
+					<div className={`modal-header ${styles.modalHeadPosition}`}>
 						<h1 className="sub-heading-2">Sort products by</h1>
 						<button
 							className="btn btn-action"
@@ -48,7 +37,7 @@ const ProductSort = () => {
 							X
 						</button>
 					</div>
-					<div className={`align-items-col ${styles.input}`}>
+					<div className={`modal-content`}>
 						<div
 							className={`align-items-row ${styles.inputContainer}`}
 						>
@@ -59,15 +48,13 @@ const ProductSort = () => {
 								id="input-low-to-high"
 								type="radio"
 								name="radio-group"
-								value={sortOption === "LOW_TO_HIGH"}
-								onChange={() => {
+								checked={sortOption === "LOW_TO_HIGH"}
+								onChange={() =>
 									dispatch({
-										type: "SORT_PRICE_LOW_TO_HIGH",
+										type: "SET_PRICE_LOW_TO_HIGH",
 										payload: "LOW_TO_HIGH",
-									});
-									clearAllInput();
-									setIsSortOptionOpen(!isSortOptionOpen);
-								}}
+									})
+								}
 							/>
 						</div>
 						<div
@@ -80,15 +67,13 @@ const ProductSort = () => {
 								id="input-high-to-low"
 								type="radio"
 								name="radio-group"
-								value={sortOption === "HIGH_TO_LOW"}
-								onChange={() => {
+								checked={sortOption === "HIGH_TO_LOW"}
+								onChange={() =>
 									dispatch({
-										type: "SORT_PRICE_HIGH_TO_LOW",
+										type: "SET_PRICE_HIGH_TO_LOW",
 										payload: "HIGH_TO_LOW",
-									});
-									clearAllInput();
-									setIsSortOptionOpen(!isSortOptionOpen);
-								}}
+									})
+								}
 							/>
 						</div>
 						<div
@@ -102,15 +87,13 @@ const ProductSort = () => {
 								id="input-trending"
 								type="radio"
 								name="radio-group"
-								value={sortOption === "TRENDING_FIRST"}
-								onChange={() => {
+								checked={sortOption === "TRENDING_FIRST"}
+								onChange={() =>
 									dispatch({
-										type: "SORT_TRENDING_FIRST",
+										type: "SET_TRENDING_FIRST",
 										payload: "TRENDING_FIRST",
-									});
-									clearAllInput();
-									setIsSortOptionOpen(!isSortOptionOpen);
-								}}
+									})
+								}
 							/>
 						</div>
 						<div
@@ -121,17 +104,23 @@ const ProductSort = () => {
 								id="input-rating"
 								type="radio"
 								name="radio-group"
-								value={sortOption === "RATING"}
-								onChange={() => {
+								checked={sortOption === "RATING"}
+								onChange={() =>
 									dispatch({
-										type: "SORT_RATING",
+										type: "SET_RATING",
 										payload: "RATING",
-									});
-									clearAllInput();
-									setIsSortOptionOpen(!isSortOptionOpen);
-								}}
+									})
+								}
 							/>
 						</div>
+					</div>
+					<div className={`modal-footer`}>
+						<button
+							className={`btn btn-action ${styles.btnClear}`}
+							onClick={() => dispatch({ type: "RESET_SORT" })}
+						>
+							Clear all
+						</button>
 					</div>
 				</div>
 			</div>
