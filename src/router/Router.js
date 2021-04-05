@@ -1,24 +1,28 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Home from "../components/Home";
-import Products from "../components/Products";
-import WishList from "../components/WishList";
-import Cart from "../components/Cart";
+import { Header, Navigation, NavigationDesktop } from "../components";
+import { Home, Categories, Products, WishList, Cart } from "../pages";
 
 const Router = () => {
 	return (
 		<BrowserRouter>
+			<Header />
+			<Navigation />
+			<NavigationDesktop />
 			<Switch>
-				<Route path="/" exact>
+				<Route exact path="/">
 					<Home />
 				</Route>
-				<Route path="/products">
+				<Route exact path="/categories">
+					<Categories />
+				</Route>
+				<Route exact path="/products">
 					<Products />
 				</Route>
-				<Route path="/wishlist">
+				<Route exact path="/wishlist">
 					<WishList />
 				</Route>
-				<Route path="/cart">
+				<Route exact path="/cart">
 					<Cart />
 				</Route>
 			</Switch>

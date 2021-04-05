@@ -12,11 +12,13 @@ const Navigation = () => {
 
 	return (
 		<div>
-			<MenuIcon
-				className={`scroll-auto ${styles.navigationOpenBtn}`}
-				onClick={() => setIsNavigationOpen(!isNavigationOpen)}
-				fontSize="large"
-			/>
+			<span className={styles.menuIcon}>
+				<MenuIcon
+					className={`scroll-auto ${styles.navigationOpenBtn}`}
+					onClick={() => setIsNavigationOpen(!isNavigationOpen)}
+					fontSize="large"
+				/>
+			</span>
 			{isNavigationOpen && (
 				<div className={`bg-overlay ${styles.container}`}>
 					<HighlightOffIcon

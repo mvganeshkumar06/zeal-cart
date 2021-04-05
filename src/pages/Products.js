@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../css/DriftUI.css";
 import styles from "../css/Products.module.css";
-import ProductItem from "./ProductItem";
-import Navigation from "./Navigation";
-import ProductsHeader from "./ProductsHeader";
-import ProductSort from "./ProductSort";
-import ProductFilter from "./ProductFilter";
-import ProductOptions from "./ProductOptions";
+import {
+	ProductItem,
+	ProductFilter,
+	ProductOptions,
+	ProductSort,
+} from "../components";
 import axios from "axios";
 import ProductContext from "../context/ProductContext";
 import {
@@ -78,8 +78,6 @@ const Products = () => {
 
 	return (
 		<div className={`align-items-col ${styles.productsContainer}`}>
-			<ProductsHeader />
-			<Navigation />
 			<div className={styles.optionsContainer}>
 				<ProductSort />
 				<ProductFilter />

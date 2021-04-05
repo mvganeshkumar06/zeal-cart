@@ -2,18 +2,27 @@ import React, { useContext } from "react";
 import "../css/DriftUI.css";
 import styles from "../css/Header.module.css";
 import ZealCartIcon from "../assets/zeal-cart.svg";
-import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import GitHubIcon from "@material-ui/icons/GitHub";
-import TwitterIcon from "@material-ui/icons/Twitter";
-import Brightness4Icon from "@material-ui/icons/Brightness4";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import { Link } from "react-router-dom";
+import ProductContext from "../context/ProductContext";
 import ThemeContext from "../context/ThemeContext";
+import Brightness4Icon from "@material-ui/icons/Brightness4";
 
 const Header = () => {
+	const {
+		state: { wishList, cart },
+	} = useContext(ProductContext);
+
 	const { switchTheme } = useContext(ThemeContext);
+
 	return (
 		<div className={`align-items-row ${styles.container}`}>
-			<div className="align-items-row">
-				<a href="https://zeal-cart.netlify.app/">
+			<div className="align-items-row center">
+				<a
+					href="https://zeal-cart.netlify.app/"
+					className={styles.zealCartIconLink}
+				>
 					<img
 						src={ZealCartIcon}
 						alt="Drift UI"
@@ -22,34 +31,38 @@ const Header = () => {
 				</a>
 				<span className={`text-bold ${styles.title}`}>Zeal Cart</span>
 			</div>
-			<div className={`align-items-row center ${styles.socialIcons}`}>
+			<div className={`align-items-row center ${styles.icons}`}>
 				<span>
 					<Brightness4Icon
-						className={styles.themeSwitchIcon}
+						className={styles.themeIcon}
 						onClick={() => switchTheme()}
 					/>
 				</span>
-				<a
-					href="https://www.linkedin.com/in/mvganeshkumar06/"
-					target="_blank"
-					rel="noreferrer"
-				>
-					<LinkedInIcon className={styles.socialIcon} />
-				</a>
-				<a
-					href="https://github.com/mvganeshkumar06"
-					target="_blank"
-					rel="noreferrer"
-				>
-					<GitHubIcon className={styles.socialIcon} />
-				</a>
-				<a
-					href="https://twitter.com/mvganeshkumar06"
-					target="_blank"
-					rel="noreferrer"
-				>
-					<TwitterIcon className={styles.socialIcon} />
-				</a>
+				<Link to="/wishlist">
+					<div>
+						<FavoriteBorder className={`${styles.wishIcon}`} />
+						<span
+							className={`badge-icon ${styles.wishCountBadge} ${
+								wishList.length > 0 &&
+								styles.wishCountBadgeActive
+							}`}
+						>
+							{wishList.length > 0 && wishList.length}
+						</span>
+					</div>
+				</Link>
+				<Link to="/cart">
+					<div>
+						<ShoppingCartIcon className={`${styles.cartIcon}`} />
+						<span
+							className={`badge-icon ${styles.cartCountBadge} ${
+								cart.length > 0 && styles.cartCountBadgeActive
+							}`}
+						>
+							{cart.length > 0 && cart.length}
+						</span>
+					</div>
+				</Link>
 			</div>
 		</div>
 	);

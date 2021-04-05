@@ -1,7 +1,7 @@
 .productsContainer {
 	width: 100%;
 	align-items: center;
-	margin-top: 5rem;
+	margin: 5rem 0rem;
 }
 
 @media (min-width: 425px) {

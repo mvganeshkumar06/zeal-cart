@@ -10,7 +10,7 @@
 
 .navigationOpenBtn {
 	position: fixed;
-	top: 1rem;
+	top: 0.8rem;
 	left: 0.25rem;
 	font-weight: bold;
 	z-index: var(--level-1);
@@ -32,5 +32,11 @@
 @media (min-width: 768px) {
 	.container {
 		width: 10rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.menuIcon {
+		display: none;
 	}
 }

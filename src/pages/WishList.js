@@ -2,9 +2,7 @@ import React, { useContext } from "react";
 import "../css/DriftUI.css";
 import styles from "../css/WishList.module.css";
 import ProductContext from "../context/ProductContext";
-import ProductItem from "./ProductItem";
-import ProductsHeader from "./ProductsHeader";
-import Navigation from "./Navigation";
+import { ProductItem } from "../components";
 
 const WishList = () => {
 	const {
@@ -12,8 +10,6 @@ const WishList = () => {
 	} = useContext(ProductContext);
 	return (
 		<div className={`align-items-col ${styles.productsContainer}`}>
-			<ProductsHeader />
-			<Navigation />
 			<h1 className="main-heading">
 				You have {wishList ? wishList.length : 0} items on your wishlist
 			</h1>
