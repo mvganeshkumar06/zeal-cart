@@ -1,91 +1,91 @@
-.container {
-	width: 100%;
-	height: 4rem;
-	background-color: var(--bg-color);
-	color: var(--text-color);
-	border-bottom: 1px solid var(--text-color);
-	z-index: var(--level-1);
-	justify-content: space-between;
-	position: fixed;
-	top: 0;
+.headerContainer {
+    width: 100%;
+    height: 4rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--text-color);
+    z-index: var(--level-1);
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
 }
 
-.zealCartIconLink {
-	display: none;
+.zealCartLink {
+    display: none;
 }
 
 .icons {
-	margin: 0.25rem 1.5rem 0rem 0.5rem;
+    margin: 0.25rem 1.5rem 0rem 0.5rem;
 }
 
 .title {
-	font-size: 1.5rem;
-	margin-left: 3.25rem;
+    font-size: 1.5rem;
+    margin-left: 3.25rem;
 }
 
 .themeIcon,
 .wishIcon,
 .cartIcon {
-	margin: 0rem 0.5rem;
+    margin: 0rem 0.5rem;
 }
 
 .themeIcon:hover {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .wishCountBadge,
 .cartCountBadge {
-	border: none;
+    border: none;
 }
 
 .wishCountBadgeActive,
 .cartCountBadgeActive {
-	width: 1rem;
-	height: 1rem;
-	border: 2px solid var(--bg-color);
-	background-color: var(--red-4);
-	filter: brightness(120%);
-	color: white;
-	font-size: 0.75rem;
-	font-weight: bold;
-	padding: 1px;
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid var(--bg-color);
+    background-color: var(--red-4);
+    filter: brightness(120%);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 1px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .wishCountBadgeActive {
-	top: 0.5rem;
-	right: 3.75rem;
+    top: 0.5rem;
+    right: 3.75rem;
 }
 
 .cartCountBadgeActive {
-	top: 0.5rem;
-	right: 1.25rem;
+    top: 0.5rem;
+    right: 1.25rem;
 }
 
 @media (min-width: 1024px) {
-	.zealCartIconLink {
-		display: initial;
-	}
-	.zealCartIcon {
-		width: 2.5rem;
-		height: 2.5rem;
-		margin-left: 1.5rem;
-	}
-	.icons {
-		margin-left: auto;
-		margin-right: 5rem;
-	}
-	.title {
-		font-size: 1.5rem;
-		margin-left: 1rem;
-	}
-	.wishCountBadgeActive {
-		right: 7.25rem;
-	}
-	.cartCountBadgeActive {
-		right: 4.75rem;
-	}
+    .zealCartLink {
+        display: initial;
+    }
+    .zealCartIcon {
+        width: 2.5rem;
+        height: 2.5rem;
+        margin-left: 1.5rem;
+    }
+    .icons {
+        margin-left: auto;
+        margin-right: 5rem;
+    }
+    .title {
+        font-size: 1.5rem;
+        margin-left: 1rem;
+    }
+    .wishCountBadgeActive {
+        right: 7.25rem;
+    }
+    .cartCountBadgeActive {
+        right: 4.75rem;
+    }
 }

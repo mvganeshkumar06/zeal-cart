@@ -6,23 +6,23 @@ import { Link } from "react-router-dom";
 const navigationItems = ["Home", "Categories", "Products", "WishList", "Cart"];
 
 const NavigationDesktop = () => {
-	return (
-		<div className={`align-items-row ${styles.navContainer}`}>
-			{navigationItems.map((component) => {
-				return (
-					<Link
-						to={`${
-							component === "Home"
-								? "/"
-								: `/${component.toLowerCase()}`
-						}`}
-					>
-						{component}
-					</Link>
-				);
-			})}
-		</div>
-	);
+    return (
+        <div className={`align-items-row ${styles.navigationContainer}`}>
+            {navigationItems.map((component) => {
+                return (
+                    <Link
+                        to={`${
+                            component === "Home"
+                                ? "/"
+                                : `/${component.toLowerCase()}`
+                        }`}
+                    >
+                        {component}
+                    </Link>
+                );
+            })}
+        </div>
+    );
 };
 
 export default NavigationDesktop;

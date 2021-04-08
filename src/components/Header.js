@@ -10,62 +10,62 @@ import ThemeContext from "../context/ThemeContext";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 
 const Header = () => {
-	const {
-		state: { wishList, cart },
-	} = useContext(ProductContext);
+    const {
+        state: { wishList, cart },
+    } = useContext(ProductContext);
 
-	const { switchTheme } = useContext(ThemeContext);
+    const { switchTheme } = useContext(ThemeContext);
 
-	return (
-		<div className={`align-items-row ${styles.container}`}>
-			<div className="align-items-row center">
-				<a
-					href="https://zeal-cart.netlify.app/"
-					className={styles.zealCartIconLink}
-				>
-					<img
-						src={ZealCartIcon}
-						alt="Drift UI"
-						className={styles.zealCartIcon}
-					/>
-				</a>
-				<span className={`text-bold ${styles.title}`}>Zeal Cart</span>
-			</div>
-			<div className={`align-items-row center ${styles.icons}`}>
-				<span>
-					<Brightness4Icon
-						className={styles.themeIcon}
-						onClick={() => switchTheme()}
-					/>
-				</span>
-				<Link to="/wishlist">
-					<div>
-						<FavoriteBorder className={`${styles.wishIcon}`} />
-						<span
-							className={`badge-icon ${styles.wishCountBadge} ${
-								wishList.length > 0 &&
-								styles.wishCountBadgeActive
-							}`}
-						>
-							{wishList.length > 0 && wishList.length}
-						</span>
-					</div>
-				</Link>
-				<Link to="/cart">
-					<div>
-						<ShoppingCartIcon className={`${styles.cartIcon}`} />
-						<span
-							className={`badge-icon ${styles.cartCountBadge} ${
-								cart.length > 0 && styles.cartCountBadgeActive
-							}`}
-						>
-							{cart.length > 0 && cart.length}
-						</span>
-					</div>
-				</Link>
-			</div>
-		</div>
-	);
+    return (
+        <div className={`align-items-row ${styles.headerContainer}`}>
+            <div className="align-items-row center">
+                <a
+                    href="https://zeal-cart.netlify.app/"
+                    className={styles.zealCartLink}
+                >
+                    <img
+                        src={ZealCartIcon}
+                        alt="Drift UI"
+                        className={styles.zealCartIcon}
+                    />
+                </a>
+                <span className={`text-bold ${styles.title}`}>Zeal Cart</span>
+            </div>
+            <div className={`align-items-row center ${styles.icons}`}>
+                <span>
+                    <Brightness4Icon
+                        className={styles.themeIcon}
+                        onClick={() => switchTheme()}
+                    />
+                </span>
+                <Link to="/wishlist">
+                    <div>
+                        <FavoriteBorder className={`${styles.wishIcon}`} />
+                        <span
+                            className={`badge-icon ${styles.wishCountBadge} ${
+                                wishList.length > 0 &&
+                                styles.wishCountBadgeActive
+                            }`}
+                        >
+                            {wishList.length > 0 && wishList.length}
+                        </span>
+                    </div>
+                </Link>
+                <Link to="/cart">
+                    <div>
+                        <ShoppingCartIcon className={`${styles.cartIcon}`} />
+                        <span
+                            className={`badge-icon ${styles.cartCountBadge} ${
+                                cart.length > 0 && styles.cartCountBadgeActive
+                            }`}
+                        >
+                            {cart.length > 0 && cart.length}
+                        </span>
+                    </div>
+                </Link>
+            </div>
+        </div>
+    );
 };
 
 export default Header;

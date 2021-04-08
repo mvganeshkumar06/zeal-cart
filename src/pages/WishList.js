@@ -5,21 +5,21 @@ import ProductContext from "../context/ProductContext";
 import { ProductItem } from "../components";
 
 const WishList = () => {
-	const {
-		state: { wishList },
-	} = useContext(ProductContext);
-	return (
-		<div className={`align-items-col ${styles.productsContainer}`}>
-			<h1 className="main-heading">
-				You have {wishList ? wishList.length : 0} items on your wishlist
-			</h1>
-			<div className={`grid grid-col-1 ${styles.products}`}>
-				{wishList.map((product) => {
-					return <ProductItem key={product.id} details={product} />;
-				})}
-			</div>
-		</div>
-	);
+    const {
+        state: { wishList },
+    } = useContext(ProductContext);
+    return (
+        <div className={`align-items-col ${styles.wishListContainer}`}>
+            <h1 className="main-heading">
+                You have {wishList ? wishList.length : 0} items on your wishlist
+            </h1>
+            <div className={`grid grid-col-1 ${styles.wishListItem}`}>
+                {wishList.map((product) => {
+                    return <ProductItem key={product.id} details={product} />;
+                })}
+            </div>
+        </div>
+    );
 };
 
 export default WishList;

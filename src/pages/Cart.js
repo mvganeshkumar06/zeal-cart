@@ -5,21 +5,21 @@ import ProductContext from "../context/ProductContext";
 import { ProductItem } from "../components";
 
 const Cart = () => {
-	const {
-		state: { cart },
-	} = useContext(ProductContext);
-	return (
-		<div className={`align-items-col ${styles.productsContainer}`}>
-			<h1 className="main-heading">
-				You have {cart ? cart.length : 0} items on your cart
-			</h1>
-			<div className={`grid grid-col-1 ${styles.products}`}>
-				{cart.map((product) => {
-					return <ProductItem key={product.id} details={product} />;
-				})}
-			</div>
-		</div>
-	);
+    const {
+        state: { cart },
+    } = useContext(ProductContext);
+    return (
+        <div className={`align-items-col ${styles.cartContainer}`}>
+            <h1 className="main-heading">
+                You have {cart ? cart.length : 0} items on your cart
+            </h1>
+            <div className={`grid grid-col-1 ${styles.cartItem}`}>
+                {cart.map((product) => {
+                    return <ProductItem key={product.id} details={product} />;
+                })}
+            </div>
+        </div>
+    );
 };
 
 export default Cart;
