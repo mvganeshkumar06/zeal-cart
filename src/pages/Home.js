@@ -1,15 +1,18 @@
 import React from "react";
-import "../css/DriftUI.css";
-import styles from "../css/Home.module.css";
+import { Container } from "@zeal-ui/core";
 import createMockServer from "../server/mock-server";
-
 createMockServer({ environment: "development" });
 
 const Home = () => {
+    const homeContainer = `
+        margin-top: 5rem;
+        align-items: center;
+    `;
+
     return (
-        <div className={`align-items-col ${styles.homeContainer}`}>
+        <Container type="col" customStyles={homeContainer}>
             <h1>Home</h1>
-        </div>
+        </Container>
     );
 };
 

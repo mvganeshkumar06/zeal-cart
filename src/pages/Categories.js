@@ -1,12 +1,16 @@
 import React from "react";
-import "../css/DriftUI.css";
-import styles from "../css/Categories.module.css";
+import { Container, Text } from "@zeal-ui/core";
 
 const Categories = () => {
+    const styles = `    
+        margin-top: 5rem;
+        align-items: center;
+    `;
+
     return (
-        <div className={`align-items-col ${styles.categoriesContainer}`}>
-            <h1>Categories</h1>
-        </div>
+        <Container type="col" customStyles={styles}>
+            <Text type="mainHeading">Categories</Text>
+        </Container>
     );
 };
 

@@ -1,27 +1,35 @@
 import React from "react";
-import "../css/DriftUI.css";
-import styles from "../css/NavigationDesktop.module.css";
 import { Link } from "react-router-dom";
-
-const navigationItems = ["Home", "Categories", "Products", "WishList", "Cart"];
+import { Container, useStyleContext } from "@zeal-ui/core";
+import { navigationItems } from "../utils/Links";
 
 const NavigationDesktop = () => {
+    const style = useStyleContext();
+
+    const styles = `    
+        display: none;
+        @media (min-width: 1024px) {
+            display: flex;
+            position: fixed;
+            top: 1.25rem;
+            left: 15rem;
+            z-index: ${style.zIndex[2]};
+            width: 25rem;
+            justify-content: space-evenly;
+            font-weight: bold;
+        }    
+    `;
+
     return (
-        <div className={`align-items-row ${styles.navigationContainer}`}>
-            {navigationItems.map((component) => {
+        <Container type="row" customStyles={styles}>
+            {navigationItems.map(({ name, url }) => {
                 return (
-                    <Link
-                        to={`${
-                            component === "Home"
-                                ? "/"
-                                : `/${component.toLowerCase()}`
-                        }`}
-                    >
-                        {component}
+                    <Link to={url} key={name}>
+                        {name}
                     </Link>
                 );
             })}
-        </div>
+        </Container>
     );
 };
 

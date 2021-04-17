@@ -1,56 +1,106 @@
 import React, { useState } from "react";
-import "../css/DriftUI.css";
-import styles from "../css/Navigation.module.css";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
-
-const navigationItems = ["Home", "Categories", "Products", "WishList", "Cart"];
+import {
+    Container,
+    useStyleContext,
+    List,
+    ListItem,
+    useThemeContext,
+} from "@zeal-ui/core";
+import { navigationItems } from "../utils/Links";
 
 const Navigation = () => {
+    const style = useStyleContext();
+    const { theme } = useThemeContext();
+
+    const styles = `
+        .navigationContainer {
+            width: 8rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            padding: 5rem 1rem;
+            z-index: ${style.zIndex[3]};
+            background-color:${
+                theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
+            };
+        }
+        
+        .navigationOpenBtn {
+            position: fixed;
+            top: 0.8rem;
+            left: 0.25rem;
+            font-weight: bold;
+            z-index: ${style.zIndex[1]};
+        }
+        
+        .navigationCloseBtn {
+            position: absolute;
+            top: 1rem;
+            right: 0.5rem;
+            font-weight: bold;
+            z-index: ${style.zIndex[1]};
+        }
+        
+        .navigationOpenBtn:hover,
+        .navigationCloseBtn:hover {
+            cursor: pointer;
+        }
+
+        @media (min-width: 768px) {
+            .navigationContainer {
+                width: 10rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .navigationOpenBtn {
+                display: none;
+            }
+        }
+    
+    `;
+
     const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
     return (
-        <div>
-            <span className={styles.menuIcon}>
-                <MenuIcon
-                    className={`scroll-auto ${styles.navigationOpenBtn}`}
-                    onClick={() => setIsNavigationOpen(!isNavigationOpen)}
-                    fontSize="large"
-                />
-            </span>
+        <Container type="col" customStyles={styles}>
+            <MenuIcon
+                className="navigationOpenBtn"
+                onClick={() => setIsNavigationOpen(!isNavigationOpen)}
+                fontSize="large"
+            />
             {isNavigationOpen && (
-                <div className={`bg-overlay ${styles.navigationContainer}`}>
+                <Container type="col" className="navigationContainer">
                     <HighlightOffIcon
-                        className={styles.navigationCloseBtn}
+                        className="navigationCloseBtn"
                         fontSize="large"
                         onClick={() => setIsNavigationOpen(!isNavigationOpen)}
                     />
-                    <ul className="list">
-                        {navigationItems.map((component) => {
+                    <List>
+                        {navigationItems.map(({ name, url }) => {
                             return (
-                                <li className="list-link" key={component}>
+                                <ListItem key={name}>
                                     <Link
-                                        to={`${
-                                            component === "Home"
-                                                ? "/"
-                                                : `/${component.toLowerCase()}`
-                                        }`}
-                                        onClick={() => {
+                                        to={url}
+                                        onClick={() =>
                                             setIsNavigationOpen(
                                                 !isNavigationOpen
-                                            );
-                                        }}
+                                            )
+                                        }
                                     >
-                                        {component}
+                                        {name}
                                     </Link>
-                                </li>
+                                </ListItem>
                             );
                         })}
-                    </ul>
-                </div>
+                    </List>
+                </Container>
             )}
-        </div>
+        </Container>
     );
 };
 
