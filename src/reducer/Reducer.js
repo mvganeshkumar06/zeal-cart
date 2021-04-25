@@ -3,7 +3,7 @@ const reducer = (state, action) => {
         case "SET_PRODUCTS":
             return {
                 ...state,
-                products: [...state.products, ...action.payload],
+                products: action.payload,
             };
         case "SET_USER": {
             return {

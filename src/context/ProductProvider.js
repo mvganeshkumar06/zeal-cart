@@ -25,7 +25,6 @@ const ProductProvider = ({ children }) => {
         });
 
         const source = axios.CancelToken.source();
-
         const fetchProducts = async () => {
             try {
                 const response = await axios({
