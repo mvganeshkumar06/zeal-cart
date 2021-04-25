@@ -33,14 +33,15 @@ const Cart = () => {
     const {
         state: { cart },
     } = useContext(ProductContext);
+
     return (
         <Container type="col" customStyles={styles}>
             <Text type="mainHeading">
                 You have {cart ? cart.length : 0} items on your cart
             </Text>
             <Grid col={1} className="cartItem">
-                {cart.map((product) => {
-                    return <ProductItem key={product.id} details={product} />;
+                {cart.map(({ product }) => {
+                    return <ProductItem key={product._id} details={product} />;
                 })}
             </Grid>
         </Container>

@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import {
     Container,
-    Text,
     Alert,
     Grid,
     useStyleContext,
@@ -14,7 +13,6 @@ import {
     ProductOptions,
     ProductSort,
 } from "../components";
-import axios from "axios";
 import ProductContext from "../context/ProductContext";
 import {
     sortInIncreasingOrder,
@@ -47,30 +45,33 @@ const Products = () => {
             bottom: 0;
         }
         
+        .productsContainer{
+            align-items:center;
+        }
+
         .alertContainer {
             max-width: 100%;
             margin-top: 6rem;
         }
-        
-        @media (min-width: 425px) {
+
+        .productsItem{
+            margin:0.5rem 0rem;
+            padding:0.5rem 0rem;
+        }
+
+        @media (min-width: 768px) {
             .productsItem {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
         
-        @media (min-width: 768px) {
-            .productsItem {
-                margin:0rem;
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        
         @media (min-width: 1024px) {
+            .productsContainer{
+                align-items:flex-end;
+            }
             .productsItem {
                 width: 80%;
-                grid-template-columns: repeat(4, 1fr);
             }        
-        
             .optionsContainer {
                 display: none;
             }
@@ -85,36 +86,8 @@ const Products = () => {
     `;
 
     const {
-        state: { products, sortOption, filterOptions },
-        dispatch,
+        state: { products, sortOption, filterOptions, isLoading, isError },
     } = useContext(ProductContext);
-
-    const [isLoading, setIsLoading] = useState(true);
-    const [isError, setIsError] = useState(false);
-
-    useEffect(() => {
-        try {
-            const fetchData = async () => {
-                const response = await axios({
-                    method: "Get",
-                    url: "/products",
-                });
-                dispatch({
-                    type: "SET_PRODUCTS",
-                    payload: response.data.products,
-                });
-            };
-            fetchData();
-        } catch (error) {
-            setIsError(true);
-        }
-    }, [dispatch]);
-
-    useEffect(() => {
-        if (products.length !== 0) {
-            setIsLoading(false);
-        }
-    }, [products]);
 
     const sortProducts = (sortOption) => {
         switch (sortOption) {
@@ -152,27 +125,22 @@ const Products = () => {
                 <ProductFilter />
             </Container>
             <ProductOptions />
-            <Container type="col" rowEnd width="100%">
+            <Container type="col" width="100%" className="productsContainer">
                 <Container type="row" rowCenter width="100%">
                     {isLoading && <Spinner />}
                     {isError && (
-                        <Alert type="danger">
-                            <Text>Something went wrong !</Text>
-                        </Alert>
+                        <Alert type="danger">Something went wrong !</Alert>
                     )}
-                    {filteredProducts.length === 0 && !isLoading && (
+                    {filteredProducts.length === 0 && products.length !== 0 && (
                         <Alert type="danger" className="alertContainer">
-                            <Text>
-                                Sorry no products avaialble based on current
-                                filters
-                            </Text>
+                            Sorry no products avaialble based on current filters
                         </Alert>
                     )}
                 </Container>
                 <Grid col={1} className="productsItem">
                     {filteredProducts.map((product) => {
                         return (
-                            <ProductItem key={product.id} details={product} />
+                            <ProductItem details={product} key={product._id} />
                         );
                     })}
                 </Grid>

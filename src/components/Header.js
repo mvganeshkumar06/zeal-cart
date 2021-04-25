@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import {
     Container,
-    Image,
     useStyleContext,
     useThemeContext,
     Text,
+    Button,
 } from "@zeal-ui/core";
-import ZealCartIcon from "../assets/zeal-cart.svg";
-import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Link } from "react-router-dom";
 import ProductContext from "../context/ProductContext";
+import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import ShopIcon from "@material-ui/icons/Shop";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 
 const Header = () => {
@@ -30,14 +30,11 @@ const Header = () => {
         .zealCartLink{
             display: none;
         }
-        
-        .icons{
-            margin: 0.25rem 1.5rem 0rem 0.5rem;
-        }
-        
+
         .title{
             font-size: 1.25rem;
-            margin-left: 3.25rem;
+            width:6rem;
+            margin-left: 3rem;
         }
 
         .themeIcon:hover,.wishIcon:hover,.cartIcon:hover{
@@ -45,17 +42,23 @@ const Header = () => {
         }
         
         .themeIcon,.wishIcon,.cartIcon{
+            width:1.25rem;
+            height:1.25rem;
             margin: 0rem 0.75rem;
         }
-    
+
+        .themeIcon{
+            margin:0rem 0.25rem;
+        }
+
         .wishIconContainer,.cartIconContainer{
             position:relative;
         }
 
         .wishCount,
         .cartCount{
-            width: 1rem;
-            height: 1rem;
+            width: 0.75rem;
+            height: 0.75rem;
             border: 2px solid  ${theme === "light" ? "black" : "white"};
             background-color: ${style.colors.red[4]};
             color: white;
@@ -74,6 +77,46 @@ const Header = () => {
             left: 1.75rem;
         }
 
+        .authBtn{
+            margin:0rem 0rem 0rem 0.5rem;
+            padding:0rem 0.25rem;
+        }
+
+        .theme, .wishlist, .cart{
+            display:none;
+        }
+
+        @media(min-width:425px){
+            .themeIcon, .wishIcon, .cartIcon{
+                width:1.5rem;
+                height:1.5rem;
+            }
+            .themeIcon{
+                margin:0rem 0.75rem;
+            }
+            .wishCount, .cartCount{
+                width:1rem;
+                height:1rem;
+            }
+            .authBtn{
+                margin:0rem 0rem 0rem 1rem;
+            }
+        }
+
+        @media(min-width:768px){
+            .theme, .wishlist, .cart{
+                display:initial;
+            }
+            .icons{
+                margin-left: auto;
+                margin-right:5rem;
+            }
+            .wishCount, .cartCount{
+                bottom:0.85rem;
+                left:1.65rem;
+            }
+        }
+
         @media (min-width: 1024px) {
             .zealCartLink {
                 display: initial;
@@ -83,26 +126,23 @@ const Header = () => {
                 height: 2.5rem;
                 margin-left: 1.5rem;
             }
-            .icons {
-                margin-left: auto;
-                margin-right: 5rem;
-            }
             .title {
                 font-size: 1.5rem;
+                width:fit-content;
                 margin-left: 1rem;
-            }
-            .wishCountBadgeActive {
-                right: 7.25rem;
-            }
-            .cartCountBadgeActive {
-                right: 4.75rem;
             }
         }
     `;
 
     const {
-        state: { wishList, cart },
+        state: { user, wishList, cart },
+        dispatch,
     } = useContext(ProductContext);
+
+    const logoutUser = () => {
+        dispatch({ type: "SET_USER", payload: "" });
+        localStorage.removeItem("user");
+    };
 
     return (
         <Container type="row" rowBetween colCenter customStyles={styles}>
@@ -111,19 +151,17 @@ const Header = () => {
                     href="https://zeal-cart.netlify.app/"
                     className="zealCartLink"
                 >
-                    <Image
-                        src={ZealCartIcon}
-                        alt="Drift UI"
-                        className="zealCartIcon"
-                    />
+                    <ShopIcon className="zealCartIcon" />
                 </a>
                 <Text className="title">Zeal Cart</Text>
             </Container>
-            <Container className="icons">
+            <Container type="row" rowCenter colCenter className="icons">
                 <Brightness4Icon className="themeIcon" onClick={toggleTheme} />
+                <span className="theme">Theme</span>
                 <Link to="/wishlist">
                     <Container type="row" className="wishIconContainer">
-                        <FavoriteBorder className="wishIcon" />
+                        <FavoriteBorder className="wishIcon" />{" "}
+                        <span className="wishlist">Wishlist</span>
                         {wishList.length > 0 && (
                             <span className="wishCount">{wishList.length}</span>
                         )}
@@ -131,12 +169,27 @@ const Header = () => {
                 </Link>
                 <Link to="/cart">
                     <Container type="row" className="cartIconContainer">
-                        <ShoppingCartIcon className="cartIcon" />
+                        <ShoppingCartIcon className="cartIcon" />{" "}
+                        <span className="cart">Cart</span>
                         {cart.length > 0 && (
                             <span className="cartCount">{cart.length}</span>
                         )}
                     </Container>
                 </Link>
+                {user ? (
+                    <Button className="authBtn" onClick={logoutUser}>
+                        Logout
+                    </Button>
+                ) : (
+                    <Link
+                        to={{
+                            pathname: "/login",
+                            state: { pathAfterLogin: "/" },
+                        }}
+                    >
+                        <Button className="authBtn">Login</Button>
+                    </Link>
+                )}
             </Container>
         </Container>
     );

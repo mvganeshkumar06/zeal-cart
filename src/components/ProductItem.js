@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import {
     Container,
     Text,
@@ -6,6 +6,7 @@ import {
     Badge,
     useStyleContext,
     Toast,
+    useNotify,
 } from "@zeal-ui/core";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -13,36 +14,23 @@ import StarSharpIcon from "@material-ui/icons/StarSharp";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ProductContext from "../context/ProductContext";
+import axios from "axios";
+import { useHistory } from "react-router";
 
 const ProductItem = ({ details }) => {
     const style = useStyleContext();
 
     const styles = `
         margin:1rem 0rem;
-        border:1px solid ${style.colors.gray[3]};
-		
-		.productDetails {
-			margin-top: 5%;
-		}
-		
-		.actionsContainer {
-			position: relative;
-			width:100%;
-			margin: 0;
-		}
-		
+
 		.ratingIcon{
 			width: 1.25rem;
 			height: 1.25rem;
-			margin:0rem 0.25rem;
+			margin-left:0.25rem;
 		}
 
 		.trendingBadge {
 			padding:0rem 0.25rem;
-		}
-		
-		.price {
-			font-size: 1rem;
 		}
 		
 		.description {
@@ -50,14 +38,9 @@ const ProductItem = ({ details }) => {
 			margin: 0.25rem 0rem;
 		}
 		
-		.name {
-			font-size: 1.25rem;
-		}
-		
 		.wishIcon,
 		.wishIconActive {
-			position: absolute;
-			right: 2.5rem;
+			margin:0rem 0rem;
 		}
 		
 		.wishIconActive {
@@ -73,8 +56,7 @@ const ProductItem = ({ details }) => {
 		}
 		
 		.addIcon,.addIconActive {
-			position: absolute;
-			right: 0.5rem;
+			margin:0rem 1rem;
 		}
 		
 		.addIconActive {
@@ -84,9 +66,19 @@ const ProductItem = ({ details }) => {
 
         .productImage{
             margin:0rem;
-            border-radius:0;
+            margin-right:1rem;
+            height:auto;
         }
 		
+        .productName{
+            margin-top:0rem;
+            margin-left:0rem;
+        }
+
+        .productPrice,.productDetailsItem{
+            margin:0.25rem 0rem;
+        }
+
 		@media (min-width: 425px) {
 			margin: 1rem 0.25rem;
 
@@ -97,89 +89,127 @@ const ProductItem = ({ details }) => {
 	
 	`;
 
-    const {
-        id,
-        name,
-        image,
-        description,
-        price,
-        rating,
-        isTrending,
-        discount,
-    } = details;
+    const { _id, name, imageUrl, price, rating, trending } = details;
 
     const {
-        state: { wishList, cart },
+        state: { wishList, cart, user },
         dispatch,
     } = useContext(ProductContext);
 
     const isProductWishListed = (id) => {
-        return wishList.find((item) => item.id === id);
+        return wishList.find((item) => item._id === id);
     };
 
     const isProductAddedToCart = (id) => {
-        return cart.find((item) => item.id === id);
+        return cart.find((item) => item.product._id === id);
     };
 
-    const productWishListed = isProductWishListed(id);
-    const productAddedToCart = isProductAddedToCart(id);
+    const productWishListed = isProductWishListed(_id);
+    const productAddedToCart = isProductAddedToCart(_id);
 
-    const [isProductActionToastOpen, setIsProductActionToastOpen] = useState(
-        ""
-    );
+    const { isOpen, onOpen, onClose } = useNotify();
 
     const getToast = (text, type) => {
         return (
             <Toast
                 type="center"
-                isOpen={isProductActionToastOpen === type}
+                isOpen={isOpen === type}
                 delay={1500}
-                onClose={() => setIsProductActionToastOpen("")}
+                onClose={onClose}
             >
                 {text}
             </Toast>
         );
     };
 
+    const history = useHistory();
+
+    const updateWishList = () => {
+        if (user) {
+            const updateWishListOnDb = async () => {
+                try {
+                    const response = await axios({
+                        method: "Post",
+                        url: `http://localhost:5000/wishlists/${user.id}`,
+                        data: {
+                            productId: _id,
+                        },
+                    });
+                    dispatch({
+                        type: "SET_WISHLIST",
+                        payload: response.data,
+                    });
+                    onOpen("WISH_LIST");
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+            updateWishListOnDb();
+        } else {
+            history.push({
+                pathname: "/login",
+                state: { pathAfterLogin: "/products" },
+            });
+        }
+    };
+
+    const updateCart = () => {
+        if (user) {
+            const updateCartOnDb = async () => {
+                try {
+                    const response = await axios({
+                        method: "Post",
+                        url: `http://localhost:5000/carts/${user.id}`,
+                        data: {
+                            productId: _id,
+                            quantity: 1,
+                        },
+                    });
+                    dispatch({
+                        type: "SET_CART",
+                        payload: response.data,
+                    });
+                    onOpen("CART");
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+            updateCartOnDb();
+        } else {
+            history.push({
+                pathname: "/login",
+                state: { pathAfterLogin: "/products" },
+            });
+        }
+    };
+
     return (
-        <Container type="col" rowCenter customStyles={styles} key={id}>
-            <Image
-                src={image}
-                alt="product"
-                width="100%"
-                className="productImage"
-            />
-            <Container type="col" className="productDetails">
-                <Text className="name">{name}</Text>
-                <Text className="description">{description}</Text>
-                <Text className="price">
-                    {price} | {discount}{" "}
-                </Text>
-                <Container type="row" colCenter className="actionsContainer">
-                    <Container
-                        type="row"
-                        rowCenter
-                        colCenter
-                        className="ratingContainer"
-                    >
+        <Container type="row" customStyles={styles} key={_id}>
+            <Image src={imageUrl} alt="product" className="productImage" />
+            <Container type="col">
+                <Text className="productName">{name}</Text>
+                <Text className="productPrice">${price}</Text>
+                <Container type="row" colCenter className="productDetailsItem">
+                    <Container type="row" rowCenter colCenter>
                         {rating} <StarSharpIcon className="ratingIcon" />
                     </Container>
-                    {isTrending && (
+                    {trending && (
                         <Badge type="new" className="trendingBadge">
                             Trending
                         </Badge>
                     )}
+                </Container>
+                <Container
+                    type="row"
+                    width="100%"
+                    colCenter
+                    className="productDetailsItem"
+                >
                     {productWishListed ? (
                         <>
                             <Favorite
                                 className="wishIconActive"
-                                onClick={() => {
-                                    dispatch({
-                                        type: "REMOVE_FROM_WISHLIST",
-                                        payload: id,
-                                    });
-                                    setIsProductActionToastOpen("WISH_LIST");
-                                }}
+                                onClick={updateWishList}
                             />
                             {getToast(
                                 `${name} is added to your wish list !`,
@@ -190,14 +220,8 @@ const ProductItem = ({ details }) => {
                         <>
                             <FavoriteBorderIcon
                                 className="wishIcon"
-                                onClick={() => {
-                                    dispatch({
-                                        type: "ADD_TO_WISHLIST",
-                                        payload: details,
-                                    });
-                                    setIsProductActionToastOpen("WISH_LIST");
-                                }}
-                            />
+                                onClick={updateWishList}
+                            />{" "}
                             {getToast(
                                 `${name} is removed from your wish list !`,
                                 "WISH_LIST"
@@ -208,13 +232,7 @@ const ProductItem = ({ details }) => {
                         <>
                             <ShoppingCartIcon
                                 className="addIconActive"
-                                onClick={() => {
-                                    dispatch({
-                                        type: "REMOVE_FROM_CART",
-                                        payload: id,
-                                    });
-                                    setIsProductActionToastOpen("CART");
-                                }}
+                                onClick={updateCart}
                             />
                             {getToast(
                                 `${name} is added to your cart !`,
@@ -225,13 +243,7 @@ const ProductItem = ({ details }) => {
                         <>
                             <AddShoppingCartIcon
                                 className="addIcon"
-                                onClick={() => {
-                                    dispatch({
-                                        type: "ADD_TO_CART",
-                                        payload: details,
-                                    });
-                                    setIsProductActionToastOpen("CART");
-                                }}
+                                onClick={updateCart}
                             />
                             {getToast(
                                 `${name} is removed from your cart !`,

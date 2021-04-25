@@ -1,7 +1,5 @@
 import React from "react";
-import { Container } from "@zeal-ui/core";
-import createMockServer from "../server/mock-server";
-createMockServer({ environment: "development" });
+import { Container, Text } from "@zeal-ui/core";
 
 const Home = () => {
     const homeContainer = `
@@ -11,7 +9,7 @@ const Home = () => {
 
     return (
         <Container type="col" customStyles={homeContainer}>
-            <h1>Home</h1>
+            <Text type="mainHeading">Home</Text>
         </Container>
     );
 };

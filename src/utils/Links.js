@@ -11,14 +11,6 @@ const navigationItems = [
         name: "Products",
         url: "/products",
     },
-    {
-        name: "WishList",
-        url: "/wishlist",
-    },
-    {
-        name: "Cart",
-        url: "/cart",
-    },
 ];
 
 export { navigationItems };

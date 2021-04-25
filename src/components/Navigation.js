@@ -50,6 +50,10 @@ const Navigation = () => {
             cursor: pointer;
         }
 
+        .list{
+            list-style-type:none;
+        }
+
         @media (min-width: 768px) {
             .navigationContainer {
                 width: 10rem;
@@ -80,7 +84,7 @@ const Navigation = () => {
                         fontSize="large"
                         onClick={() => setIsNavigationOpen(!isNavigationOpen)}
                     />
-                    <List>
+                    <List className="list">
                         {navigationItems.map(({ name, url }) => {
                             return (
                                 <ListItem key={name}>
@@ -91,6 +95,7 @@ const Navigation = () => {
                                                 !isNavigationOpen
                                             )
                                         }
+                                        className="link"
                                     >
                                         {name}
                                     </Link>

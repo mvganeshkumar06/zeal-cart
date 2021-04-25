@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Container, Text, Grid } from "@zeal-ui/core";
 import ProductContext from "../context/ProductContext";
 import { ProductItem } from "../components";
-
 const WishList = () => {
     const styles = `    
         width: 100%;
@@ -33,6 +32,7 @@ const WishList = () => {
     const {
         state: { wishList },
     } = useContext(ProductContext);
+
     return (
         <Container type="col" customStyles={styles}>
             <Text type="mainHeading">
@@ -40,7 +40,7 @@ const WishList = () => {
             </Text>
             <Grid className="wishListItem">
                 {wishList.map((product) => {
-                    return <ProductItem key={product.id} details={product} />;
+                    return <ProductItem key={product._id} details={product} />;
                 })}
             </Grid>
         </Container>
