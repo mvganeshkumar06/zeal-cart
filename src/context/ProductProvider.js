@@ -47,7 +47,7 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "Get",
-                    url: `http://zeal-cart.herokuapp.com/wishlists/${user.id}`,
+                    url: `https://zeal-cart.herokuapp.com/wishlists/${user.id}`,
                     timeout: 5000,
                     cancelToken: source.token,
                 });
@@ -65,7 +65,7 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "Get",
-                    url: `http://zeal-cart.herokuapp.com/carts/${user.id}`,
+                    url: `https://zeal-cart.herokuapp.com/carts/${user.id}`,
                     timeout: 5000,
                     cancelToken: source.token,
                 });
