@@ -130,7 +130,7 @@ const ProductItem = ({ details }) => {
                 try {
                     const response = await axios({
                         method: "Post",
-                        url: `http://localhost:5000/wishlists/${user.id}`,
+                        url: `http://zeal-cart.herokuapp.com/wishlists/${user.id}`,
                         data: {
                             productId: _id,
                         },
@@ -159,7 +159,7 @@ const ProductItem = ({ details }) => {
                 try {
                     const response = await axios({
                         method: "Post",
-                        url: `http://localhost:5000/carts/${user.id}`,
+                        url: `http://zeal-cart.herokuapp.com/carts/${user.id}`,
                         data: {
                             productId: _id,
                             quantity: 1,

@@ -80,8 +80,10 @@ const ProductProvider = ({ children }) => {
             }
         };
         fetchProducts();
-        fetchUserWishList();
-        fetchUserCart();
+        if (user) {
+            fetchUserWishList();
+            fetchUserCart();
+        }
         return () => source.cancel("Component unmounted");
     }, []);
 
