@@ -67,7 +67,7 @@ const ProductItem = ({ details }) => {
         .productImage{
             margin:0rem;
             margin-right:1rem;
-            height:auto;
+            width:auto;
         }
 		
         .productName{
