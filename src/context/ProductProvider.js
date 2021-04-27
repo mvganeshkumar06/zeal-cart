@@ -23,15 +23,15 @@ const ProductProvider = ({ children }) => {
             type: "SET_USER",
             payload: user,
         });
+    }, []);
 
-        const source = axios.CancelToken.source();
+    useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await axios({
                     method: "Get",
                     url: "https://zeal-cart.herokuapp.com/products",
                     timeout: 5000,
-                    cancelToken: source.token,
                 });
                 dispatch({
                     type: "SET_PRODUCTS",
@@ -47,9 +47,8 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "Get",
-                    url: `https://zeal-cart.herokuapp.com/wishlists/${user.id}`,
+                    url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
                     timeout: 5000,
-                    cancelToken: source.token,
                 });
                 dispatch({
                     type: "SET_WISHLIST",
@@ -65,9 +64,8 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "Get",
-                    url: `https://zeal-cart.herokuapp.com/carts/${user.id}`,
+                    url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
                     timeout: 5000,
-                    cancelToken: source.token,
                 });
                 dispatch({
                     type: "SET_CART",
@@ -80,12 +78,11 @@ const ProductProvider = ({ children }) => {
             }
         };
         fetchProducts();
-        if (user) {
+        if (state.user) {
             fetchUserWishList();
             fetchUserCart();
         }
-        return () => source.cancel("Component unmounted");
-    }, []);
+    }, [state.user]);
 
     return (
         <ProductContext.Provider value={{ state, dispatch }}>

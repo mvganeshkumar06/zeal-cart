@@ -1,27 +1,43 @@
 import React, { useState, useContext } from "react";
-import { Container, Alert, Spinner, Button, Text } from "@zeal-ui/core";
+import {
+    Container,
+    Alert,
+    Spinner,
+    Button,
+    Text,
+    Input,
+    InputContainer,
+} from "@zeal-ui/core";
 import axios from "axios";
 import ProductContext from "../context/ProductContext";
 import { Redirect, useLocation } from "react-router-dom";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 
 const Login = () => {
     const loginContainer = `
         margin-top: 5rem;
-        align-items: center;
 
         .userNameInput, .passwordInput{
             margin:1rem 0rem;
         }
 
         .loginBtn{
-            margin:0rem;
-            padding:0rem;
+            margin-top:3rem;
+        }
+
+        .showHideIcon{
+            margin-right:0.5rem;
+        }
+
+        .showHideIcon:hover{
+            cursor:pointer;
         }
 
     `;
 
     const {
-        state: { user },
+        state: { user, isLoading, isError },
         dispatch,
     } = useContext(ProductContext);
 
@@ -31,13 +47,10 @@ const Login = () => {
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const authenticateUser = () => {
         const authenticate = async () => {
-            setIsLoading(true);
             try {
                 const response = await axios({
                     method: "Post",
@@ -48,51 +61,87 @@ const Login = () => {
                     },
                 });
                 if (response.data) {
+                    setUserName("");
+                    setPassword("");
                     dispatch({
                         type: "SET_USER",
                         payload: response.data,
                     });
                     localStorage.setItem("user", JSON.stringify(response.data));
                 } else {
-                    setIsError(true);
+                    dispatch({
+                        type: "SET_IS_ERROR",
+                        payload: true,
+                    });
                     setTimeout(() => {
-                        setIsError(false);
+                        dispatch({
+                            type: "SET_IS_ERROR",
+                            payload: false,
+                        });
                     }, 3000);
                 }
             } catch (err) {
-                setIsError(true);
+                dispatch({
+                    type: "SET_IS_ERROR",
+                    payload: true,
+                });
                 setTimeout(() => {
-                    setIsError(false);
+                    dispatch({
+                        type: "SET_IS_ERROR",
+                        payload: false,
+                    });
                 }, 3000);
             } finally {
-                setIsLoading(false);
+                dispatch({
+                    type: "SET_IS_LOADING",
+                    payload: false,
+                });
             }
         };
         authenticate();
     };
 
     return (
-        <Container type="col" customStyles={loginContainer}>
-            <Text>Login</Text>
+        <Container type="col" rowCenter customStyles={loginContainer}>
+            <Text type="mainHeading">Login</Text>
             {isLoading && <Spinner />}
             {isError && (
                 <Alert type="danger">
                     <p>Wrong username or password, please try again</p>
                 </Alert>
             )}
-            <input
-                type="text"
-                placeholder="Enter your username"
-                value={userName}
-                onChange={(event) => setUserName(event.target.value)}
-                className="userNameInput"
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="passwordInput"
-            />
+            <InputContainer>
+                <Input
+                    type="text"
+                    placeholder="Enter your username"
+                    value={userName}
+                    onChange={(event) => setUserName(event.target.value)}
+                    className="userNameInput"
+                />
+            </InputContainer>
+            <InputContainer type="col">
+                <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    className="passwordInput"
+                />
+                <Container type="row" rowCenter colCenter>
+                    {showPassword ? (
+                        <VisibilityIcon
+                            className="showHideIcon"
+                            onClick={() => setShowPassword(false)}
+                        />
+                    ) : (
+                        <VisibilityOffIcon
+                            className="showHideIcon"
+                            onClick={() => setShowPassword(true)}
+                        />
+                    )}{" "}
+                    {showPassword ? "Hide" : "Show"} password
+                </Container>
+            </InputContainer>
             <Button className="loginBtn" onClick={authenticateUser}>
                 Login
             </Button>
