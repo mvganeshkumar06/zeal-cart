@@ -68,6 +68,7 @@ const ProductItem = ({ details }) => {
             margin:0rem;
             margin-right:1rem;
             width:auto;
+            height:auto;
         }
 		
         .productName{
