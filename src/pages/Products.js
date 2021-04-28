@@ -59,9 +59,17 @@ const Products = () => {
             padding:0.5rem 0rem;
         }
 
-        @media (min-width: 768px) {
+        @media(min-width:425px){
             .productsItem {
                 grid-template-columns: repeat(2, 1fr);
+                grid-gap:1rem 0.5rem;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .productsItem {
+                grid-template-columns: repeat(3, 1fr);
+                grid-column-gap:1rem;
             }
         }
         
@@ -71,6 +79,7 @@ const Products = () => {
             }
             .productsItem {
                 width: 80%;
+                grid-template-columns: repeat(4, 1fr);
             }        
             .optionsContainer {
                 display: none;
@@ -79,8 +88,7 @@ const Products = () => {
 
         @media(min-width:1440px){
             .productsItem{
-                width: 60%;
-                margin-right:12rem;
+                grid-template-columns: repeat(5, 1fr);
             }
         }
     `;

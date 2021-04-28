@@ -1,7 +1,15 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Header, Navigation, NavigationDesktop } from "../components";
-import { Home, Categories, Products, WishList, Cart, Login } from "../pages";
+import {
+    Home,
+    Categories,
+    Products,
+    WishList,
+    Cart,
+    Login,
+    Product,
+} from "../pages";
 import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
@@ -13,6 +21,9 @@ const Router = () => {
             <Switch>
                 <Route path="/categories">
                     <Categories />
+                </Route>
+                <Route path="/products/:productId">
+                    <Product />
                 </Route>
                 <Route path="/products">
                     <Products />

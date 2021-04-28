@@ -23,13 +23,11 @@ const ProductProvider = ({ children }) => {
             type: "SET_USER",
             payload: user,
         });
-    }, []);
 
-    useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await axios({
-                    method: "Get",
+                    method: "get",
                     url: "https://zeal-cart.herokuapp.com/products",
                     timeout: 5000,
                 });
@@ -43,10 +41,15 @@ const ProductProvider = ({ children }) => {
                 dispatch({ type: "SET_IS_LOADING", payload: false });
             }
         };
+
+        fetchProducts();
+    }, []);
+
+    useEffect(() => {
         const fetchUserWishList = async () => {
             try {
                 const response = await axios({
-                    method: "Get",
+                    method: "get",
                     url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
                     timeout: 5000,
                 });
@@ -63,7 +66,7 @@ const ProductProvider = ({ children }) => {
         const fetchUserCart = async () => {
             try {
                 const response = await axios({
-                    method: "Get",
+                    method: "get",
                     url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
                     timeout: 5000,
                 });
@@ -77,10 +80,18 @@ const ProductProvider = ({ children }) => {
                 dispatch({ type: "SET_IS_LOADING", payload: false });
             }
         };
-        fetchProducts();
         if (state.user) {
             fetchUserWishList();
             fetchUserCart();
+        } else {
+            dispatch({
+                type: "SET_WISHLIST",
+                payload: [],
+            });
+            dispatch({
+                type: "SET_CART",
+                payload: [],
+            });
         }
     }, [state.user]);
 
