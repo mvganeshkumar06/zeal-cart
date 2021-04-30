@@ -6,13 +6,14 @@ import axios from "axios";
 const ProductProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, {
         products: [],
+        categories: [],
+        user: "",
         wishList: [],
         cart: [],
         sortOption: "",
         filterOptions: {
             priceRange: 1500,
         },
-        user: "",
         isLoading: true,
         isError: false,
     });

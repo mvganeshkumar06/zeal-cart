@@ -4,12 +4,12 @@ const navigationItems = [
         url: "/",
     },
     {
-        name: "Categories",
-        url: "/categories",
-    },
-    {
         name: "Products",
         url: "/products",
+    },
+    {
+        name: "Login",
+        url: "/login",
     },
 ];
 
