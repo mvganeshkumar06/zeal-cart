@@ -41,9 +41,8 @@ const Login = () => {
         dispatch,
     } = useContext(ProductContext);
 
-    const {
-        state: { pathAfterLogin },
-    } = useLocation();
+    const location = useLocation();
+    const pathAfterLogin = location.state?.pathAfterLogin || "/";
 
     const [userName, setUserName] = useState("");
     const [password, setPassword] = useState("");
