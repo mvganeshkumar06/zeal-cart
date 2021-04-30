@@ -11,12 +11,12 @@ import StarSharpIcon from "@material-ui/icons/StarSharp";
 import { Link } from "react-router-dom";
 import ProductAction from "./ProductAction";
 
-const ProductItem = ({ details, showQuantity }) => {
+const ProductItem = ({ details, showQuantity, onSlideShow }) => {
     const style = useStyleContext();
     const { theme } = useThemeContext();
 
     const styles = `
-        margin:1rem 0rem;
+        margin:1rem ${onSlideShow ? "2rem" : "0rem"};
 
 		.ratingIcon{
 			width: 1.25rem;
@@ -56,7 +56,7 @@ const ProductItem = ({ details, showQuantity }) => {
         }
 
 		@media (min-width: 425px) {
-			margin: 1rem 0.25rem;
+			margin:1rem ${onSlideShow ? "2rem" : "0rem"};
 		}
 	
 	`;
@@ -64,7 +64,13 @@ const ProductItem = ({ details, showQuantity }) => {
     const { _id, name, imageUrl, price, rating, trending } = details;
 
     return (
-        <Container type="col" withBorder customStyles={styles} key={_id}>
+        <Container
+            type="col"
+            rowCenter={onSlideShow}
+            withBorder={!onSlideShow}
+            customStyles={styles}
+            key={_id}
+        >
             <Container
                 type="col"
                 rowCenter
@@ -81,27 +87,38 @@ const ProductItem = ({ details, showQuantity }) => {
                     />
                 </Link>
             </Container>
-            <Container type="col" className="productDetailsContainer">
+            {onSlideShow ? (
                 <Link to={`/products/${_id}`}>
                     <Text className="productName">{name}</Text>
                 </Link>
-                <Text className="productPrice">${price}</Text>
-                <Container type="row" colCenter className="productDetailsItem">
-                    <Container type="row" rowCenter colCenter>
-                        {rating} <StarSharpIcon className="ratingIcon" />
+            ) : (
+                <Container type="col" className="productDetailsContainer">
+                    <Link to={`/products/${_id}`}>
+                        <Text className="productName">{name}</Text>
+                    </Link>
+
+                    <Text className="productPrice">${price}</Text>
+                    <Container
+                        type="row"
+                        colCenter
+                        className="productDetailsItem"
+                    >
+                        <Container type="row" rowCenter colCenter>
+                            {rating} <StarSharpIcon className="ratingIcon" />
+                        </Container>
+                        {trending && (
+                            <Badge type="new" className="trendingBadge">
+                                Trending
+                            </Badge>
+                        )}
                     </Container>
-                    {trending && (
-                        <Badge type="new" className="trendingBadge">
-                            Trending
-                        </Badge>
-                    )}
+                    <ProductAction
+                        _id={_id}
+                        name={name}
+                        showQuantity={showQuantity}
+                    />
                 </Container>
-                <ProductAction
-                    _id={_id}
-                    name={name}
-                    showQuantity={showQuantity}
-                />
-            </Container>
+            )}
         </Container>
     );
 };

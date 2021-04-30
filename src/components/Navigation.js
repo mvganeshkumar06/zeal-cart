@@ -31,7 +31,7 @@ const Navigation = () => {
         
         .navigationOpenBtn {
             position: fixed;
-            top: 0.8rem;
+            top: 1rem;
             left: 0.25rem;
             font-weight: bold;
             z-index: ${style.zIndex[1]};

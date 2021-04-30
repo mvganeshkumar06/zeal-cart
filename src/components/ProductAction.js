@@ -97,7 +97,6 @@ const ProductAction = ({ _id, name, showQuantity }) => {
 
     const productsMatch = useRouteMatch("/products");
     const productMatch = useRouteMatch("/products/:productId");
-    const categoriesMatch = useRouteMatch("/categories");
     const wishlistMatch = useRouteMatch("/wishlist");
     const cartMatch = useRouteMatch("/cart");
 
@@ -107,9 +106,6 @@ const ProductAction = ({ _id, name, showQuantity }) => {
         }
         if (productsMatch) {
             return productsMatch.url;
-        }
-        if (categoriesMatch) {
-            return categoriesMatch.url;
         }
         if (wishlistMatch) {
             return wishlistMatch.url;

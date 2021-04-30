@@ -12,6 +12,7 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ShopIcon from "@material-ui/icons/Shop";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
+import LocalMallIcon from "@material-ui/icons/LocalMall";
 
 const Header = () => {
     const style = useStyleContext();
@@ -19,7 +20,7 @@ const Header = () => {
 
     const styles = `
         width: 100%;
-        height: 4rem;
+        height: 4.5rem;
         background-color: ${theme === "light" ? "white" : style.colors.gray[4]};
         color: ${theme === "light" ? "black" : "white"};
         border-bottom: 1px solid  ${theme === "light" ? "black" : "white"};
@@ -33,7 +34,6 @@ const Header = () => {
 
         .title{
             font-size: 1.25rem;
-            width:6rem;
             margin-left: 3rem;
         }
 
@@ -42,8 +42,8 @@ const Header = () => {
         }
         
         .themeIcon,.wishIcon,.cartIcon{
-            width:1.25rem;
-            height:1.25rem;
+            width:1.5rem;
+            height:1.5rem;
             margin: 0rem 0.75rem;
         }
 
@@ -57,8 +57,8 @@ const Header = () => {
 
         .wishCount,
         .cartCount{
-            width: 0.75rem;
-            height: 0.75rem;
+            width: 1rem;
+            height: 1rem;
             border: 2px solid  ${theme === "light" ? "black" : "white"};
             background-color: ${style.colors.red[4]};
             color: white;
@@ -77,43 +77,33 @@ const Header = () => {
             left: 1.75rem;
         }
 
-        .authBtn{
-            margin:0rem 0rem 0rem 0.5rem;
-            padding:0rem 0.25rem;
-        }
-
-        .theme, .wishlist, .cart{
+        .iconText, .productsIconItem, .authBtn{
             display:none;
         }
 
-        @media(min-width:425px){
-            .themeIcon, .wishIcon, .cartIcon{
-                width:1.5rem;
-                height:1.5rem;
-            }
-            .themeIcon{
-                margin:0rem 0.75rem;
-            }
-            .wishCount, .cartCount{
-                width:1rem;
-                height:1rem;
-            }
-            .authBtn{
-                margin:0rem 0rem 0rem 1rem;
-            }
+        .iconsContainer{
+            margin-right:1rem;
         }
 
         @media(min-width:768px){
-            .theme, .wishlist, .cart{
+            .authBtn{
                 display:initial;
+                margin-left:1.5rem;
             }
-            .icons{
-                margin-left: auto;
-                margin-right:5rem;
+            .iconText{
+                display:initial;
+                margin:0.25rem 0rem 0rem 0rem;
+            }
+            .iconsContainer{
+                margin:0.5rem 5rem 0rem auto;
+            }
+            .iconItem{
+                display:flex;
+                margin:0rem 1.5rem;
             }
             .wishCount, .cartCount{
-                bottom:0.85rem;
-                left:1.65rem;
+                bottom:2.5rem;
+                left:1.85rem;
             }
         }
 
@@ -128,7 +118,6 @@ const Header = () => {
             }
             .title {
                 font-size: 1.5rem;
-                width:fit-content;
                 margin-left: 1rem;
             }
         }
@@ -155,22 +144,48 @@ const Header = () => {
                 </a>
                 <Text className="title">Zeal Cart</Text>
             </Container>
-            <Container type="row" rowCenter colCenter className="icons">
-                <Brightness4Icon className="themeIcon" onClick={toggleTheme} />
-                <span className="theme">Theme</span>
-                <Link to="/wishlist">
-                    <Container type="row" className="wishIconContainer">
+            <Container
+                type="row"
+                rowCenter
+                colCenter
+                className="iconsContainer"
+            >
+                <Container type="col" rowCenter colCenter className="iconItem">
+                    <Brightness4Icon
+                        className="themeIcon"
+                        onClick={toggleTheme}
+                    />
+                    <Text className="iconText">Theme</Text>
+                </Container>
+                <Link to="/products" className="iconItem productsIconItem">
+                    <Container type="col" rowCenter colCenter>
+                        <LocalMallIcon className="bagIcon" />
+                        <Text className="iconText">Products</Text>
+                    </Container>
+                </Link>
+                <Link to="/wishlist" className="iconItem">
+                    <Container
+                        type="col"
+                        rowCenter
+                        colCenter
+                        className="wishIconContainer"
+                    >
                         <FavoriteBorder className="wishIcon" />{" "}
-                        <span className="wishlist">Wishlist</span>
+                        <Text className="iconText">Wishlist</Text>
                         {wishList.length > 0 && (
                             <span className="wishCount">{wishList.length}</span>
                         )}
                     </Container>
                 </Link>
-                <Link to="/cart">
-                    <Container type="row" className="cartIconContainer">
+                <Link to="/cart" className="iconItem">
+                    <Container
+                        type="col"
+                        rowCenter
+                        colCenter
+                        className="cartIconContainer"
+                    >
                         <ShoppingCartIcon className="cartIcon" />{" "}
-                        <span className="cart">Cart</span>
+                        <Text className="iconText">Cart</Text>
                         {cart.length > 0 && (
                             <span className="cartCount">{cart.length}</span>
                         )}
