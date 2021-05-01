@@ -54,11 +54,6 @@ const Product = () => {
             .productImageContainer{
                 margin:1.5rem 5rem 0rem 0rem;
             }
-            
-            .productImage{
-                width:15rem;
-                height:auto;
-            }
         }
 
         @media(min-width:1024px){
@@ -114,10 +109,19 @@ const Product = () => {
     return (
         <Container type="col" rowCenter customStyles={styles}>
             <Container type="col" rowCenter className="productContainer">
-                <Container type="col" className="productImageContainer">
+                <Container
+                    type="col"
+                    width="15rem"
+                    height="auto"
+                    rowCenter
+                    colCenter
+                    className="productImageContainer"
+                >
                     <Image
                         src={imageUrl}
                         alt="product"
+                        width="auto"
+                        height="auto"
                         className="productImage"
                     />
                 </Container>
