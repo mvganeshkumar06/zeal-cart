@@ -37,8 +37,6 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
 		
         .productImage{
             margin:0rem;
-            width:auto;
-            height:auto;
         }
 		
         .productPrice,.productDetailsItem{
@@ -83,6 +81,8 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
                     <Image
                         src={imageUrl}
                         alt="product"
+                        width="auto"
+                        height="auto"
                         className="productImage"
                     />
                 </Link>
