@@ -13,6 +13,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ShopIcon from "@material-ui/icons/Shop";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
+import HomeIcon from "@material-ui/icons/Home";
 
 const Header = () => {
     const style = useStyleContext();
@@ -41,9 +42,9 @@ const Header = () => {
             cursor:pointer;
         }
         
-        .themeIcon,.wishIcon,.cartIcon{
-            width:1.5rem;
-            height:1.5rem;
+        .themeIcon,.homeIcon,.bagIcon,.wishIcon,.cartIcon{
+            width:1.25rem;
+            height:1.25rem;
             margin: 0rem 0.75rem;
         }
 
@@ -73,8 +74,8 @@ const Header = () => {
         }
 
         .wishCount,.cartCount{   
-            bottom: 0.75rem;
-            left: 1.75rem;
+            bottom: 0.5rem;
+            left: 1.5rem;
         }
 
         .iconText, .productsIconItem, .authBtn{
@@ -93,6 +94,7 @@ const Header = () => {
             .iconText{
                 display:initial;
                 margin:0.25rem 0rem 0rem 0rem;
+                font-size:0.85rem;
             }
             .iconsContainer{
                 margin:0.5rem 5rem 0rem auto;
@@ -102,8 +104,8 @@ const Header = () => {
                 margin:0rem 1.5rem;
             }
             .wishCount, .cartCount{
-                bottom:2.5rem;
-                left:1.85rem;
+                bottom:2.25rem;
+                left:1.75rem;
             }
         }
 
@@ -157,6 +159,12 @@ const Header = () => {
                     />
                     <Text className="iconText">Theme</Text>
                 </Container>
+                <Link to="/" className="iconItem">
+                    <Container type="col" rowCenter colCenter>
+                        <HomeIcon className="homeIcon" />
+                        <Text className="iconText">Home</Text>
+                    </Container>
+                </Link>
                 <Link to="/products" className="iconItem productsIconItem">
                     <Container type="col" rowCenter colCenter>
                         <LocalMallIcon className="bagIcon" />

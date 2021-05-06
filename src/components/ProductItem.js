@@ -51,6 +51,9 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
             background-color:${
                 theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
             };
+            border-radius:0.25rem;
+            padding:0.5rem;
+            box-sizing:border-box;
         }
 
 		@media (min-width: 425px) {
