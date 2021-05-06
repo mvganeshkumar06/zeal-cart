@@ -5,6 +5,11 @@ const reducer = (state, action) => {
                 ...state,
                 products: action.payload,
             };
+        case "SET_PRODUCT":
+            return {
+                ...state,
+                product: action.payload,
+            };
         case "SET_CATEGORIES":
             return {
                 ...state,
@@ -67,13 +72,13 @@ const reducer = (state, action) => {
         case "SET_IS_LOADING": {
             return {
                 ...state,
-                isLoading: action.payload,
+                isLoading: { ...state.isLoading, ...action.payload },
             };
         }
         case "SET_IS_ERROR": {
             return {
                 ...state,
-                isError: action.payload,
+                isError: { ...state.isError, ...action.payload },
             };
         }
         default:
