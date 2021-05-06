@@ -29,6 +29,10 @@ const Products = () => {
     const styles = `
         margin: 5rem 0rem;
 
+        .feedbackContainer{
+            margin-top:2rem;
+        }
+
         .optionsContainer {
             width: 100%;
             height: 3rem;
@@ -134,10 +138,17 @@ const Products = () => {
             </Container>
             <ProductOptions />
             <Container type="col" width="100%" className="productsContainer">
-                <Container type="row" rowCenter width="100%">
-                    {isLoading && <Spinner />}
-                    {isError && (
-                        <Alert type="danger">Something went wrong !</Alert>
+                <Container
+                    type="row"
+                    rowCenter
+                    width="100%"
+                    className="feedbackContainer"
+                >
+                    {isLoading.products && <Spinner />}
+                    {isError.products && (
+                        <Alert type="danger">
+                            Error while getting products
+                        </Alert>
                     )}
                     {filteredProducts.length === 0 && products.length !== 0 && (
                         <Alert type="danger" className="alertContainer">
@@ -145,13 +156,18 @@ const Products = () => {
                         </Alert>
                     )}
                 </Container>
-                <Grid col={1} className="productsItem">
-                    {filteredProducts.map((product) => {
-                        return (
-                            <ProductItem details={product} key={product._id} />
-                        );
-                    })}
-                </Grid>
+                {!isLoading.products && !isError.products && (
+                    <Grid col={1} className="productsItem">
+                        {filteredProducts.map((product) => {
+                            return (
+                                <ProductItem
+                                    details={product}
+                                    key={product._id}
+                                />
+                            );
+                        })}
+                    </Grid>
+                )}
             </Container>
         </Container>
     );

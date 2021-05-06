@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import {
     Container,
     Text,
@@ -8,16 +8,22 @@ import {
     Divider,
     Spinner,
     Badge,
+    Alert,
 } from "@zeal-ui/core";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import StarSharpIcon from "@material-ui/icons/StarSharp";
 import ProductAction from "../components/ProductAction";
+import ProductContext from "../context/ProductContext";
 
 const Product = () => {
     const styles = `
         margin:5rem 1.5rem;
         
+        .feedbackContainer{
+            margin-top:2rem;
+        }
+
         .productImageContainer{
             background-color:white;
             margin: 1.5rem 1rem 2rem 0rem;
@@ -66,8 +72,10 @@ const Product = () => {
 
     const { productId } = useParams();
 
-    const [product, setProduct] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+    const {
+        state: { product, isLoading, isError },
+        dispatch,
+    } = useContext(ProductContext);
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -76,24 +84,20 @@ const Product = () => {
                     method: "get",
                     url: `https://zeal-cart.herokuapp.com/products/${productId}`,
                 });
-                setProduct(response.data);
+                dispatch({ type: "SET_PRODUCT", payload: response.data });
             } catch (err) {
                 console.log(err);
+                dispatch({ type: "SET_IS_ERROR", payload: { product: true } });
             } finally {
-                setIsLoading(false);
+                dispatch({
+                    type: "SET_IS_LOADING",
+                    payload: { product: false },
+                });
             }
         };
 
         fetchProductDetails();
-    }, [productId]);
-
-    if (isLoading) {
-        return (
-            <Container type="col" rowCenter customStyles={styles}>
-                <Spinner />
-            </Container>
-        );
-    }
+    }, [dispatch, productId]);
 
     const {
         category: { name: categoryName },
@@ -108,68 +112,81 @@ const Product = () => {
 
     return (
         <Container type="col" rowCenter customStyles={styles}>
-            <Container type="col" rowCenter className="productContainer">
-                <Container
-                    type="col"
-                    width="15rem"
-                    height="auto"
-                    rowCenter
-                    colCenter
-                    className="productImageContainer"
-                >
-                    <Image
-                        src={imageUrl}
-                        alt="product"
-                        width="auto"
-                        height="auto"
-                        className="productImage"
-                    />
-                </Container>
-                <Container type="col" colCenter className="productDetails">
-                    <Text type="mainHeading">{name}</Text>
-                    <Divider />
-                    <Text>{categoryName}</Text>
-                    <Text>${price}</Text>
-                    <Container type="row" colCenter>
-                        <Container type="row" colCenter>
-                            <Text>{rating}</Text>
-                            <StarSharpIcon className="ratingIcon" />
-                        </Container>
-                        {trending && (
-                            <Badge type="new" className="trendingBadge">
-                                Trending
-                            </Badge>
-                        )}
-                    </Container>
-                    <br />
-                    {description && (
-                        <>
-                            <Text type="subHeading">Description</Text>
-                            <Text className="productDescription">
-                                {description}
-                            </Text>
-                        </>
-                    )}
-                    <Text type="subHeading">Features</Text>
-                    <List>
-                        {features.map((feature) => (
-                            <ListItem key={feature}>{feature}</ListItem>
-                        ))}
-                    </List>
+            <Container
+                type="row"
+                rowCenter
+                width="100%"
+                className="feedbackContainer"
+            >
+                {isLoading.product && <Spinner />}
+                {isError.product && (
+                    <Alert type="danger">Error while getting product</Alert>
+                )}
+            </Container>
+            {!isLoading.product && !isError.product && (
+                <Container type="col" rowCenter className="productContainer">
                     <Container
-                        type="row"
-                        width="100%"
+                        type="col"
+                        width="15rem"
+                        height="auto"
+                        rowCenter
                         colCenter
-                        className="productActionContainer"
+                        className="productImageContainer"
                     >
-                        <ProductAction
-                            _id={productId}
-                            name={name}
-                            showQuantity
+                        <Image
+                            src={imageUrl}
+                            alt="product"
+                            width="auto"
+                            height="auto"
+                            className="productImage"
                         />
                     </Container>
+                    <Container type="col" colCenter className="productDetails">
+                        <Text type="mainHeading">{name}</Text>
+                        <Divider />
+                        <Text>{categoryName}</Text>
+                        <Text>${price}</Text>
+                        <Container type="row" colCenter>
+                            <Container type="row" colCenter>
+                                <Text>{rating}</Text>
+                                <StarSharpIcon className="ratingIcon" />
+                            </Container>
+                            {trending && (
+                                <Badge type="new" className="trendingBadge">
+                                    Trending
+                                </Badge>
+                            )}
+                        </Container>
+                        <br />
+                        {description && (
+                            <>
+                                <Text type="subHeading">Description</Text>
+                                <Text className="productDescription">
+                                    {description}
+                                </Text>
+                            </>
+                        )}
+                        <Text type="subHeading">Features</Text>
+                        <List>
+                            {features.map((feature) => (
+                                <ListItem key={feature}>{feature}</ListItem>
+                            ))}
+                        </List>
+                        <Container
+                            type="row"
+                            width="100%"
+                            colCenter
+                            className="productActionContainer"
+                        >
+                            <ProductAction
+                                _id={productId}
+                                name={name}
+                                showQuantity
+                            />
+                        </Container>
+                    </Container>
                 </Container>
-            </Container>
+            )}
         </Container>
     );
 };

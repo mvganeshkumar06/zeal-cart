@@ -49,6 +49,10 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
 
     const authenticateUser = () => {
+        dispatch({
+            type: "SET_IS_LOADING",
+            payload: { authentication: true },
+        });
         const authenticate = async () => {
             try {
                 const response = await axios({
@@ -59,41 +63,28 @@ const Login = () => {
                         password: password,
                     },
                 });
-                if (response.data) {
-                    setUserName("");
-                    setPassword("");
-                    dispatch({
-                        type: "SET_USER",
-                        payload: response.data,
-                    });
-                    localStorage.setItem("user", JSON.stringify(response.data));
-                } else {
-                    dispatch({
-                        type: "SET_IS_ERROR",
-                        payload: true,
-                    });
-                    setTimeout(() => {
-                        dispatch({
-                            type: "SET_IS_ERROR",
-                            payload: false,
-                        });
-                    }, 3000);
-                }
-            } catch (err) {
+                setUserName("");
+                setPassword("");
+                dispatch({
+                    type: "SET_USER",
+                    payload: response.data,
+                });
+                localStorage.setItem("user", JSON.stringify(response.data));
+            } catch {
                 dispatch({
                     type: "SET_IS_ERROR",
-                    payload: true,
+                    payload: { authentication: true },
                 });
                 setTimeout(() => {
                     dispatch({
                         type: "SET_IS_ERROR",
-                        payload: false,
+                        payload: { authentication: false },
                     });
                 }, 3000);
             } finally {
                 dispatch({
                     type: "SET_IS_LOADING",
-                    payload: false,
+                    payload: { authentication: false },
                 });
             }
         };
@@ -103,47 +94,55 @@ const Login = () => {
     return (
         <Container type="col" rowCenter customStyles={loginContainer}>
             <Text type="mainHeading">Login</Text>
-            {isLoading && <Spinner />}
-            {isError && (
+            {isLoading.authentication && <Spinner />}
+            {isError.authentication && (
                 <Alert type="danger">
-                    <p>Wrong username or password, please try again</p>
+                    Wrong username or password, please try again
                 </Alert>
             )}
-            <InputContainer>
-                <Input
-                    type="text"
-                    placeholder="Enter your username"
-                    value={userName}
-                    onChange={(event) => setUserName(event.target.value)}
-                    className="userNameInput"
-                />
-            </InputContainer>
-            <InputContainer type="col">
-                <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    className="passwordInput"
-                />
-                <Container type="row" rowCenter colCenter>
-                    {showPassword ? (
-                        <VisibilityIcon
-                            className="showHideIcon"
-                            onClick={() => setShowPassword(false)}
+            {!isError.authentication && (
+                <>
+                    <InputContainer>
+                        <Input
+                            type="text"
+                            placeholder="Enter your username"
+                            value={userName}
+                            onChange={(event) =>
+                                setUserName(event.target.value)
+                            }
+                            className="userNameInput"
                         />
-                    ) : (
-                        <VisibilityOffIcon
-                            className="showHideIcon"
-                            onClick={() => setShowPassword(true)}
+                    </InputContainer>
+                    <InputContainer type="col">
+                        <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={(event) =>
+                                setPassword(event.target.value)
+                            }
+                            className="passwordInput"
                         />
-                    )}{" "}
-                    {showPassword ? "Hide" : "Show"} password
-                </Container>
-            </InputContainer>
-            <Button className="loginBtn" onClick={authenticateUser}>
-                Login
-            </Button>
+                        <Container type="row" rowCenter colCenter>
+                            {showPassword ? (
+                                <VisibilityIcon
+                                    className="showHideIcon"
+                                    onClick={() => setShowPassword(false)}
+                                />
+                            ) : (
+                                <VisibilityOffIcon
+                                    className="showHideIcon"
+                                    onClick={() => setShowPassword(true)}
+                                />
+                            )}{" "}
+                            {showPassword ? "Hide" : "Show"} password
+                        </Container>
+                    </InputContainer>
+                    <Button className="loginBtn" onClick={authenticateUser}>
+                        Login
+                    </Button>
+                </>
+            )}
             {user && <Redirect to={pathAfterLogin} />}
         </Container>
     );

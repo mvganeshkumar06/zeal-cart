@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Container, Text, Grid, Spinner } from "@zeal-ui/core";
+import React, { useContext } from "react";
+import { Container, Text, Grid, Alert, Spinner } from "@zeal-ui/core";
 import ProductContext from "../context/ProductContext";
 import { ProductItem } from "../components";
 const WishList = () => {
@@ -7,6 +7,10 @@ const WishList = () => {
         width: 100%;
         align-items: center;
         margin-top: 5rem;
+
+        .feedbackContainer{
+            margin-top:2rem;
+        }
 
         @media (min-width: 425px) {
             .wishListItem {
@@ -36,20 +40,23 @@ const WishList = () => {
     `;
 
     const {
-        state: { wishList },
+        state: { wishList, isLoading, isError },
     } = useContext(ProductContext);
-
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        setIsLoading(false);
-    }, []);
 
     return (
         <Container type="col" customStyles={styles}>
-            {isLoading ? (
-                <Spinner />
-            ) : (
+            <Container
+                type="row"
+                rowCenter
+                width="100%"
+                className="feedbackContainer"
+            >
+                {isLoading.wishList && <Spinner />}
+                {isError.wishList && (
+                    <Alert type="danger">Error while getting wishlist</Alert>
+                )}
+            </Container>
+            {!isLoading.wishList && !isError.wishList && (
                 <>
                     <Text type="mainHeading">WishList</Text>
                     <Text type="subHeading">

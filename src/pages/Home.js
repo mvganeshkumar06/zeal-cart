@@ -5,6 +5,8 @@ import {
     SlideShow,
     Button,
     useMediaQuery,
+    Alert,
+    Spinner,
 } from "@zeal-ui/core";
 import axios from "axios";
 import ProductContext from "../context/ProductContext";
@@ -15,6 +17,10 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 const Home = () => {
     const styles = `
         margin: 5rem 0rem 5rem 0rem;
+
+        .feedbackContainer{
+            margin-top:2rem;
+        }
 
         .displayItem{
             width:90%;
@@ -39,7 +45,7 @@ const Home = () => {
     `;
 
     const {
-        state: { products, categories },
+        state: { products, categories, isLoading, isError },
         dispatch,
     } = useContext(ProductContext);
 
@@ -55,7 +61,15 @@ const Home = () => {
                     payload: response.data,
                 });
             } catch (err) {
-                console.log(err);
+                dispatch({
+                    type: "SET_IS_ERROR",
+                    payload: { categoires: true },
+                });
+            } finally {
+                dispatch({
+                    type: "SET_IS_LOADING",
+                    payload: { categories: false },
+                });
             }
         };
         fetchCategories();
@@ -101,47 +115,60 @@ const Home = () => {
 
     return (
         <Container type="col" rowCenter customStyles={styles}>
-            <Container type="col" className="displayItem">
-                <Container type="row" width="100%" rowBetween>
-                    <Text type="subHeading" color="purple">
-                        Shop Trending products
-                    </Text>
-                    <Button>Show More</Button>
-                </Container>
-                <Container type="col" className="slideShowContainer">
-                    <SlideShow
-                        slides={getSlides(trendingProducts)}
-                        slidesToDisplay={getSlidesToDisplay()}
-                        prev={<NavigateBeforeIcon />}
-                        next={<NavigateNextIcon />}
-                    />
-                </Container>
+            <Container
+                type="row"
+                rowCenter
+                width="100%"
+                className="feedbackContainer"
+            >
+                {isLoading.categories && <Spinner />}
+                {isError.categories && (
+                    <Alert type="danger">Error while getting products</Alert>
+                )}
             </Container>
-            <Container type="col" className="displayItem">
-                <Container type="row" width="100%" rowBetween>
-                    <Text type="subHeading" color="purple">
-                        Shop By Category
-                    </Text>
-                    <Button>Show more</Button>
-                </Container>
-                {categories.map(({ name, products }) => {
-                    return (
-                        <Container
-                            type="col"
-                            className="slideShowContainer"
-                            key={name}
-                        >
-                            <Text className="categoryName">{name}</Text>
+            {!isLoading.categoires && !isError.categoires && (
+                <>
+                    <Container type="col" className="displayItem">
+                        <Container type="row" width="100%" rowBetween>
+                            <Text type="subHeading">
+                                Shop Trending products
+                            </Text>
+                            <Button>Show More</Button>
+                        </Container>
+                        <Container type="col" className="slideShowContainer">
                             <SlideShow
-                                slides={getSlides(products)}
+                                slides={getSlides(trendingProducts)}
                                 slidesToDisplay={getSlidesToDisplay()}
                                 prev={<NavigateBeforeIcon />}
                                 next={<NavigateNextIcon />}
                             />
                         </Container>
-                    );
-                })}
-            </Container>
+                    </Container>
+                    <Container type="col" className="displayItem">
+                        <Container type="row" width="100%" rowBetween>
+                            <Text type="subHeading">Shop By Category</Text>
+                            <Button>Show more</Button>
+                        </Container>
+                        {categories.map(({ name, products }) => {
+                            return (
+                                <Container
+                                    type="col"
+                                    className="slideShowContainer"
+                                    key={name}
+                                >
+                                    <Text className="categoryName">{name}</Text>
+                                    <SlideShow
+                                        slides={getSlides(products)}
+                                        slidesToDisplay={getSlidesToDisplay()}
+                                        prev={<NavigateBeforeIcon />}
+                                        next={<NavigateNextIcon />}
+                                    />
+                                </Container>
+                            );
+                        })}
+                    </Container>
+                </>
+            )}
         </Container>
     );
 };

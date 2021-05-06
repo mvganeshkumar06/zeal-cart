@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { Container, Text, Grid, Spinner } from "@zeal-ui/core";
+import React, { useContext } from "react";
+import { Container, Text, Grid, Alert, Spinner } from "@zeal-ui/core";
 import ProductContext from "../context/ProductContext";
 import { ProductItem } from "../components";
 
@@ -8,6 +8,10 @@ const Cart = () => {
         width: 100%;
         align-items: center;
         margin: 5rem 0rem;
+
+        .feedbackContainer{
+            margin-top:2rem;
+        }
         
         @media (min-width: 425px) {
             .cartItem {
@@ -37,20 +41,23 @@ const Cart = () => {
     `;
 
     const {
-        state: { cart },
+        state: { cart, isLoading, isError },
     } = useContext(ProductContext);
-
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        setIsLoading(false);
-    }, []);
 
     return (
         <Container type="col" customStyles={styles}>
-            {isLoading ? (
-                <Spinner />
-            ) : (
+            <Container
+                type="row"
+                rowCenter
+                width="100%"
+                className="feedbackContainer"
+            >
+                {isLoading.cart && <Spinner />}
+                {isError.cart && (
+                    <Alert type="danger">Error while getting cart</Alert>
+                )}
+            </Container>
+            {!isLoading.cart && !isError.cart && (
                 <>
                     <Text type="mainHeading">Cart</Text>
                     <Text type="subHeading">
