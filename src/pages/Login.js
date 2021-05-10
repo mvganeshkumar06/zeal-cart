@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
     Container,
     Alert,
@@ -9,7 +9,7 @@ import {
     InputContainer,
 } from "@zeal-ui/core";
 import axios from "axios";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 import { Redirect, useLocation } from "react-router-dom";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
@@ -39,7 +39,7 @@ const Login = () => {
     const {
         state: { user, isLoading, isError },
         dispatch,
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     const location = useLocation();
     const pathAfterLogin = location.state?.pathAfterLogin || "/";

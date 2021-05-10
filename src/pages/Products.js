@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
     Container,
     Alert,
@@ -13,7 +13,7 @@ import {
     ProductOptions,
     ProductSort,
 } from "../components";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 import {
     sortInIncreasingOrder,
     sortInDecreasingOrder,
@@ -36,8 +36,6 @@ const Products = () => {
         .optionsContainer {
             width: 100%;
             height: 3rem;
-            display: flex;
-            justify-content: space-evenly;
             background-color: ${
                 theme === "light" ? style.colors.gray[1] : style.colors.gray[4]
             };
@@ -48,10 +46,6 @@ const Products = () => {
             position: fixed;
             bottom: 0;
         }
-        
-        .productsContainer{
-            align-items:center;
-        }
 
         .alertContainer {
             max-width: 100%;
@@ -59,8 +53,7 @@ const Products = () => {
         }
 
         .productsItem{
-            margin:0.5rem 0rem;
-            padding:0.5rem 0rem;
+            margin:0rem 1rem;
         }
 
         @media(min-width:425px){
@@ -82,16 +75,22 @@ const Products = () => {
                 align-items:flex-end;
             }
             .productsItem {
-                width: 80%;
-                grid-template-columns: repeat(4, 1fr);
+                width: 75%;
             }        
             .optionsContainer {
                 display: none;
             }
         }
 
+        @media(min-width:1200px){
+            .productsItem{
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
         @media(min-width:1440px){
             .productsItem{
+                width:80%;
                 grid-template-columns: repeat(5, 1fr);
             }
         }
@@ -99,13 +98,13 @@ const Products = () => {
 
     const {
         state: { products, sortOption, filterOptions, isLoading, isError },
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     const sortProducts = (sortOption) => {
         switch (sortOption) {
-            case "LOW_TO_HIGH":
+            case "PRICE_LOW_TO_HIGH":
                 return sortInIncreasingOrder(products);
-            case "HIGH_TO_LOW":
+            case "PRICE_HIGH_TO_LOW":
                 return sortInDecreasingOrder(products);
             case "TRENDING_FIRST":
                 return sortByTrending(products);
@@ -132,7 +131,7 @@ const Products = () => {
 
     return (
         <Container type="col" customStyles={styles}>
-            <Container type="row" className="optionsContainer">
+            <Container type="row" rowEven className="optionsContainer">
                 <ProductSort />
                 <ProductFilter />
             </Container>
@@ -152,7 +151,7 @@ const Products = () => {
                     )}
                     {filteredProducts.length === 0 && products.length !== 0 && (
                         <Alert type="danger" className="alertContainer">
-                            Sorry no products avaialble based on current filters
+                            No products avaialble based on current filters
                         </Alert>
                     )}
                 </Container>

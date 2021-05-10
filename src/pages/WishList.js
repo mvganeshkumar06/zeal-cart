@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Container, Text, Grid, Alert, Spinner } from "@zeal-ui/core";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 import { ProductItem } from "../components";
 const WishList = () => {
     const styles = `    
@@ -41,7 +41,7 @@ const WishList = () => {
 
     const {
         state: { wishList, isLoading, isError },
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     return (
         <Container type="col" customStyles={styles}>

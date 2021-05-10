@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import {
     Container,
     Text,
@@ -9,7 +9,7 @@ import {
     Spinner,
 } from "@zeal-ui/core";
 import axios from "axios";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 import { ProductItem } from "../components";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
@@ -42,12 +42,19 @@ const Home = () => {
         .slideShowContainer .slideIndicatorContainer{
             flex-wrap:wrap;
         }
+
+        @media(min-width:425px){
+            .slideNavigationIcon{
+                width:2rem;
+                height:2rem;
+            }
+        }
     `;
 
     const {
         state: { products, categories, isLoading, isError },
         dispatch,
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -98,7 +105,7 @@ const Home = () => {
     const isDesktopMedium = query[2];
     const isDesktopLarge = query[3];
 
-    const getSlidesToDisplay = () => {
+    const getSlidesCount = () => {
         if (isMobile) {
             return 1;
         }
@@ -130,7 +137,7 @@ const Home = () => {
                 <>
                     <Container type="col" className="displayItem">
                         <Container type="row" width="100%" rowBetween>
-                            <Text type="subHeading">
+                            <Text type="subHeading" color="orange">
                                 Shop Trending products
                             </Text>
                             <Button>Show More</Button>
@@ -138,15 +145,21 @@ const Home = () => {
                         <Container type="col" className="slideShowContainer">
                             <SlideShow
                                 slides={getSlides(trendingProducts)}
-                                slidesToDisplay={getSlidesToDisplay()}
-                                prev={<NavigateBeforeIcon />}
-                                next={<NavigateNextIcon />}
+                                slidesCount={getSlidesCount()}
+                                prev={
+                                    <NavigateBeforeIcon className="slideNavigationIcon" />
+                                }
+                                next={
+                                    <NavigateNextIcon className="slideNavigationIcon" />
+                                }
                             />
                         </Container>
                     </Container>
                     <Container type="col" className="displayItem">
                         <Container type="row" width="100%" rowBetween>
-                            <Text type="subHeading">Shop By Category</Text>
+                            <Text type="subHeading" color="orange">
+                                Shop By Category
+                            </Text>
                             <Button>Show more</Button>
                         </Container>
                         {categories.map(({ name, products }) => {
@@ -156,12 +169,18 @@ const Home = () => {
                                     className="slideShowContainer"
                                     key={name}
                                 >
-                                    <Text className="categoryName">{name}</Text>
+                                    <Text className="categoryName" color="blue">
+                                        {name}
+                                    </Text>
                                     <SlideShow
                                         slides={getSlides(products)}
-                                        slidesToDisplay={getSlidesToDisplay()}
-                                        prev={<NavigateBeforeIcon />}
-                                        next={<NavigateNextIcon />}
+                                        slidesCount={getSlidesCount()}
+                                        prev={
+                                            <NavigateBeforeIcon className="slideNavigationIcon" />
+                                        }
+                                        next={
+                                            <NavigateNextIcon className="slideNavigationIcon" />
+                                        }
                                     />
                                 </Container>
                             );

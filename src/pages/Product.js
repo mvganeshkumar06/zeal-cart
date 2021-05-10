@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import {
     Container,
     Text,
@@ -9,14 +9,19 @@ import {
     Spinner,
     Badge,
     Alert,
+    useStyleContext,
+    useThemeContext,
 } from "@zeal-ui/core";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import StarSharpIcon from "@material-ui/icons/StarSharp";
 import ProductAction from "../components/ProductAction";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 
 const Product = () => {
+    const style = useStyleContext();
+    const { theme } = useThemeContext();
+
     const styles = `
         margin:5rem 1.5rem;
         
@@ -25,8 +30,13 @@ const Product = () => {
         }
 
         .productImageContainer{
-            background-color:white;
+            background-color:${
+                theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
+            };
             margin: 1.5rem 1rem 2rem 0rem;
+            border-radius:0.25rem;
+            padding:1rem;
+            box-sizing:border-box;
         }
         
         .ratingIcon{
@@ -75,7 +85,7 @@ const Product = () => {
     const {
         state: { product, isLoading, isError },
         dispatch,
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     useEffect(() => {
         const fetchProductDetails = async () => {
@@ -99,17 +109,6 @@ const Product = () => {
         fetchProductDetails();
     }, [dispatch, productId]);
 
-    const {
-        category: { name: categoryName },
-        description,
-        features,
-        imageUrl,
-        name,
-        price,
-        rating,
-        trending,
-    } = product;
-
     return (
         <Container type="col" rowCenter customStyles={styles}>
             <Container
@@ -128,13 +127,13 @@ const Product = () => {
                     <Container
                         type="col"
                         width="15rem"
-                        height="auto"
+                        height="15rem"
                         rowCenter
                         colCenter
                         className="productImageContainer"
                     >
                         <Image
-                            src={imageUrl}
+                            src={product.imageUrl}
                             alt="product"
                             width="auto"
                             height="auto"
@@ -142,33 +141,33 @@ const Product = () => {
                         />
                     </Container>
                     <Container type="col" colCenter className="productDetails">
-                        <Text type="mainHeading">{name}</Text>
+                        <Text type="mainHeading">{product.name}</Text>
                         <Divider />
-                        <Text>{categoryName}</Text>
-                        <Text>${price}</Text>
+                        <Text>{product.category.ame}</Text>
+                        <Text>${product.price}</Text>
                         <Container type="row" colCenter>
                             <Container type="row" colCenter>
-                                <Text>{rating}</Text>
+                                <Text>{product.rating}</Text>
                                 <StarSharpIcon className="ratingIcon" />
                             </Container>
-                            {trending && (
+                            {product.trending && (
                                 <Badge type="new" className="trendingBadge">
                                     Trending
                                 </Badge>
                             )}
                         </Container>
                         <br />
-                        {description && (
+                        {product.description && (
                             <>
                                 <Text type="subHeading">Description</Text>
                                 <Text className="productDescription">
-                                    {description}
+                                    {product.description}
                                 </Text>
                             </>
                         )}
                         <Text type="subHeading">Features</Text>
                         <List>
-                            {features.map((feature) => (
+                            {product.features.map((feature) => (
                                 <ListItem key={feature}>{feature}</ListItem>
                             ))}
                         </List>
@@ -180,7 +179,7 @@ const Product = () => {
                         >
                             <ProductAction
                                 _id={productId}
-                                name={name}
+                                name={product.name}
                                 showQuantity
                             />
                         </Container>
