@@ -10,6 +10,8 @@ import {
     useThemeContext,
 } from "@zeal-ui/core";
 import { navigationItems } from "../utils/Links";
+import PersonIcon from "@material-ui/icons/Person";
+import useProductContext from "../hooks/useProductContext";
 
 const Navigation = () => {
     const style = useStyleContext();
@@ -31,18 +33,22 @@ const Navigation = () => {
         
         .navigationOpenBtn {
             position: fixed;
-            top: 1rem;
-            left: 0.25rem;
+            top: 1.35rem;
+            left: 0.75rem;
             font-weight: bold;
-            z-index: ${style.zIndex[1]};
+            z-index: ${style.zIndex[2]};
+            width:1.75rem;
+            height:1.75rem;
         }
         
         .navigationCloseBtn {
             position: absolute;
-            top: 1rem;
+            top: 1.35rem;
             right: 0.5rem;
             font-weight: bold;
-            z-index: ${style.zIndex[1]};
+            z-index: ${style.zIndex[2]};
+            width:1.75rem;
+            height:1.75rem;
         }
         
         .navigationOpenBtn:hover,
@@ -50,8 +56,16 @@ const Navigation = () => {
             cursor: pointer;
         }
 
-        .list{
-            list-style-type:none;
+        .link{
+            display:flex;
+            align-items:center;
+            margin:0rem;
+        }
+
+        .link svg{
+            width:1.5rem;
+            height:1.5rem;
+            margin-right:0.5rem;
         }
 
         @media (min-width: 768px) {
@@ -70,24 +84,32 @@ const Navigation = () => {
 
     const [isNavigationOpen, setIsNavigationOpen] = useState(false);
 
+    const {
+        state: { user },
+        dispatch,
+    } = useProductContext();
+
+    const logoutUser = () => {
+        dispatch({ type: "SET_USER", payload: "" });
+        localStorage.removeItem("user");
+    };
+
     return (
         <Container type="col" customStyles={styles}>
             <MenuIcon
                 className="navigationOpenBtn"
                 onClick={() => setIsNavigationOpen(!isNavigationOpen)}
-                fontSize="large"
             />
             {isNavigationOpen && (
                 <Container type="col" className="navigationContainer">
                     <HighlightOffIcon
                         className="navigationCloseBtn"
-                        fontSize="large"
                         onClick={() => setIsNavigationOpen(!isNavigationOpen)}
                     />
-                    <List className="list">
-                        {navigationItems.map(({ name, url }) => {
+                    <List type="link">
+                        {navigationItems.map(({ id, name, url, icon }) => {
                             return (
-                                <ListItem key={name}>
+                                <ListItem key={id}>
                                     <Link
                                         to={url}
                                         onClick={() =>
@@ -97,11 +119,31 @@ const Navigation = () => {
                                         }
                                         className="link"
                                     >
+                                        {icon}
                                         {name}
                                     </Link>
                                 </ListItem>
                             );
                         })}
+                        <ListItem key={3}>
+                            {user ? (
+                                <span onClick={logoutUser} className="link">
+                                    <PersonIcon />
+                                    Logout
+                                </span>
+                            ) : (
+                                <Link
+                                    to="/login"
+                                    onClick={() =>
+                                        setIsNavigationOpen(!isNavigationOpen)
+                                    }
+                                    className="link"
+                                >
+                                    <PersonIcon />
+                                    Login
+                                </Link>
+                            )}
+                        </ListItem>
                     </List>
                 </Container>
             )}

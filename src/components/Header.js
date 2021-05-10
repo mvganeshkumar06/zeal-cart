@@ -1,19 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
     Container,
     useStyleContext,
     useThemeContext,
     Text,
-    Button,
 } from "@zeal-ui/core";
 import { Link } from "react-router-dom";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import ShopIcon from "@material-ui/icons/Shop";
 import Brightness4Icon from "@material-ui/icons/Brightness4";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import HomeIcon from "@material-ui/icons/Home";
+import PersonIcon from "@material-ui/icons/Person";
 
 const Header = () => {
     const style = useStyleContext();
@@ -25,7 +25,7 @@ const Header = () => {
         background-color: ${theme === "light" ? "white" : style.colors.gray[4]};
         color: ${theme === "light" ? "black" : "white"};
         border-bottom: 1px solid  ${theme === "light" ? "black" : "white"};
-        z-index: ${style.zIndex[1]};
+        z-index: ${style.zIndex[2]};
         position: fixed;
         top: 0;
 
@@ -34,22 +34,34 @@ const Header = () => {
         }
 
         .title{
-            font-size: 1.25rem;
-            margin-left: 3rem;
+            font-size:1.25rem;
+            margin-left: 4rem;
         }
 
-        .themeIcon:hover,.wishIcon:hover,.cartIcon:hover{
-            cursor:pointer;
+        .iconsContainer{
+            margin-right:1rem;
         }
-        
-        .themeIcon,.homeIcon,.bagIcon,.wishIcon,.cartIcon{
+
+        .icon{
             width:1.25rem;
             height:1.25rem;
             margin: 0rem 0.75rem;
         }
 
-        .themeIcon{
-            margin:0rem 0.25rem;
+        .icon:hover, .iconText:hover, .themeIconItem:hover{
+            cursor:pointer;
+        }
+
+        .iconItem, .iconText, .productsIconItem, .authItem{
+            display:none;
+        }
+
+        .themeIconItem{
+            display:flex;
+        }
+
+        .wishIconItem, .cartIconItem{
+            display:inline;
         }
 
         .wishIconContainer,.cartIconContainer{
@@ -58,8 +70,8 @@ const Header = () => {
 
         .wishCount,
         .cartCount{
-            width: 1rem;
-            height: 1rem;
+            width: 0.75rem;
+            height: 0.75rem;
             border: 2px solid  ${theme === "light" ? "black" : "white"};
             background-color: ${style.colors.red[4]};
             color: white;
@@ -74,38 +86,13 @@ const Header = () => {
         }
 
         .wishCount,.cartCount{   
-            bottom: 0.5rem;
+            bottom: 0.75rem;
             left: 1.5rem;
         }
 
-        .iconText, .productsIconItem, .authBtn{
-            display:none;
-        }
-
-        .iconsContainer{
-            margin-right:1rem;
-        }
-
         @media(min-width:768px){
-            .authBtn{
-                display:initial;
-                margin-left:1.5rem;
-            }
-            .iconText{
-                display:initial;
-                margin:0.25rem 0rem 0rem 0rem;
-                font-size:0.85rem;
-            }
             .iconsContainer{
                 margin:0.5rem 5rem 0rem auto;
-            }
-            .iconItem{
-                display:flex;
-                margin:0rem 1.5rem;
-            }
-            .wishCount, .cartCount{
-                bottom:2.25rem;
-                left:1.75rem;
             }
         }
 
@@ -122,13 +109,29 @@ const Header = () => {
                 font-size: 1.5rem;
                 margin-left: 1rem;
             }
+            .authItem{
+                display:flex;
+            }
+            .iconItem{
+                display:flex;
+                margin:0rem 1.5rem;
+            }
+            .iconText{
+                display:initial;
+                margin:0.25rem 0rem 0rem 0rem;
+                font-size:0.85rem;
+            }
+            .wishCount, .cartCount{
+                bottom:2.25rem;
+                left:1.65rem;
+            }
         }
     `;
 
     const {
         state: { user, wishList, cart },
         dispatch,
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     const logoutUser = () => {
         dispatch({ type: "SET_USER", payload: "" });
@@ -152,47 +155,50 @@ const Header = () => {
                 colCenter
                 className="iconsContainer"
             >
-                <Container type="col" rowCenter colCenter className="iconItem">
-                    <Brightness4Icon
-                        className="themeIcon"
-                        onClick={toggleTheme}
-                    />
+                <Container
+                    type="col"
+                    rowCenter
+                    colCenter
+                    className="iconItem themeIconItem"
+                    onClick={toggleTheme}
+                >
+                    <Brightness4Icon className="icon themeIcon" />
                     <Text className="iconText">Theme</Text>
                 </Container>
                 <Link to="/" className="iconItem">
                     <Container type="col" rowCenter colCenter>
-                        <HomeIcon className="homeIcon" />
+                        <HomeIcon className="icon" />
                         <Text className="iconText">Home</Text>
                     </Container>
                 </Link>
                 <Link to="/products" className="iconItem productsIconItem">
                     <Container type="col" rowCenter colCenter>
-                        <LocalMallIcon className="bagIcon" />
+                        <LocalMallIcon className="icon" />
                         <Text className="iconText">Products</Text>
                     </Container>
                 </Link>
-                <Link to="/wishlist" className="iconItem">
+                <Link to="/wishlist" className="iconItem wishIconItem">
                     <Container
                         type="col"
                         rowCenter
                         colCenter
                         className="wishIconContainer"
                     >
-                        <FavoriteBorder className="wishIcon" />{" "}
+                        <FavoriteBorder className="icon" />
                         <Text className="iconText">Wishlist</Text>
                         {wishList.length > 0 && (
                             <span className="wishCount">{wishList.length}</span>
                         )}
                     </Container>
                 </Link>
-                <Link to="/cart" className="iconItem">
+                <Link to="/cart" className="iconItem cartIconItem">
                     <Container
                         type="col"
                         rowCenter
                         colCenter
                         className="cartIconContainer"
                     >
-                        <ShoppingCartIcon className="cartIcon" />{" "}
+                        <ShoppingCartIcon className="icon" />
                         <Text className="iconText">Cart</Text>
                         {cart.length > 0 && (
                             <span className="cartCount">{cart.length}</span>
@@ -200,17 +206,28 @@ const Header = () => {
                     </Container>
                 </Link>
                 {user ? (
-                    <Button className="authBtn" onClick={logoutUser}>
-                        Logout
-                    </Button>
+                    <Container
+                        type="col"
+                        rowCenter
+                        colCenter
+                        className="iconItem authItem"
+                        onClick={logoutUser}
+                    >
+                        <PersonIcon className="icon" />
+                        <Text className="iconText">Logout</Text>
+                    </Container>
                 ) : (
                     <Link
                         to={{
                             pathname: "/login",
                             state: { pathAfterLogin: "/" },
                         }}
+                        className="iconItem authItem"
                     >
-                        <Button className="authBtn">Login</Button>
+                        <Container type="col" rowCenter colCenter>
+                            <PersonIcon className="icon" />
+                            <Text className="iconText">Login</Text>
+                        </Container>
                     </Link>
                 )}
             </Container>

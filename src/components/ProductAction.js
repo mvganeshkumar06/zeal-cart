@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
     Container,
     Text,
@@ -13,7 +13,7 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import axios from "axios";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
 
 const ProductAction = ({ _id, name, showQuantity }) => {
     const style = useStyleContext();
@@ -58,7 +58,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
     const {
         state: { wishList, cart, user },
         dispatch,
-    } = useContext(ProductContext);
+    } = useProductContext();
 
     const isProductWishListed = (id) => {
         return wishList.find((item) => item._id === id);

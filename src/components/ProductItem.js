@@ -17,6 +17,7 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
 
     const styles = `
         margin:1rem ${onSlideShow ? "2rem" : "0rem"};
+        border-radius:${!onSlideShow ? style.common.borderRadius : ""};
 
 		.ratingIcon{
 			width: 1.25rem;

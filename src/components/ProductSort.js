@@ -1,7 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Text, Modal, Button } from "@zeal-ui/core";
 import SortIcon from "@material-ui/icons/Sort";
-import ProductContext from "../context/ProductContext";
+import useProductContext from "../hooks/useProductContext";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import queryString from "query-string";
+import { useHistory, useLocation } from "react-router";
 
 const ProductSort = () => {
     const styles = `
@@ -15,14 +18,6 @@ const ProductSort = () => {
 
 		.sortIcon {
 			margin: 0.5rem;
-		}
-		
-		.sortOptionOpen {
-			display: flex;
-		}
-		
-		.sortOptionClose {
-			display: none;
 		}
 		
 		.btnClear {
@@ -40,7 +35,30 @@ const ProductSort = () => {
     const {
         state: { sortOption },
         dispatch,
-    } = useContext(ProductContext);
+    } = useProductContext();
+
+    const location = useLocation();
+    const history = useHistory();
+    const parsedQuery = queryString.parse(location.search);
+
+    useEffect(() => {
+        const parsedQueryKeys = Object.keys(parsedQuery);
+        if (parsedQueryKeys.length > 0) {
+            for (let key of parsedQueryKeys) {
+                if (key !== "sort") {
+                    dispatch({
+                        type: `SET_${key}`,
+                        payload: parsedQuery[key],
+                    });
+                }
+            }
+        } else {
+            dispatch({
+                type: "RESET_SORT_AND_FILTER",
+            });
+        }
+        //eslint-disable-next-line
+    }, []);
 
     return (
         <Container type="row" rowCenter colCenter customStyles={styles}>
@@ -55,16 +73,14 @@ const ProductSort = () => {
             <Modal
                 type="center"
                 width="15rem"
-                height="20rem"
+                height="auto"
                 isOpen={isSortOptionOpen}
             >
                 <Container type="row" rowBetween colCenter>
                     <Text>Sort products by</Text>
-                    <Button
+                    <HighlightOffIcon
                         onClick={() => setIsSortOptionOpen(!isSortOptionOpen)}
-                    >
-                        X
-                    </Button>
+                    />
                 </Container>
                 <Container type="col" className="sortModalContent">
                     <Container type="row" rowBetween colCenter width="80%">
@@ -75,13 +91,19 @@ const ProductSort = () => {
                             id="input-low-to-high"
                             type="radio"
                             name="radio-group"
-                            checked={sortOption === "LOW_TO_HIGH"}
-                            onChange={() =>
+                            checked={sortOption === "PRICE_LOW_TO_HIGH"}
+                            onChange={() => {
                                 dispatch({
                                     type: "SET_PRICE_LOW_TO_HIGH",
-                                    payload: "LOW_TO_HIGH",
-                                })
-                            }
+                                    payload: "PRICE_LOW_TO_HIGH",
+                                });
+                                parsedQuery.sort = "PRICE_LOW_TO_HIGH";
+                                history.replace(
+                                    `/products?${queryString.stringify(
+                                        parsedQuery
+                                    )}`
+                                );
+                            }}
                         />
                     </Container>
                     <Container type="row" rowBetween colCenter width="80%">
@@ -92,13 +114,19 @@ const ProductSort = () => {
                             id="input-high-to-low"
                             type="radio"
                             name="radio-group"
-                            checked={sortOption === "HIGH_TO_LOW"}
-                            onChange={() =>
+                            checked={sortOption === "PRICE_HIGH_TO_LOW"}
+                            onChange={() => {
                                 dispatch({
                                     type: "SET_PRICE_HIGH_TO_LOW",
-                                    payload: "HIGH_TO_LOW",
-                                })
-                            }
+                                    payload: "PRICE_HIGH_TO_LOW",
+                                });
+                                parsedQuery.sort = "PRICE_HIGH_TO_LOW";
+                                history.replace(
+                                    `/products?${queryString.stringify(
+                                        parsedQuery
+                                    )}`
+                                );
+                            }}
                         />
                     </Container>
                     <Container type="row" rowBetween colCenter width="80%">
@@ -108,12 +136,18 @@ const ProductSort = () => {
                             type="radio"
                             name="radio-group"
                             checked={sortOption === "TRENDING_FIRST"}
-                            onChange={() =>
+                            onChange={() => {
                                 dispatch({
                                     type: "SET_TRENDING_FIRST",
                                     payload: "TRENDING_FIRST",
-                                })
-                            }
+                                });
+                                parsedQuery.sort = "TRENDING_FIRST";
+                                history.replace(
+                                    `/products?${queryString.stringify(
+                                        parsedQuery
+                                    )}`
+                                );
+                            }}
                         />
                     </Container>
                     <Container type="row" rowBetween colCenter width="80%">
@@ -123,20 +157,32 @@ const ProductSort = () => {
                             type="radio"
                             name="radio-group"
                             checked={sortOption === "RATING"}
-                            onChange={() =>
+                            onChange={() => {
                                 dispatch({
                                     type: "SET_RATING",
                                     payload: "RATING",
-                                })
-                            }
+                                });
+                                parsedQuery.sort = "RATING";
+                                history.replace(
+                                    `/products?${queryString.stringify(
+                                        parsedQuery
+                                    )}`
+                                );
+                            }}
                         />
                     </Container>
                 </Container>
                 <Button
                     className="btnClear"
-                    onClick={() => dispatch({ type: "RESET_SORT" })}
+                    onClick={() => {
+                        dispatch({ type: "RESET_SORT" });
+                        parsedQuery.sort = undefined;
+                        history.replace(
+                            `/products?${queryString.stringify(parsedQuery)}`
+                        );
+                    }}
                 >
-                    Clear all
+                    Clear
                 </Button>
             </Modal>
         </Container>
