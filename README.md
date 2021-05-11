@@ -31,13 +31,13 @@ An online store for all your needs.
     -   Price
     -   Trending
     -   Rating
-    -   Category
+    -   Category - TODO
 
 -   User Authentication
 
-    -   Sign up
+    -   Sign up - TODO
     -   Login
-    -   Login via social media
+    -   Login via social media - TODO
 
 -   Wishlist [Only accessible when logged In]
 
@@ -48,4 +48,4 @@ An online store for all your needs.
 
     -   Add products to cart
     -   Remove products from cart
-    -   Update product quantity in cart
+    -   Update product quantity in cart - TODO
