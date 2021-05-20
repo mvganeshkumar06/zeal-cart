@@ -1,19 +1,8 @@
 # Zeal Cart
 
+## About
+
 An online store for all your needs.
-
-## Tech stack used
-
--   Frontend
-
-    -   React
-    -   React Hooks
-
--   Backend
-
-    -   Node
-    -   Express
-    -   Mongo DB
 
 ## Features
 
@@ -49,3 +38,16 @@ An online store for all your needs.
     -   Add products to cart
     -   Remove products from cart
     -   Update product quantity in cart - TODO
+
+## Tech stack used
+
+-   Frontend
+
+    -   React
+    -   React Hooks
+
+-   Backend
+
+    -   Node
+    -   Express
+    -   Mongo DB
