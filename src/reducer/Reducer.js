@@ -47,6 +47,14 @@ const reducer = (state, action) => {
                     priceRange: action.payload,
                 },
             };
+        case "SET_CATEGORY":
+            return {
+                ...state,
+                filterOptions: {
+                    ...state.filterOptions,
+                    category: action.payload,
+                },
+            };
         case "RESET_SORT":
             return {
                 ...state,
@@ -58,6 +66,7 @@ const reducer = (state, action) => {
                 filterOptions: {
                     ...state.filterOptions,
                     priceRange: 1500,
+                    category: "",
                 },
             };
         case "RESET_SORT_AND_FILTER":
@@ -67,6 +76,7 @@ const reducer = (state, action) => {
                 filterOptions: {
                     ...state.filterOptions,
                     priceRange: 1500,
+                    category: "",
                 },
             };
         case "SET_IS_LOADING": {
