@@ -5,11 +5,17 @@ import useProductContext from "../hooks/useProductContext";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router";
+import categories from "../utils/Categories";
 
 const ProductFilter = () => {
     const styles = `
 		width: 50%;
 		
+        .filterTitle{
+            margin-left:0.5rem;
+            margin-bottom:0rem;
+        }
+
 		.filterBtn{
 			margin:0rem;
 			padding:0rem;
@@ -19,22 +25,38 @@ const ProductFilter = () => {
 		.filterIcon {
 			margin: 0.5rem;
 		}
-		
-		.btnClear {
-			padding: 0.25rem;
-			height: 2rem;
-		}
 
 		.filterModalContent{
 			padding:0rem 0.5rem;
 		}
+
+        .inputItem {
+			margin: 1rem 0rem;
+		}
+
+        .inputContainer {
+			margin: 0.25rem 0rem;
+		}
+		
+        .inputContainer input{
+            margin-right:0.5rem;
+        }
+
+		.btnClear {
+            padding:0rem 0.25rem;
+            margin:0.5rem 0rem 1rem 0.5rem;
+		}
+
+        .categoriesTitle{
+            margin:1rem 0rem 0.5rem 0rem;
+        }
 	`;
 
     const [isFilterOptionOpen, setIsFilterOptionOpen] = useState(false);
 
     const {
         state: {
-            filterOptions: { priceRange },
+            filterOptions: { priceRange, category },
         },
         dispatch,
     } = useProductContext();
@@ -47,7 +69,7 @@ const ProductFilter = () => {
         const parsedQueryKeys = Object.keys(parsedQuery);
         if (parsedQueryKeys.length > 0) {
             for (let key of parsedQueryKeys) {
-                if (key !== "sort") {
+                if (key !== "SORT") {
                     dispatch({
                         type: `SET_${key}`,
                         payload: parsedQuery[key],
@@ -70,16 +92,18 @@ const ProductFilter = () => {
                 onClick={() => setIsFilterOptionOpen(!isFilterOptionOpen)}
             >
                 <FilterListIcon className="filterIcon" />
-                Filter by
+                Filter
             </Button>
             <Modal
-                type="center"
+                center
                 width="15rem"
-                height="auto"
+                height="fit-content"
                 isOpen={isFilterOptionOpen}
             >
-                <Container type="row" rowBetween colCenter>
-                    <Text>Filter products by</Text>
+                <Container type="row" rowBetween colCenter width="100%">
+                    <Text color="orange" bold className="filterTitle">
+                        Filter products
+                    </Text>
                     <HighlightOffIcon
                         onClick={() =>
                             setIsFilterOptionOpen(!isFilterOptionOpen)
@@ -87,28 +111,73 @@ const ProductFilter = () => {
                     />
                 </Container>
                 <Container type="col" className="filterModalContent">
-                    <label htmlFor="input-range">Price Range</label>
-                    <input
-                        id="input-range"
-                        type="range"
-                        name="price-range"
-                        min="0"
-                        max="1500"
-                        value={priceRange}
-                        onChange={(event) => {
-                            dispatch({
-                                type: "SET_PRICE_RANGE",
-                                payload: parseInt(event.target.value),
-                            });
-                            parsedQuery.PRICE_RANGE = event.target.value;
-                            history.replace(
-                                `/products?${queryString.stringify(
-                                    parsedQuery
-                                )}`
-                            );
-                        }}
-                    />
-                    <Text>Upto {priceRange}</Text>
+                    <Container type="col" width="80%" className="inputItem">
+                        <Container
+                            type="col"
+                            colCenter
+                            width="100%"
+                            className="inputContainer"
+                        >
+                            <label htmlFor="input-range">
+                                <Text color="orange" bold>
+                                    Price Range ({priceRange})
+                                </Text>
+                            </label>
+                            <input
+                                id="input-range"
+                                type="range"
+                                name="price-range"
+                                min="0"
+                                max="1500"
+                                value={priceRange}
+                                onChange={(event) => {
+                                    dispatch({
+                                        type: "SET_PRICE_RANGE",
+                                        payload: parseInt(event.target.value),
+                                    });
+                                    parsedQuery.PRICE_RANGE =
+                                        event.target.value;
+                                    history.replace(
+                                        `/products?${queryString.stringify(
+                                            parsedQuery
+                                        )}`
+                                    );
+                                }}
+                            />
+                        </Container>
+                        <Text color="orange" bold className="categoriesTitle">
+                            Categories
+                        </Text>
+                        {categories.map(({ id, name, query }) => (
+                            <Container
+                                type="row"
+                                colCenter
+                                width="100%"
+                                className="inputContainer"
+                                key={id}
+                            >
+                                <input
+                                    id="input-category"
+                                    type="radio"
+                                    name="category-radio-group"
+                                    checked={category === query}
+                                    onChange={() => {
+                                        dispatch({
+                                            type: "SET_CATEGORY",
+                                            payload: query,
+                                        });
+                                        parsedQuery.CATEGORY = query;
+                                        history.replace(
+                                            `/products?${queryString.stringify(
+                                                parsedQuery
+                                            )}`
+                                        );
+                                    }}
+                                />
+                                <label htmlFor="input-category">{name}</label>
+                            </Container>
+                        ))}
+                    </Container>
                 </Container>
                 <Button
                     className="btnClear"
@@ -116,7 +185,7 @@ const ProductFilter = () => {
                         dispatch({ type: "RESET_FILTER" });
                         const parsedQueryKeys = Object.keys(parsedQuery);
                         for (let key of parsedQueryKeys) {
-                            if (key !== "sort") {
+                            if (key !== "SORT") {
                                 parsedQuery[key] = undefined;
                             }
                         }
@@ -124,6 +193,7 @@ const ProductFilter = () => {
                             `/products?${queryString.stringify(parsedQuery)}`
                         );
                     }}
+                    color="blue"
                 >
                     Clear
                 </Button>

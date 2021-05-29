@@ -53,6 +53,8 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
                 theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
             };
             border-radius:0.25rem;
+            border-bottom-left-radius:0rem;
+            border-bottom-right-radius:0rem;
             padding:0.5rem;
             box-sizing:border-box;
         }

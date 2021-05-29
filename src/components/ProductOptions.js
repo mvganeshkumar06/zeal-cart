@@ -10,6 +10,8 @@ import {
 } from "@zeal-ui/core";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router";
+import categories from "../utils/Categories";
+
 const ProductOptions = () => {
     const style = useStyleContext();
     const { theme } = useThemeContext();
@@ -22,17 +24,29 @@ const ProductOptions = () => {
 			text-align: center;
 		}
 		
-		.input {
-			margin-bottom: 2rem;
+		.inputItem {
+			margin: 1rem 0rem;
 		}
 		
 		.inputContainer {
-			margin-bottom: 0.25rem;
+			margin: 0.25rem 0rem;
 		}
 		
+        .inputContainer input{
+            margin-right:0.5rem;
+        }
+
 		.btnClear {
-            padding:0.25rem 0.5rem;
+            padding:0rem 0.25rem;
 		}
+
+        .divider{
+            margin-bottom:0.25rem;
+        }
+
+        .categoriesTitle{
+            margin:1rem 0rem 0.5rem 0rem;
+        }
 		
 		@media (min-width: 1024px) {
 			border-right: 1px solid ${
@@ -55,7 +69,7 @@ const ProductOptions = () => {
     const {
         state: {
             sortOption,
-            filterOptions: { priceRange },
+            filterOptions: { priceRange, category },
         },
         dispatch,
     } = useProductContext();
@@ -68,7 +82,7 @@ const ProductOptions = () => {
         const parsedQueryKeys = Object.keys(parsedQuery);
         if (parsedQueryKeys.length > 0) {
             for (let key of parsedQueryKeys) {
-                if (key === "sort") {
+                if (key === "SORT") {
                     dispatch({
                         type: `SET_${parsedQuery[key]}`,
                         payload: parsedQuery[key],
@@ -102,20 +116,19 @@ const ProductOptions = () => {
                         });
                         history.replace("/products");
                     }}
+                    color="blue"
                 >
                     Clear
                 </Button>
             </Container>
-            <Divider />
-            <Container type="col" width="80%" className="input">
+            <Divider className="divider" />
+            <Container type="col" width="80%" className="inputItem">
                 <Container
                     type="row"
                     width="100%"
-                    rowBetween
                     colCenter
                     className="inputContainer"
                 >
-                    <label htmlFor="input-low-to-high">Price Low to High</label>
                     <input
                         id="input-low-to-high"
                         type="radio"
@@ -126,7 +139,7 @@ const ProductOptions = () => {
                                 type: "SET_PRICE_LOW_TO_HIGH",
                                 payload: "PRICE_LOW_TO_HIGH",
                             });
-                            parsedQuery.sort = "PRICE_LOW_TO_HIGH";
+                            parsedQuery.SORT = "PRICE_LOW_TO_HIGH";
                             history.replace(
                                 `/products?${queryString.stringify(
                                     parsedQuery
@@ -134,15 +147,14 @@ const ProductOptions = () => {
                             );
                         }}
                     />
+                    <label htmlFor="input-low-to-high">Price Low to High</label>
                 </Container>
                 <Container
                     type="row"
                     width="100%"
-                    rowBetween
                     colCenter
                     className="inputContainer"
                 >
-                    <label htmlFor="input-high-to-low">Price High to Low</label>
                     <input
                         id="input-high-to-low"
                         type="radio"
@@ -153,7 +165,7 @@ const ProductOptions = () => {
                                 type: "SET_PRICE_HIGH_TO_LOW",
                                 payload: "PRICE_HIGH_TO_LOW",
                             });
-                            parsedQuery.sort = "PRICE_HIGH_TO_LOW";
+                            parsedQuery.SORT = "PRICE_HIGH_TO_LOW";
                             history.replace(
                                 `/products?${queryString.stringify(
                                     parsedQuery
@@ -161,15 +173,14 @@ const ProductOptions = () => {
                             );
                         }}
                     />
+                    <label htmlFor="input-high-to-low">Price High to Low</label>
                 </Container>
                 <Container
                     type="row"
                     width="100%"
-                    rowBetween
                     colCenter
                     className="inputContainer"
                 >
-                    <label htmlFor="input-trending"> Trending First </label>
                     <input
                         id="input-trending"
                         type="radio"
@@ -180,7 +191,7 @@ const ProductOptions = () => {
                                 type: "SET_TRENDING_FIRST",
                                 payload: "TRENDING_FIRST",
                             });
-                            parsedQuery.sort = "TRENDING_FIRST";
+                            parsedQuery.SORT = "TRENDING_FIRST";
                             history.replace(
                                 `/products?${queryString.stringify(
                                     parsedQuery
@@ -188,15 +199,14 @@ const ProductOptions = () => {
                             );
                         }}
                     />
+                    <label htmlFor="input-trending"> Trending First </label>
                 </Container>
                 <Container
                     type="row"
                     width="100%"
-                    rowBetween
                     colCenter
                     className="inputContainer"
                 >
-                    <label htmlFor="input-rating"> Rating </label>
                     <input
                         id="input-rating"
                         type="radio"
@@ -207,7 +217,7 @@ const ProductOptions = () => {
                                 type: "SET_RATING",
                                 payload: "RATING",
                             });
-                            parsedQuery.sort = "RATING";
+                            parsedQuery.SORT = "RATING";
                             history.replace(
                                 `/products?${queryString.stringify(
                                     parsedQuery
@@ -215,15 +225,25 @@ const ProductOptions = () => {
                             );
                         }}
                     />
+                    <label htmlFor="input-rating"> Rating </label>
                 </Container>
             </Container>
-            <Divider />
-            <Container type="col" width="80%" className="input">
-                <Text bold color="orange">
-                    FILTERS
-                </Text>
-                <Container type="col" width="100%" className="input">
-                    <label htmlFor="input-range">Price Range</label>
+            <Text bold color="orange">
+                FILTERS
+            </Text>
+            <Divider className="divider" />
+            <Container type="col" width="80%" className="inputItem">
+                <Container
+                    type="col"
+                    colCenter
+                    width="100%"
+                    className="inputContainer"
+                >
+                    <label htmlFor="input-range">
+                        <Text bold color="orange">
+                            Price Range ({priceRange})
+                        </Text>
+                    </label>
                     <input
                         id="input-range"
                         type="range"
@@ -244,8 +264,39 @@ const ProductOptions = () => {
                             );
                         }}
                     />
-                    <span>Upto {priceRange}</span>
                 </Container>
+                <Text color="orange" bold className="categoriesTitle">
+                    Categories
+                </Text>
+                {categories.map(({ id, name, query }) => (
+                    <Container
+                        type="row"
+                        colCenter
+                        width="100%"
+                        className="inputContainer"
+                        key={id}
+                    >
+                        <input
+                            id="input-category"
+                            type="radio"
+                            name="category"
+                            checked={category === query}
+                            onChange={() => {
+                                dispatch({
+                                    type: "SET_CATEGORY",
+                                    payload: query,
+                                });
+                                parsedQuery.CATEGORY = query;
+                                history.replace(
+                                    `/products?${queryString.stringify(
+                                        parsedQuery
+                                    )}`
+                                );
+                            }}
+                        />
+                        <label htmlFor="input-category">{name}</label>
+                    </Container>
+                ))}
             </Container>
         </Container>
     );
