@@ -14,6 +14,7 @@ const ProductProvider = ({ children }) => {
         sortOption: "",
         filterOptions: {
             priceRange: 1500,
+            category: "",
         },
         isLoading: {
             products: true,
@@ -45,7 +46,6 @@ const ProductProvider = ({ children }) => {
                 const response = await axios({
                     method: "get",
                     url: "https://zeal-cart.herokuapp.com/products",
-                    timeout: 5000,
                 });
                 dispatch({
                     type: "SET_PRODUCTS",
@@ -70,7 +70,6 @@ const ProductProvider = ({ children }) => {
                 const response = await axios({
                     method: "get",
                     url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
-                    timeout: 5000,
                 });
                 dispatch({
                     type: "SET_WISHLIST",
@@ -90,7 +89,6 @@ const ProductProvider = ({ children }) => {
                 const response = await axios({
                     method: "get",
                     url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
-                    timeout: 5000,
                 });
                 dispatch({
                     type: "SET_CART",
