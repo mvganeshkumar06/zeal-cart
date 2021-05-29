@@ -20,7 +20,7 @@ import {
     sortByTrending,
     sortByRating,
 } from "../utils/Sort";
-import filterByRange from "../utils/Filter";
+import { filterByRange, filterByCategory } from "../utils/Filter";
 
 const Products = () => {
     const style = useStyleContext();
@@ -121,6 +121,12 @@ const Products = () => {
             filteredProducts = filterByRange(
                 sortedProducts,
                 filterOptions.priceRange
+            );
+        }
+        if (filterOptions.category) {
+            filteredProducts = filterByCategory(
+                filteredProducts,
+                filterOptions.category
             );
         }
         return filteredProducts;

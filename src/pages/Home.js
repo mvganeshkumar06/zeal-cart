@@ -13,6 +13,7 @@ import useProductContext from "../hooks/useProductContext";
 import { ProductItem } from "../components";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const styles = `
@@ -140,7 +141,9 @@ const Home = () => {
                             <Text type="subHeading" color="orange">
                                 Shop Trending products
                             </Text>
-                            <Button>Show More</Button>
+                            <Link to="/products?SORT=TRENDING_FIRST">
+                                <Button color="blue">Show More</Button>
+                            </Link>
                         </Container>
                         <Container type="col" className="slideShowContainer">
                             <SlideShow
@@ -158,9 +161,8 @@ const Home = () => {
                     <Container type="col" className="displayItem">
                         <Container type="row" width="100%" rowBetween>
                             <Text type="subHeading" color="orange">
-                                Shop By Category
+                                Shop by Category
                             </Text>
-                            <Button>Show more</Button>
                         </Container>
                         {categories.map(({ name, products }) => {
                             return (
@@ -169,9 +171,28 @@ const Home = () => {
                                     className="slideShowContainer"
                                     key={name}
                                 >
-                                    <Text className="categoryName" color="blue">
-                                        {name}
-                                    </Text>
+                                    <Container
+                                        type="row"
+                                        rowBetween
+                                        colCenter
+                                        width="100%"
+                                    >
+                                        <Text
+                                            className="categoryName"
+                                            color="blue"
+                                        >
+                                            {name}
+                                        </Text>
+                                        <Link
+                                            to={`/products?CATEGORY=${name
+                                                .toUpperCase()
+                                                .replace(" ", "_")}`}
+                                        >
+                                            <Button color="blue">
+                                                Show more
+                                            </Button>
+                                        </Link>
+                                    </Container>
                                     <SlideShow
                                         slides={getSlides(products)}
                                         slidesCount={getSlidesCount()}
