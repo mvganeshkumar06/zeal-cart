@@ -49,12 +49,11 @@ const ProductOptions = () => {
         }
 		
 		@media (min-width: 1024px) {
-			border-right: 1px solid ${
-                theme === "light" ? style.colors.gray[2] : style.colors.gray[3]
-            };
             display: flex;
+            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[2]};
+            border-radius: ${style.common.borderRadius};
             position: fixed;
-            top: 6.2rem;
+            top: 8rem;
             left: 0rem;
             bottom: 0rem;
             padding: 0rem 1rem;

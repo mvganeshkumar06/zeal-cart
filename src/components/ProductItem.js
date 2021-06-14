@@ -18,6 +18,7 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
     const styles = `
         margin:1rem ${onSlideShow ? "2rem" : "0rem"};
         border-radius:${!onSlideShow ? style.common.borderRadius : ""};
+        background-color:${theme === "light" ? "white" : style.colors.gray[2]};
 
 		.ratingIcon{
 			width: 1.25rem;
@@ -36,6 +37,11 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
 			margin: 0.25rem 0rem;
 		}
 		
+        .productName{
+            padding:0rem 0.5rem;
+            box-sizing:border-box;
+        }
+
         .productImage{
             margin:0rem;
         }
@@ -49,9 +55,7 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
         }
 
         .productImageContainer{
-            background-color:${
-                theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
-            };
+            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[1]};
             border-radius:0.25rem;
             border-bottom-left-radius:0rem;
             border-bottom-right-radius:0rem;

@@ -26,9 +26,8 @@ const Navigation = () => {
             bottom: 0;
             padding: 5rem 1rem;
             z-index: ${style.zIndex[3]};
-            background-color:${
-                theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
-            };
+            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[2]
+        };
         }
         
         .navigationOpenBtn {
