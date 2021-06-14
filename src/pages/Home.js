@@ -7,6 +7,8 @@ import {
     useMediaQuery,
     Alert,
     Spinner,
+    useStyleContext,
+    useThemeContext
 } from "@zeal-ui/core";
 import axios from "axios";
 import useProductContext from "../hooks/useProductContext";
@@ -16,6 +18,9 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { Link } from "react-router-dom";
 
 const Home = () => {
+    const style = useStyleContext();
+    const { theme } = useThemeContext();
+
     const styles = `
         margin: 5rem 0rem 5rem 0rem;
 
@@ -29,6 +34,10 @@ const Home = () => {
 
         .categoryName{
             font-size:1.25rem;
+        }
+
+        .slideShow{
+            background-color:${theme === "light" ? "white" : style.colors.gray[2]};
         }
 
         .slideShowContainer{
@@ -155,6 +164,7 @@ const Home = () => {
                                 next={
                                     <NavigateNextIcon className="slideNavigationIcon" />
                                 }
+                                className="slideShow"
                             />
                         </Container>
                     </Container>
@@ -202,6 +212,7 @@ const Home = () => {
                                         next={
                                             <NavigateNextIcon className="slideNavigationIcon" />
                                         }
+                                        className="slideShow"
                                     />
                                 </Container>
                             );

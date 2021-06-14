@@ -29,10 +29,14 @@ const Product = () => {
             margin-top:2rem;
         }
 
+        .productDetails{
+            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[2]};
+            border-radius:${style.common.borderRadius};
+            padding:0.25rem 1rem;
+        }
+
         .productImageContainer{
-            background-color:${
-                theme === "light" ? style.colors.gray[1] : style.colors.gray[3]
-            };
+            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[1]};
             margin: 1.5rem 1rem 2rem 0rem;
             border-radius:0.25rem;
             padding:1rem;
@@ -68,7 +72,7 @@ const Product = () => {
             }
 
             .productImageContainer{
-                margin:1.5rem 5rem 0rem 0rem;
+                margin:0rem 5rem 0rem 0rem;
             }
         }
 
