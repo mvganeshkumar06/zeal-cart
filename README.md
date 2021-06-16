@@ -20,13 +20,12 @@ An online store for all your needs.
     -   Price
     -   Trending
     -   Rating
-    -   Category - TODO
+    -   Category
 
 -   User Authentication
 
     -   Sign up - TODO
     -   Login
-    -   Login via social media - TODO
 
 -   Wishlist [Only accessible when logged In]
 
