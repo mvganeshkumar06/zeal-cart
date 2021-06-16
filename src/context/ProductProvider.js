@@ -82,8 +82,7 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "get",
-                    // url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
-                    url: `http://localhost:5000/wishlists/${state.user.id}`,
+                    url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
                     headers: {
                         Authorization: state.accessToken,
                     }
@@ -106,8 +105,7 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "get",
-                    // url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
-                    url: `http://localhost:5000/carts/${state.user.id}`,
+                    url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
                     headers: {
                         Authorization: state.accessToken,
                     }
