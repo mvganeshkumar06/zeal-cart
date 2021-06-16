@@ -135,7 +135,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                     });
                     onOpen("WISH_LIST");
                 } catch (err) {
-                    console.log(err);
+                    console.log(err.response?.data.errorMessage);
                 }
             };
             updateWishListOnDb();
@@ -167,7 +167,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                     });
                     onOpen("CART");
                 } catch (err) {
-                    console.log(err);
+                    console.log(err.response?.data.errorMessage);
                 }
             };
             updateCartOnDb();

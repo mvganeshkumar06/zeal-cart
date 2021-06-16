@@ -133,8 +133,9 @@ const Header = () => {
     } = useProductContext();
 
     const logoutUser = () => {
-        dispatch({ type: "SET_USER", payload: "" });
-        localStorage.removeItem("user");
+        localStorage.removeItem("user-access-token");
+        dispatch({ type: "SET_ACCESS_TOKEN", payload: "" });
+        dispatch({ type: "SET_USER", payload: undefined });
     };
 
     return (

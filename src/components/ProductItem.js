@@ -38,7 +38,7 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
 		}
 		
         .productName{
-            padding:0rem 0.5rem;
+            padding:${onSlideShow ? "0rem 0.5rem" : ""};
             box-sizing:border-box;
         }
 
