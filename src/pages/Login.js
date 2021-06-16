@@ -58,8 +58,7 @@ const Login = () => {
             try {
                 const response = await axios({
                     method: "Post",
-                    // url: "https://zeal-cart.herokuapp.com/users/login",
-                    url: "http://localhost:5000/users/login",
+                    url: "https://zeal-cart.herokuapp.com/users/login",
                     data: {
                         userName: userName,
                         password: password,
