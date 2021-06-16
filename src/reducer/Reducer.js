@@ -21,6 +21,12 @@ const reducer = (state, action) => {
                 user: action.payload,
             };
         }
+        case "SET_ACCESS_TOKEN": {
+            return {
+                ...state,
+                accessToken: action.payload,
+            };
+        }
         case "SET_WISHLIST":
             return {
                 ...state,
