@@ -2,13 +2,15 @@ import React, { useReducer, useEffect } from "react";
 import ProductContext from "./ProductContext";
 import reducer from "../reducer/Reducer";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 const ProductProvider = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, {
         products: [],
         product: {},
         categories: [],
-        user: "",
+        user: undefined,
+        accessToken: "",
         wishList: [],
         cart: [],
         sortOption: "",
@@ -35,11 +37,21 @@ const ProductProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"));
-        dispatch({
-            type: "SET_USER",
-            payload: user,
-        });
+        const accessToken = localStorage.getItem("user-access-token");
+
+        if (accessToken) {
+            dispatch({
+                type: "SET_ACCESS_TOKEN",
+                payload: accessToken,
+            });
+
+            const user = jwtDecode(accessToken);
+
+            dispatch({
+                type: "SET_USER",
+                payload: user,
+            });
+        }
 
         const fetchProducts = async () => {
             try {
@@ -52,6 +64,7 @@ const ProductProvider = ({ children }) => {
                     payload: response.data,
                 });
             } catch (err) {
+                console.log(err.response?.data.errorMessage);
                 dispatch({ type: "SET_IS_ERROR", payload: { products: true } });
             } finally {
                 dispatch({
@@ -69,13 +82,18 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "get",
-                    url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
+                    // url: `https://zeal-cart.herokuapp.com/wishlists/${state.user.id}`,
+                    url: `http://localhost:5000/wishlists/${state.user.id}`,
+                    headers: {
+                        Authorization: state.accessToken,
+                    }
                 });
                 dispatch({
                     type: "SET_WISHLIST",
                     payload: response.data,
                 });
             } catch (err) {
+                console.log(err.response?.data.errorMessage);
                 dispatch({ type: "SET_IS_ERROR", payload: { wishList: true } });
             } finally {
                 dispatch({
@@ -88,13 +106,18 @@ const ProductProvider = ({ children }) => {
             try {
                 const response = await axios({
                     method: "get",
-                    url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
+                    // url: `https://zeal-cart.herokuapp.com/carts/${state.user.id}`,
+                    url: `http://localhost:5000/carts/${state.user.id}`,
+                    headers: {
+                        Authorization: state.accessToken,
+                    }
                 });
                 dispatch({
                     type: "SET_CART",
                     payload: response.data,
                 });
             } catch (err) {
+                console.log(err.response?.data.errorMessage);
                 dispatch({ type: "SET_IS_ERROR", payload: { cart: true } });
             } finally {
                 dispatch({ type: "SET_IS_LOADING", payload: { cart: false } });
@@ -113,7 +136,7 @@ const ProductProvider = ({ children }) => {
                 payload: [],
             });
         }
-    }, [state.user]);
+    }, [state.accessToken, state.user]);
 
     return (
         <ProductContext.Provider value={{ state, dispatch }}>
