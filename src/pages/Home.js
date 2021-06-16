@@ -78,6 +78,7 @@ const Home = () => {
                     payload: response.data,
                 });
             } catch (err) {
+                console.log(err.response?.data.errorMessage);
                 dispatch({
                     type: "SET_IS_ERROR",
                     payload: { categoires: true },

@@ -13,6 +13,7 @@ import useProductContext from "../hooks/useProductContext";
 import { Redirect, useLocation } from "react-router-dom";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import jwtDecode from "jwt-decode";
 
 const Login = () => {
     const loginContainer = `
@@ -57,7 +58,8 @@ const Login = () => {
             try {
                 const response = await axios({
                     method: "Post",
-                    url: "https://zeal-cart.herokuapp.com/users/login",
+                    // url: "https://zeal-cart.herokuapp.com/users/login",
+                    url: "http://localhost:5000/users/login",
                     data: {
                         userName: userName,
                         password: password,
@@ -65,12 +67,19 @@ const Login = () => {
                 });
                 setUserName("");
                 setPassword("");
+                const accessToken = response.data.accessToken;
+                dispatch({
+                    type: "SET_ACCESS_TOKEN",
+                    payload: accessToken,
+                });
+                localStorage.setItem("user-access-token", accessToken);
+                const user = jwtDecode(accessToken);
                 dispatch({
                     type: "SET_USER",
-                    payload: response.data,
+                    payload: user,
                 });
-                localStorage.setItem("user", JSON.stringify(response.data));
-            } catch {
+            } catch (err) {
+                console.log(err.response?.data.errorMessage);
                 dispatch({
                     type: "SET_IS_ERROR",
                     payload: { authentication: true },

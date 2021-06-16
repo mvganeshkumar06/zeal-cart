@@ -100,7 +100,7 @@ const Product = () => {
                 });
                 dispatch({ type: "SET_PRODUCT", payload: response.data });
             } catch (err) {
-                console.log(err);
+                console.log(err.response?.data.errorMessage);
                 dispatch({ type: "SET_IS_ERROR", payload: { product: true } });
             } finally {
                 dispatch({
