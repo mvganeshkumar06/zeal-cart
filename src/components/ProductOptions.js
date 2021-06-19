@@ -57,7 +57,8 @@ const ProductOptions = () => {
             left: 0rem;
             bottom: 0rem;
             padding: 0rem 1rem;
-            width: 18%;          
+            width: 18%;     
+            height:35rem;     
 		}
         
         @media(min-width:1440px){

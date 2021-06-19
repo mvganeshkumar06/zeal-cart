@@ -28,6 +28,8 @@ const ProductAction = ({ _id, name, showQuantity }) => {
             margin-right:0.5rem;
         }
 
+        .wishActionContainer:hover,
+        .cartActionContainer:hover,
         .wishIcon:hover,
 		.wishIconActive:hover,
 		.addIcon:hover,
@@ -43,7 +45,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
             margin-top:1rem;
         }
 
-        .cartActionItem{
+        .cartActionContainerOnShowQuantity{
             margin-top:2.5rem;
             margin-left:1.5rem;
         }
@@ -56,7 +58,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
     `;
 
     const {
-        state: { wishList, cart, user },
+        state: { wishList, cart, user, accessToken },
         dispatch,
     } = useProductContext();
 
@@ -86,6 +88,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
         return (
             <Toast
                 type="center"
+                color="blue"
                 isOpen={isOpen === type}
                 delay={1500}
                 onClose={onClose}
@@ -128,6 +131,9 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                         data: {
                             productId: _id,
                         },
+                        headers: {
+                            Authorization: accessToken,
+                        }
                     });
                     dispatch({
                         type: "SET_WISHLIST",
@@ -160,6 +166,9 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                             productId: _id,
                             quantity: productQuantity,
                         },
+                        headers: {
+                            Authorization: accessToken,
+                        }
                     });
                     dispatch({
                         type: "SET_CART",
@@ -181,16 +190,15 @@ const ProductAction = ({ _id, name, showQuantity }) => {
 
     return (
         <Container type="col" width="100%" colCenter customStyles={styles}>
-            <Container type="row" colCenter>
+            <Container type="row" colCenter className="wishActionContainer" onClick={updateWishList}>
                 {productWishListed ? (
                     <>
                         <Favorite
                             className="wishIconActive"
-                            onClick={updateWishList}
                         />
                         <Text>Remove from wishlist</Text>
                         {getToast(
-                            `${name} is added to your wish list !`,
+                            `${name} is added to your wish list`,
                             "WISH_LIST"
                         )}
                     </>
@@ -198,11 +206,10 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                     <>
                         <FavoriteBorderIcon
                             className="wishIcon"
-                            onClick={updateWishList}
                         />
                         <Text>Add to wishlist</Text>
                         {getToast(
-                            `${name} is removed from your wish list !`,
+                            `${name} is removed from your wish list`,
                             "WISH_LIST"
                         )}
                     </>
@@ -226,13 +233,13 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                 <Container
                     type="row"
                     colCenter
-                    className={`${showQuantity ? "cartActionItem" : ""}`}
+                    className={`${showQuantity ? "cartActionContainerOnShowQuantity" : "cartActionContainer"}`}
+                    onClick={updateCart}
                 >
                     {productAddedToCart ? (
                         <>
                             <ShoppingCartIcon
                                 className="addIconActive"
-                                onClick={updateCart}
                             />
                             <Text>
                                 {showQuantity
@@ -240,7 +247,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                                     : "Remove from cart"}
                             </Text>
                             {getToast(
-                                `${name} is added to your cart !`,
+                                `${name} is added to your cart`,
                                 "CART"
                             )}
                         </>
@@ -248,13 +255,12 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                         <>
                             <AddShoppingCartIcon
                                 className="addIcon"
-                                onClick={updateCart}
                             />
                             <Text>
                                 {showQuantity ? "Update cart" : "Add to cart"}
                             </Text>
                             {getToast(
-                                `${name} is removed from your cart !`,
+                                `${name} is removed from your cart`,
                                 "CART"
                             )}
                         </>

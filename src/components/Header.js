@@ -22,7 +22,7 @@ const Header = () => {
     const styles = `
         width: 100%;
         height: 4.5rem;
-        background-color: ${theme === "light" ? style.colors.gray[0] : style.colors.gray[3]};
+        background-color: ${theme === "light" ? style.colors.gray[1] : style.colors.gray[3]};
         color: ${theme === "light" ? "black" : "white"};
         z-index: ${style.zIndex[2]};
         position: fixed;
