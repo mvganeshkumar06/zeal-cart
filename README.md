@@ -24,7 +24,7 @@ An online store for all your needs.
 
 -   User Authentication
 
-    -   Sign up - TODO
+    -   Sign up
     -   Login
 
 -   Wishlist [Only accessible when logged In]
@@ -36,7 +36,7 @@ An online store for all your needs.
 
     -   Add products to cart
     -   Remove products from cart
-    -   Update product quantity in cart - TODO
+    -   Update product quantity in cart
 
 ## Tech stack used
 
@@ -44,9 +44,11 @@ An online store for all your needs.
 
     -   React
     -   React Hooks
+    -   Zeal UI
 
 -   Backend
 
     -   Node
     -   Express
     -   Mongo DB
+    -   Mongoose
