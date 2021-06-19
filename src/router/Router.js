@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { Header, Navigation } from "../components";
-import { Home, Products, WishList, Cart, Login, Product, NotFound } from "../pages";
+import { Header, Navigation, Footer } from "../components";
+import { Home, Products, WishList, Cart, Auth, Product, NotFound } from "../pages";
 import PrivateRoute from "./PrivateRoute";
 
 const Router = () => {
@@ -23,7 +23,7 @@ const Router = () => {
                     <Cart />
                 </PrivateRoute>
                 <Route path="/login">
-                    <Login />
+                    <Auth />
                 </Route>
                 <Route path="/" exact>
                     <Home />
@@ -32,6 +32,7 @@ const Router = () => {
                     <NotFound />
                 </Route>
             </Switch>
+            <Footer />
         </BrowserRouter>
     );
 };
