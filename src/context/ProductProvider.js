@@ -30,7 +30,7 @@ const ProductProvider = ({ children }) => {
             products: false,
             product: false,
             categories: false,
-            authentication: false,
+            authentication: undefined,
             wishList: false,
             cart: false,
         },
