@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
     Container,
     Alert,
@@ -11,12 +11,10 @@ import {
 } from "@zeal-ui/core";
 import axios from "axios";
 import useProductContext from "../hooks/useProductContext";
-import { useLocation, useHistory } from "react-router-dom";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import jwtDecode from "jwt-decode";
 
-const Login = ({ userCredentials, setUserCredentials }) => {
+const Signup = ({ userCredentials, setUserCredentials }) => {
 
     const styles = `
 
@@ -47,46 +45,36 @@ const Login = ({ userCredentials, setUserCredentials }) => {
     `;
 
 
-    const { name, password, showPassword } = userCredentials;
+    const { name, password, showPassword, address, email } = userCredentials;
 
     const {
-        state: { user, isLoading, isError },
+        state: { isLoading, isError },
         dispatch,
     } = useProductContext();
 
     const { isOpen, onOpen, onClose } = useNotify();
 
-    const location = useLocation();
-    const pathAfterLogin = location.state?.pathAfterLogin || "/";
-    const history = useHistory();
-
-    const authenticateUser = () => {
-        const authenticate = async () => {
+    const signupUser = () => {
+        const signup = async () => {
             try {
-                const response = await axios({
+                await axios({
                     method: "post",
-                    url: "https://zeal-cart.herokuapp.com/users/login",
+                    url: "https://zeal-cart.herokuapp.com/users/signup",
                     data: {
                         userName: name,
-                        password: password,
+                        password,
+                        contact: {
+                            address,
+                            email
+                        }
                     },
                 });
                 setUserCredentials({
-                    ...userCredentials,
                     name: "",
                     password: "",
                     showPassword: false,
-                });
-                const accessToken = response.data.accessToken;
-                dispatch({
-                    type: "SET_ACCESS_TOKEN",
-                    payload: accessToken,
-                });
-                localStorage.setItem("user-access-token", accessToken);
-                const decodedUser = jwtDecode(accessToken);
-                dispatch({
-                    type: "SET_USER",
-                    payload: decodedUser,
+                    address: "",
+                    email: ""
                 });
                 onOpen("SUCCESS_TOAST");
             } catch (error) {
@@ -108,7 +96,7 @@ const Login = ({ userCredentials, setUserCredentials }) => {
                 });
             }
         };
-        if (name.length === 0 || password.length === 0) {
+        if (name.length === 0 || password.length === 0 || email.length === 0 || address.length === 0) {
             dispatch({
                 type: "SET_IS_ERROR",
                 payload: { authentication: "Please fill all the fields" },
@@ -125,26 +113,13 @@ const Login = ({ userCredentials, setUserCredentials }) => {
                 type: "SET_IS_LOADING",
                 payload: { authentication: true },
             });
-            authenticate();
+            signup();
         }
     };
 
-    useEffect(() => {
-        let timerId;
-        if (isOpen === "SUCCESS_TOAST" && user) {
-            timerId = setTimeout(() => {
-                history.push(pathAfterLogin);
-            }, 2000);
-        }
-
-        return () => {
-            clearTimeout(timerId);
-        };
-    }, [isOpen, user, history, pathAfterLogin]);
-
     return (
         <Container type="col" rowCenter customStyles={styles}>
-            <Text type="mainHeading">Login</Text>
+            <Text type="mainHeading">Signup</Text>
             {isLoading.authentication && <Spinner />}
             {isError.authentication && (
                 <Alert type="danger">
@@ -152,11 +127,11 @@ const Login = ({ userCredentials, setUserCredentials }) => {
                 </Alert>
             )}
             <Toast width="auto" height="auto" color="green" type="center" isOpen={isOpen === "SUCCESS_TOAST"} onClose={onClose} delay={3000}>
-                <Text>Successfully logged in, redirecting now...</Text>
+                <Text>Successfully signed up, you can now login with your credentials</Text>
             </Toast>
             <Input
                 type="text"
-                placeholder="Enter your username"
+                placeholder="Create your username"
                 value={name}
                 onChange={(event) =>
                     setUserCredentials({ ...userCredentials, name: event.target.value })
@@ -165,7 +140,7 @@ const Login = ({ userCredentials, setUserCredentials }) => {
             />
             <Input
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder="Create your password"
                 value={password}
                 onChange={(event) =>
                     setUserCredentials({ ...userCredentials, password: event.target.value })
@@ -196,11 +171,29 @@ const Login = ({ userCredentials, setUserCredentials }) => {
                     </>
                 )}
             </Container>
-            <Button className="authBtn" color="blue" onClick={authenticateUser}>
-                Login
+            <Input
+                type="text"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(event) =>
+                    setUserCredentials({ ...userCredentials, email: event.target.value })
+                }
+                className="input"
+            />
+            <Input
+                type="text"
+                placeholder="Enter your address"
+                value={address}
+                onChange={(event) =>
+                    setUserCredentials({ ...userCredentials, address: event.target.value })
+                }
+                className="input"
+            />
+            <Button className="authBtn" color="blue" onClick={signupUser}>
+                Signup
             </Button>
         </Container>
     );
 };
 
-export default Login;
+export default Signup;
