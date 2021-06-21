@@ -88,10 +88,6 @@ const Login = ({ userCredentials, setUserCredentials }) => {
                     type: "SET_USER",
                     payload: decodedUser,
                 });
-                dispatch({
-                    type: "SET_USER_LOGGED_IN",
-                    payload: true,
-                });
                 onOpen("SUCCESS_TOAST");
             } catch (error) {
                 console.log(error.response?.data.errorMessage);
