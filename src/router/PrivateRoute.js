@@ -1,24 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Redirect } from "react-router";
-import ProductContext from "../context/ProductContext";
 
 const PrivateRoute = ({ path, children, ...rest }) => {
-    const {
-        state: { user },
-    } = useContext(ProductContext);
 
-    if (user) {
-        return (
-            <Route path={path} {...rest}>
-                {children}
-            </Route>
-        );
-    }
+    const savedAccessToken = localStorage.getItem("user-access-token");
 
     return (
-        <Redirect
-            to={{ pathname: "/login", state: { pathAfterLogin: path } }}
-        />
+        <Route path={path} {...rest}>
+            {savedAccessToken ? children : <Redirect to={{ pathname: "/login", state: { pathAfterLogin: path } }} />}
+        </Route>
     );
 };
 
