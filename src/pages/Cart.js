@@ -6,6 +6,7 @@ import { ProductItem } from "../components";
 const Cart = () => {
     const styles = `
         width: 100%;
+        min-height: 100vh;
         align-items: center;
         margin: 5rem 0rem;
 

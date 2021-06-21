@@ -24,6 +24,7 @@ const Product = () => {
 
     const styles = `
         margin:5rem 1.5rem;
+        min-height: 100vh;
         
         .feedbackContainer{
             margin-top:2rem;

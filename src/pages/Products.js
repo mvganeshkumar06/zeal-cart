@@ -28,6 +28,7 @@ const Products = () => {
 
     const styles = `
         margin: 5rem 0rem;
+        min-height: 100vh;
 
         .feedbackContainer{
             margin-top:2rem;
@@ -36,13 +37,11 @@ const Products = () => {
         .optionsContainer {
             width: 100%;
             height: 3rem;
-            background-color: ${
-                theme === "light" ? style.colors.gray[1] : style.colors.gray[4]
-            };
+            background-color: ${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]
+        };
             z-index: ${style.zIndex[2]};
-            border-top: 5px solid ${
-                theme === "light" ? "white" : style.colors.gray[4]
-            };
+            border-top: 5px solid ${theme === "light" ? "white" : style.colors.gray[4]
+        };
             position: fixed;
             bottom: 0;
         }

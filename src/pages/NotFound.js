@@ -6,6 +6,7 @@ const NotFound = () => {
 
     const styles = `
         margin-top:8rem;
+        min-height: 100vh;
     `;
 
     return (

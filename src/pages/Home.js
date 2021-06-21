@@ -23,6 +23,7 @@ const Home = () => {
 
     const styles = `
         margin: 5rem 0rem 5rem 0rem;
+        min-height: 100vh;
 
         .feedbackContainer{
             margin-top:2rem;

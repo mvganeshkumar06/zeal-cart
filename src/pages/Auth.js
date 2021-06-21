@@ -5,7 +5,7 @@ import {
     useStyleContext,
     useThemeContext
 } from "@zeal-ui/core";
-import { Login, Signup } from "./index";
+import { Login, Signup } from "../components/index";
 
 const Auth = () => {
 
@@ -14,6 +14,7 @@ const Auth = () => {
 
     const styles = `
         margin-top: 5rem;
+        min-height: 100vh;
 
         .authContainer{
             width:80%;
