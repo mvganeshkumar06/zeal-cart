@@ -233,7 +233,7 @@ const ProductAction = ({ _id, name, showQuantity }) => {
                 <Container
                     type="row"
                     colCenter
-                    className={`${showQuantity ? "cartActionContainerOnShowQuantity" : "cartActionContainer"}`}
+                    className={`cartActionContainer ${showQuantity ? "cartActionContainerOnShowQuantity" : ""}`}
                     onClick={updateCart}
                 >
                     {productAddedToCart ? (

@@ -3,7 +3,7 @@ import LinkedInIcon from "@material-ui/icons/LinkedIn";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import { Container, useStyleContext, useThemeContext, Text, InlineCode } from "@zeal-ui/core";
+import { Container, useStyleContext, useThemeContext, Text } from "@zeal-ui/core";
 
 const Footer = () => {
     const style = useStyleContext();
@@ -11,11 +11,10 @@ const Footer = () => {
 
     const styles = `
         width: 100%;
+        height:4rem;
         background-color: ${theme === "light" ? style.colors.gray[1] : style.colors.gray[3]};
         color: ${theme === "light" ? "black" : "white"};
-        z-index: ${style.zIndex[2]};
-        position: relative;
-        bottom: 0;
+        margin-top: auto;
         
         .text{
             font-size:0.95rem;
@@ -23,11 +22,6 @@ const Footer = () => {
             flex-direction:row;
             align-items:center;
             margin:0rem 0.25rem;
-        }
-
-        .inlineCode{
-            font-size:0.85rem;
-            padding:0rem 0.5rem;
         }
 
         .icon{
@@ -39,17 +33,20 @@ const Footer = () => {
         .icon:hover, .zealUI:hover{
             cursor:pointer;
         }
+
+        @media(min-width:478px){
+            flex-direction:row;
+            height:3rem;
+        }
     `;
 
     return (
-        <Container type="row" rowCenter colCenter height="3rem" customStyles={styles}>
+        <Container type="col" rowCenter colCenter height="3rem" customStyles={styles}>
             <a href="https://zeal-ui.netlify.app" target="_blank" rel="noreferrer">
-                <Text className="text zealUI">Powered by
-                    <InlineCode color="blue" className="inlineCode">Zeal UI</InlineCode>
-                </Text>
+                <Text className="text zealUI">Powered by Zeal UI.</Text>
             </a>
             <Container type="row" colCenter>
-                <Text className="text">Made with <FavoriteIcon className="icon" /> by <InlineCode color="blue" className="inlineCode">Ganesh Kumar </InlineCode></Text>
+                <Text className="text">Made with <FavoriteIcon className="icon" /> by Ganesh Kumar</Text>
                 <a
                     href="https://www.linkedin.com/in/mvganeshkumar06/"
                     target="_blank"
