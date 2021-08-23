@@ -8,8 +8,6 @@ import { useHistory, useLocation } from "react-router";
 
 const ProductSort = () => {
     const styles = `
-		width: 50%;
-
         .sortTitle{
             margin-left:0.5rem;
             margin-bottom:0rem;
@@ -17,12 +15,11 @@ const ProductSort = () => {
 
 		.sortBtn{
 			margin:0rem;
-			padding:0rem;
-            border-radius:0;
+            padding:0rem;
 		}
 
 		.sortIcon {
-			margin: 0.5rem;
+			margin:0.5rem;
 		}
 		
         .sortModalContent{
@@ -30,11 +27,11 @@ const ProductSort = () => {
 		}
 
         .inputItem {
-			margin: 1rem 0rem;
+			margin:1rem 0rem;
 		}
 		
 		.inputContainer {
-			margin: 0.25rem 0rem;
+			margin:0.25rem 0rem;
 		}
 		
         .inputContainer input{
@@ -42,7 +39,7 @@ const ProductSort = () => {
         }
 
 		.btnClear {
-            padding:0rem 0.25rem;
+            margin-left:0.5rem;
 		}
 	`;
 
@@ -77,9 +74,9 @@ const ProductSort = () => {
     }, []);
 
     return (
-        <Container type="row" rowCenter colCenter customStyles={styles}>
+        <Container type="row" width="10rem" rowCenter colCenter customStyles={styles}>
             <Button
-                width="100%"
+                width="80%"
                 className="sortBtn"
                 onClick={() => setIsSortOptionOpen(!isSortOptionOpen)}
             >

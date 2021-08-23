@@ -16,9 +16,9 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
     const { theme } = useThemeContext();
 
     const styles = `
-        margin:1rem ${onSlideShow ? "2rem" : "0rem"};
         border-radius:${!onSlideShow ? style.common.borderRadius : ""};
-        background-color:${theme === "light" ? "white" : style.colors.gray[2]};
+        box-shadow:${!onSlideShow ? style.common.boxShadow[1] : ""};
+        background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
 
 		.ratingIcon{
 			width: 1.25rem;
@@ -55,16 +55,17 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
         }
 
         .productImageContainer{
-            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[1]};
+            background-color:${theme === "light" ? "white" : style.colors.gray[3]};
             border-radius:0.25rem;
             border-bottom-left-radius:0rem;
             border-bottom-right-radius:0rem;
             padding:0.5rem;
+            margin-top:${onSlideShow ? "1rem" : ""}; 
             box-sizing:border-box;
         }
 
 		@media (min-width: 425px) {
-			margin:1rem ${onSlideShow ? "2rem" : "0rem"};
+			margin:0rem ${onSlideShow ? "2rem" : "0rem"};
 		}
 	
 	`;
@@ -75,7 +76,6 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
         <Container
             type="col"
             rowCenter={onSlideShow}
-            withBorder={!onSlideShow}
             customStyles={styles}
             key={_id}
         >
@@ -117,7 +117,7 @@ const ProductItem = ({ details, showQuantity, onSlideShow }) => {
                             {rating} <StarSharpIcon className="ratingIcon" />
                         </Container>
                         {trending && (
-                            <Badge type="new" className="trendingBadge">
+                            <Badge color="orange" className="trendingBadge">
                                 Trending
                             </Badge>
                         )}

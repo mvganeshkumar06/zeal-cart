@@ -8,9 +8,7 @@ import { useHistory, useLocation } from "react-router";
 import categories from "../utils/Categories";
 
 const ProductFilter = () => {
-    const styles = `
-		width: 50%;
-		
+    const styles = `		
         .filterTitle{
             margin-left:0.5rem;
             margin-bottom:0rem;
@@ -19,7 +17,6 @@ const ProductFilter = () => {
 		.filterBtn{
 			margin:0rem;
 			padding:0rem;
-			border-radius:0;
 		}
 
 		.filterIcon {
@@ -43,8 +40,7 @@ const ProductFilter = () => {
         }
 
 		.btnClear {
-            padding:0rem 0.25rem;
-            margin:0.5rem 0rem 1rem 0.5rem;
+            margin-left:0.5rem;
 		}
 
         .categoriesTitle{
@@ -85,9 +81,9 @@ const ProductFilter = () => {
     }, []);
 
     return (
-        <Container type="row" rowCenter colCenter customStyles={styles}>
+        <Container type="row" width="10rem" rowCenter colCenter customStyles={styles}>
             <Button
-                width="100%"
+                width="80%"
                 className="filterBtn"
                 onClick={() => setIsFilterOptionOpen(!isFilterOptionOpen)}
             >

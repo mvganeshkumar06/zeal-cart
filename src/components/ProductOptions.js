@@ -6,7 +6,6 @@ import {
     useStyleContext,
     useThemeContext,
     Button,
-    Divider,
 } from "@zeal-ui/core";
 import queryString from "query-string";
 import { useHistory, useLocation } from "react-router";
@@ -24,10 +23,6 @@ const ProductOptions = () => {
 			text-align: center;
 		}
 		
-		.inputItem {
-			margin: 1rem 0rem;
-		}
-		
 		.inputContainer {
 			margin: 0.25rem 0rem;
 		}
@@ -36,28 +31,21 @@ const ProductOptions = () => {
             margin-right:0.5rem;
         }
 
-		.btnClear {
-            padding:0rem 0.25rem;
-		}
-
-        .divider{
-            margin-bottom:0.25rem;
-        }
-
         .categoriesTitle{
             margin:1rem 0rem 0.5rem 0rem;
         }
 		
 		@media (min-width: 1024px) {
-            display: flex;
-            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[2]};
-            border-radius: ${style.common.borderRadius};
-            position: fixed;
-            top: 8rem;
-            left: 0rem;
-            bottom: 0rem;
-            padding: 0rem 1rem;
-            width: 18%;     
+            display:flex;
+            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
+            border-radius:${style.common.borderRadius};
+            box-shadow:${style.common.boxShadow[1]};
+            position:fixed;
+            top:7rem;
+            left:0rem;
+            bottom:0rem;
+            padding:0rem 1rem;
+            width:18%;     
             height:35rem;     
 		}
         
@@ -109,7 +97,6 @@ const ProductOptions = () => {
                     SORT
                 </Text>
                 <Button
-                    className="btnClear"
                     onClick={() => {
                         dispatch({
                             type: "RESET_SORT_AND_FILTER",
@@ -121,8 +108,7 @@ const ProductOptions = () => {
                     Clear
                 </Button>
             </Container>
-            <Divider className="divider" />
-            <Container type="col" width="80%" className="inputItem">
+            <Container type="col" width="80%">
                 <Container
                     type="row"
                     width="100%"
@@ -228,11 +214,11 @@ const ProductOptions = () => {
                     <label htmlFor="input-rating"> Rating </label>
                 </Container>
             </Container>
+            <br />
             <Text bold color="orange">
                 FILTERS
             </Text>
-            <Divider className="divider" />
-            <Container type="col" width="80%" className="inputItem">
+            <Container type="col" width="80%">
                 <Container
                     type="col"
                     colCenter

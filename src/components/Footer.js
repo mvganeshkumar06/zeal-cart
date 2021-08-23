@@ -12,8 +12,8 @@ const Footer = () => {
     const styles = `
         width: 100%;
         height:4rem;
-        background-color: ${theme === "light" ? style.colors.gray[1] : style.colors.gray[3]};
-        color: ${theme === "light" ? "black" : "white"};
+        background-color: ${theme === "light" ? "white" : style.colors.gray[3]};
+        box-shadow:${style.common.boxShadow[1]};
         margin-top: auto;
         
         .text{

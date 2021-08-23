@@ -22,8 +22,8 @@ const Header = () => {
     const styles = `
         width: 100%;
         height: 4.5rem;
-        background-color: ${theme === "light" ? style.colors.gray[1] : style.colors.gray[3]};
-        color: ${theme === "light" ? "black" : "white"};
+        background-color: ${theme === "light" ? "white" : style.colors.gray[3]};
+        box-shadow:${style.common.boxShadow[1]};
         z-index: ${style.zIndex[2]};
         position: fixed;
         top: 0;
@@ -69,14 +69,12 @@ const Header = () => {
 
         .wishCount,
         .cartCount{
-            width: 0.75rem;
-            height: 0.75rem;
-            border: 2px solid  ${theme === "light" ? "black" : "white"};
-            background-color: ${style.colors.red[4]};
+            width: 1rem;
+            height: 1rem;
+            background-color: ${style.colors.red[3]};
             color: white;
             font-size: 0.75rem;
-            font-weight: bold;
-            padding: 1px;
+            padding: 2px;
             position: absolute;
             display: flex;
             justify-content: center;
@@ -85,7 +83,7 @@ const Header = () => {
         }
 
         .wishCount,.cartCount{   
-            bottom: 0.75rem;
+            bottom: 0.65rem;
             left: 1.5rem;
         }
 
@@ -121,7 +119,7 @@ const Header = () => {
                 font-size:0.85rem;
             }
             .wishCount, .cartCount{
-                bottom:2.25rem;
+                bottom:2rem;
                 left:1.65rem;
             }
         }
