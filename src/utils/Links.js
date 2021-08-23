@@ -3,16 +3,16 @@ import LocalMallIcon from "@material-ui/icons/LocalMall";
 
 const navigationItems = [
     {
-        id:1,
+        id: 1,
         name: "Home",
         url: "/",
-        icon:<HomeIcon/>,
+        icon: <HomeIcon />,
     },
     {
-        id:2,
+        id: 2,
         name: "Products",
         url: "/products",
-        icon:<LocalMallIcon/>,
+        icon: <LocalMallIcon />,
     },
 ];
 
