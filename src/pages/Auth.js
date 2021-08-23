@@ -21,7 +21,8 @@ const Auth = () => {
             margin-top:2rem;
             padding:0.5rem;
             border-radius:${style.common.borderRadius};
-            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[3]};
+            box-shadow:${style.common.boxShadow[1]};
+            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
         }
 
         .authNavBtn{

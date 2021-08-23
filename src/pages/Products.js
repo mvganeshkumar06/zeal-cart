@@ -35,13 +35,9 @@ const Products = () => {
         }
 
         .optionsContainer {
-            width: 100%;
-            height: 3rem;
-            background-color: ${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]
-        };
+            background-color: ${theme === "light" ? style.colors.gray[2] : style.colors.gray[4]};
+            border-top:${theme === "light" ? "1px solid black" : "none"};
             z-index: ${style.zIndex[2]};
-            border-top: 5px solid ${theme === "light" ? "white" : style.colors.gray[4]
-        };
             position: fixed;
             bottom: 0;
         }
@@ -136,7 +132,7 @@ const Products = () => {
 
     return (
         <Container type="col" customStyles={styles}>
-            <Container type="row" rowEven className="optionsContainer">
+            <Container type="row" width="100%" height="4rem" rowCenter colCenter className="optionsContainer">
                 <ProductSort />
                 <ProductFilter />
             </Container>

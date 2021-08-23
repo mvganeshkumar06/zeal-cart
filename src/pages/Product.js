@@ -31,13 +31,13 @@ const Product = () => {
         }
 
         .productDetails{
-            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[2]};
+            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
             border-radius:${style.common.borderRadius};
             padding:0.25rem 1rem;
         }
 
         .productImageContainer{
-            background-color:${theme === "light" ? style.colors.gray[0] : style.colors.gray[1]};
+            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
             margin: 1.5rem 1rem 2rem 0rem;
             border-radius:0.25rem;
             padding:1rem;
@@ -156,7 +156,7 @@ const Product = () => {
                                 <StarSharpIcon className="ratingIcon" />
                             </Container>
                             {product.trending && (
-                                <Badge type="new" className="trendingBadge">
+                                <Badge color="orange" className="trendingBadge">
                                     Trending
                                 </Badge>
                             )}

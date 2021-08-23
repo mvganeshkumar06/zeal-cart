@@ -38,20 +38,13 @@ const Home = () => {
         }
 
         .slideShow{
-            background-color:${theme === "light" ? "white" : style.colors.gray[2]};
+            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
+            box-shadow:${style.common.boxShadow[1]};
+            border:none;
         }
 
-        .slideShowContainer{
-            width:100%;
-            height:auto;
-        }
-
-        .slideShowContainer .slideContainer{
-            width:90%;
-        }
-
-        .slideShowContainer .slideIndicatorContainer{
-            flex-wrap:wrap;
+        .slideShow .slideContainer{
+            width:80%;
         }
 
         @media(min-width:425px){
@@ -156,7 +149,7 @@ const Home = () => {
                                 <Button color="blue">Show More</Button>
                             </Link>
                         </Container>
-                        <Container type="col" className="slideShowContainer">
+                        <Container type="col" width="100%" height="auto">
                             <SlideShow
                                 slides={getSlides(trendingProducts)}
                                 slidesCount={getSlidesCount()}
@@ -166,6 +159,8 @@ const Home = () => {
                                 next={
                                     <NavigateNextIcon className="slideNavigationIcon" />
                                 }
+                                width="100%"
+                                height="auto"
                                 className="slideShow"
                             />
                         </Container>
@@ -180,7 +175,8 @@ const Home = () => {
                             return (
                                 <Container
                                     type="col"
-                                    className="slideShowContainer"
+                                    width="100%"
+                                    height="auto"
                                     key={name}
                                 >
                                     <Container
@@ -192,6 +188,7 @@ const Home = () => {
                                         <Text
                                             className="categoryName"
                                             color="blue"
+                                            bold
                                         >
                                             {name}
                                         </Text>
@@ -214,6 +211,8 @@ const Home = () => {
                                         next={
                                             <NavigateNextIcon className="slideNavigationIcon" />
                                         }
+                                        width="100%"
+                                        height="auto"
                                         className="slideShow"
                                     />
                                 </Container>
