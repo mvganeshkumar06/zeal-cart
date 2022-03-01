@@ -1,228 +1,131 @@
-import React, { useEffect } from "react";
-import {
-    Container,
-    Text,
-    SlideShow,
-    Button,
-    useMediaQuery,
-    Alert,
-    Spinner,
-    useStyleContext,
-    useThemeContext
-} from "@zeal-ui/core";
-import axios from "axios";
-import useProductContext from "../hooks/useProductContext";
-import { ProductItem } from "../components";
-import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import { Link } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Container, Text, SlideShow, Button, useMediaQuery, Alert, Spinner } from '@zeal-ui/core';
+import { HomeStyled } from '../styles';
+import axios from 'axios';
+import useProductContext from '../hooks/use-product-context';
+import { ProductItem } from '../components';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-    const style = useStyleContext();
-    const { theme } = useThemeContext();
+	const {
+		state: { products, categories, isLoading, isError },
+		dispatch,
+	} = useProductContext();
 
-    const styles = `
-        margin: 5rem 0rem 5rem 0rem;
-        min-height: 100vh;
+	useEffect(() => {
+		const fetchCategories = async () => {
+			try {
+				const response = await axios({
+					method: 'get',
+					url: 'https://zeal-cart.herokuapp.com/categories',
+				});
+				dispatch({
+					type: 'SET_CATEGORIES',
+					payload: response.data,
+				});
+			} catch (err) {
+				console.log(err.response?.data.errorMessage);
+				dispatch({
+					type: 'SET_IS_ERROR',
+					payload: { categoires: true },
+				});
+			} finally {
+				dispatch({
+					type: 'SET_IS_LOADING',
+					payload: { categories: false },
+				});
+			}
+		};
+		fetchCategories();
+	}, [dispatch]);
 
-        .feedbackContainer{
-            margin-top:2rem;
-        }
+	const getSlides = (products) => {
+		return products.map((productDetails) => (
+			<ProductItem details={productDetails} key={productDetails._id} onSlideShow />
+		));
+	};
 
-        .displayItem{
-            width:90%;
-        }
+	const trendingProducts = products.filter((product) => product.trending);
 
-        .categoryName{
-            font-size:1.25rem;
-        }
+	const query = useMediaQuery([
+		'(max-width:768px)',
+		'(max-width:1024px)',
+		'(max-width:1440px)',
+		'(min-width:1440px)',
+	]);
+	const isMobile = query[0];
+	const isDesktop = query[1];
+	const isDesktopMedium = query[2];
+	const isDesktopLarge = query[3];
 
-        .slideShow{
-            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
-            box-shadow:${style.common.boxShadow[1]};
-            border:none;
-        }
+	const getSlidesCount = () => {
+		if (isMobile) {
+			return 1;
+		}
+		if (isDesktop) {
+			return 2;
+		}
+		if (isDesktopMedium) {
+			return 3;
+		}
+		if (isDesktopLarge) {
+			return 4;
+		}
+	};
 
-        .slideShow .slideContainer{
-            width:80%;
-        }
-
-        @media(min-width:425px){
-            .slideNavigationIcon{
-                width:2rem;
-                height:2rem;
-            }
-        }
-    `;
-
-    const {
-        state: { products, categories, isLoading, isError },
-        dispatch,
-    } = useProductContext();
-
-    useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await axios({
-                    method: "get",
-                    url: "https://zeal-cart.herokuapp.com/categories",
-                });
-                dispatch({
-                    type: "SET_CATEGORIES",
-                    payload: response.data,
-                });
-            } catch (err) {
-                console.log(err.response?.data.errorMessage);
-                dispatch({
-                    type: "SET_IS_ERROR",
-                    payload: { categoires: true },
-                });
-            } finally {
-                dispatch({
-                    type: "SET_IS_LOADING",
-                    payload: { categories: false },
-                });
-            }
-        };
-        fetchCategories();
-    }, [dispatch]);
-
-    const getSlides = (products) => {
-        return products.map((productDetails) => (
-            <ProductItem
-                details={productDetails}
-                key={productDetails._id}
-                onSlideShow
-            />
-        ));
-    };
-
-    const trendingProducts = products.filter((product) => product.trending);
-
-    const query = useMediaQuery([
-        "(max-width:768px)",
-        "(max-width:1024px)",
-        "(max-width:1440px)",
-        "(min-width:1440px)",
-    ]);
-    const isMobile = query[0];
-    const isDesktop = query[1];
-    const isDesktopMedium = query[2];
-    const isDesktopLarge = query[3];
-
-    const getSlidesCount = () => {
-        if (isMobile) {
-            return 1;
-        }
-        if (isDesktop) {
-            return 3;
-        }
-        if (isDesktopMedium) {
-            return 4;
-        }
-        if (isDesktopLarge) {
-            return 5;
-        }
-    };
-
-    return (
-        <Container type="col" rowCenter customStyles={styles}>
-            <Container
-                type="row"
-                rowCenter
-                width="100%"
-                className="feedbackContainer"
-            >
-                {isLoading.categories && <Spinner />}
-                {isError.categories && (
-                    <Alert type="danger">Error while getting products</Alert>
-                )}
-            </Container>
-            {!isLoading.categoires && !isError.categoires && (
-                <>
-                    <Container type="col" className="displayItem">
-                        <Container type="row" width="100%" rowBetween>
-                            <Text type="subHeading" color="orange">
-                                Shop Trending products
-                            </Text>
-                            <Link to="/products?SORT=TRENDING_FIRST">
-                                <Button color="blue">Show More</Button>
-                            </Link>
-                        </Container>
-                        <Container type="col" width="100%" height="auto">
-                            <SlideShow
-                                slides={getSlides(trendingProducts)}
-                                slidesCount={getSlidesCount()}
-                                prev={
-                                    <NavigateBeforeIcon className="slideNavigationIcon" />
-                                }
-                                next={
-                                    <NavigateNextIcon className="slideNavigationIcon" />
-                                }
-                                width="100%"
-                                height="auto"
-                                className="slideShow"
-                            />
-                        </Container>
-                    </Container>
-                    <Container type="col" className="displayItem">
-                        <Container type="row" width="100%" rowBetween>
-                            <Text type="subHeading" color="orange">
-                                Shop by Category
-                            </Text>
-                        </Container>
-                        {categories.map(({ name, products }) => {
-                            return (
-                                <Container
-                                    type="col"
-                                    width="100%"
-                                    height="auto"
-                                    key={name}
-                                >
-                                    <Container
-                                        type="row"
-                                        rowBetween
-                                        colCenter
-                                        width="100%"
-                                    >
-                                        <Text
-                                            className="categoryName"
-                                            color="blue"
-                                            bold
-                                        >
-                                            {name}
-                                        </Text>
-                                        <Link
-                                            to={`/products?CATEGORY=${name
-                                                .toUpperCase()
-                                                .replace(" ", "_")}`}
-                                        >
-                                            <Button color="blue">
-                                                Show more
-                                            </Button>
-                                        </Link>
-                                    </Container>
-                                    <SlideShow
-                                        slides={getSlides(products)}
-                                        slidesCount={getSlidesCount()}
-                                        prev={
-                                            <NavigateBeforeIcon className="slideNavigationIcon" />
-                                        }
-                                        next={
-                                            <NavigateNextIcon className="slideNavigationIcon" />
-                                        }
-                                        width="100%"
-                                        height="auto"
-                                        className="slideShow"
-                                    />
-                                </Container>
-                            );
-                        })}
-                    </Container>
-                </>
-            )}
-        </Container>
-    );
+	return (
+		<HomeStyled type="col" width="100%" rowCenter>
+			<Container type="row" rowCenter width="100%" className="feedbackContainer">
+				{isLoading.categories && <Spinner />}
+				{isError.categories && (
+					<Alert type="error">
+						<Text>Error while getting products</Text>
+					</Alert>
+				)}
+			</Container>
+			{!isLoading.categoires && !isError.categoires && (
+				<Container type="col" width="100%" className="contentContainer">
+					<Container type="row" colCenter>
+						<Text type="subHeading1">Trending products</Text>
+						<Link to="/products?SORT=TRENDING_FIRST">
+							<Button className="showMoreBtn">Show More</Button>
+						</Link>
+					</Container>
+					<SlideShow
+						slides={getSlides(trendingProducts)}
+						slidesCount={getSlidesCount()}
+						width="100%"
+						height="22rem"
+						colCenter
+						className="slideShow"
+					/>
+					{categories.map(({ name, products }) => {
+						return (
+							<Container type="col" width="100%" height="auto" key={name}>
+								<Container type="row" colCenter>
+									<Text type="subHeading1">{name}</Text>
+									<Link
+										to={`/products?CATEGORY=${name
+											.toUpperCase()
+											.replace(' ', '_')}`}
+									>
+										<Button className="showMoreBtn">Show more</Button>
+									</Link>
+								</Container>
+								<SlideShow
+									slides={getSlides(products)}
+									slidesCount={getSlidesCount()}
+									width="100%"
+									height="22rem"
+									className="slideShow"
+								/>
+							</Container>
+						);
+					})}
+				</Container>
+			)}
+		</HomeStyled>
+	);
 };
 
 export default Home;

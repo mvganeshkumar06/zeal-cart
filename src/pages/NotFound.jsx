@@ -1,20 +1,17 @@
-import React from "react";
-import { Container, Text, Button } from "@zeal-ui/core";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Text, Button } from '@zeal-ui/core';
+import { NotFoundStyled } from '../styles';
+import { Link } from 'react-router-dom';
 
 const NotFound = () => {
-
-    const styles = `
-        margin-top:8rem;
-        min-height: 100vh;
-    `;
-
-    return (
-        <Container type="col" rowCenter customStyles={styles}>
-            <Text type="mainHeading" color="orange">Page not found 🧐</Text>
-            <Link to="/"><Button>Go back to home</Button></Link>
-        </Container>
-    );
+	return (
+		<NotFoundStyled type="col" width="100%" rowCenter>
+			<Text type="mainHeading">The page you are looking for is not found!</Text>
+			<Link to="/">
+				<Button>Go back to home</Button>
+			</Link>
+		</NotFoundStyled>
+	);
 };
 
 export default NotFound;

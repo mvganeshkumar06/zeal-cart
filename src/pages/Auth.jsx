@@ -1,70 +1,57 @@
-import React, { useState } from "react";
-import {
-    Container,
-    Button,
-    useStyleContext,
-    useThemeContext
-} from "@zeal-ui/core";
-import { Login, Signup } from "../components/index";
+import React, { useState } from 'react';
+import { Container, Button } from '@zeal-ui/core';
+import { AuthStyled } from '../styles';
+import { Login, Signup } from '../components/index';
 
 const Auth = () => {
+	const [showLogin, setShowLogin] = useState(true);
+	const [userCredentials, setUserCredentials] = useState({
+		name: '',
+		password: '',
+		showPassword: false,
+		address: '',
+		email: '',
+	});
+	const [loginAsGuest, setLoginAsGuest] = useState(false);
 
-    const style = useStyleContext();
-    const { theme } = useThemeContext();
-
-    const styles = `
-        margin-top: 5rem;
-        min-height: 100vh;
-
-        .authContainer{
-            width:80%;
-            margin-top:2rem;
-            padding:0.5rem;
-            border-radius:${style.common.borderRadius};
-            box-shadow:${style.common.boxShadow[1]};
-            background-color:${theme === "light" ? style.colors.gray[1] : style.colors.gray[4]};
-        }
-
-        .authNavBtn{
-            margin:2rem 1rem;
-        }
-
-        .authNavBtnActive{
-            background-color:${style.colors.orange[3]};
-        }
-
-        .userNameInput, .passwordInput{
-            margin:1rem 0rem;
-        }
-
-        @media(min-width:768px){
-            .authContainer{
-                width:30rem;
-            }
-        }
-
-    `;
-
-    const [showLogin, setShowLogin] = useState(true);
-    const [userCredentials, setUserCredentials] = useState({
-        name: "",
-        password: "",
-        showPassword: false,
-        address: "",
-        email: ""
-    });
-
-    return (
-        <Container type="col" rowCenter customStyles={styles}>
-            <Container type="col" rowCenter className="authContainer">
-                <Container type="row" colCenter>
-                    <Button className={`authNavBtn ${showLogin && "authNavBtnActive"}`} onClick={() => setShowLogin(true)}>Login</Button>
-                    <Button className={`authNavBtn ${!showLogin && "authNavBtnActive"}`} onClick={() => setShowLogin(false)}>Signup</Button>
-                </Container>
-                {showLogin ? <Login userCredentials={userCredentials} setUserCredentials={setUserCredentials} /> : <Signup userCredentials={userCredentials} setUserCredentials={setUserCredentials} />}
-            </Container>
-        </Container>
-    );
+	return (
+		<AuthStyled type="col" width="100%" rowCenter>
+			<Container type="col" width="100%" rowCenter className="authContainer">
+				<Container type="row" width="100%" rowCenter colCenter className="authNavContainer">
+					<Button
+						width="50%"
+						color="secondary"
+						className={`authNavBtn ${showLogin && 'authNavBtnActive'}`}
+						onClick={() => setShowLogin(true)}
+					>
+						Login
+					</Button>
+					<Button
+						width="50%"
+						color="secondary"
+						className={`authNavBtn ${!showLogin && 'authNavBtnActive'}`}
+						onClick={() => setShowLogin(false)}
+					>
+						Signup
+					</Button>
+				</Container>
+				{showLogin ? (
+					<Login
+						userCredentials={userCredentials}
+						setUserCredentials={setUserCredentials}
+						loginAsGuest={loginAsGuest}
+					/>
+				) : (
+					<Signup
+						userCredentials={userCredentials}
+						setUserCredentials={setUserCredentials}
+						setShowLogin={setShowLogin}
+						setLoginAsGuest={setLoginAsGuest}
+					/>
+				)}
+			</Container>
+		</AuthStyled>
+	);
 };
 
 export default Auth;
